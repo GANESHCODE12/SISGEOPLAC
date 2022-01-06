@@ -1,0 +1,165 @@
+{% extends "lista.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_list %}
+<link href="{% static 'lib/jquery-ui-1.12.1/jquery-ui.min.css' %}" rel="stylesheet" />
+<script src="{% static 'lib/jquery-ui-1.12.1/jquery-ui.min.js' %}"></script>
+
+<link href="{% static 'lib/select2-4.0.13/css/select2.min.css' %}" rel="stylesheet" />
+<link href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}" rel="stylesheet" />
+<script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
+<script src="{% static 'lib/select2-4.0.13/js/i18n/es.js' %}"></script>
+
+<link href="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.css' %}" rel="stylesheet"/>
+<script src="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.js' %}"></script>
+
+<script src="{% static 'js/forms/inspeccion.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<form method="POST">
+    <div class="card">
+        <div class="card-header bg-dark">
+            <h3 class="card-title">
+                <i class="fas fa-plus"></i>
+                {{ title }} de la orden: {{ produccion.numero_op }}, producto: {{ produccion.producto }}
+            </h3>
+        </div>
+        <div class="card-body">
+            <input type="hidden" name="action" value="{{ action }}">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-info-circle"></i> Información general de la inspección</h3>
+                        </div>
+                        <div class="card-body">
+                            {{ form|crispy }}
+                            <input type="hidden" name="numero_op_id" value="{{ produccion.numero_op }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-vials"></i> Pruebas y/o ensayos
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Buscador:</label>
+                                <div class="input-group">
+                                    <select class="form-control select2" style="width: 100%;" name="pruebas_y_o_ensayos">
+    
+                                    </select>
+                                </div>
+                            </div>
+                            <hr>
+                            <table class="table table-bordered" id="tblPruebasEnsayos">
+                                <thead>
+                                    <tr>
+                                        <th>Eliminar</th>
+                                        <th>Prueba y/o ensayo</th>
+                                        <th>Valor FT</th>
+                                        <th>Tolerancia FT</th>
+                                        <th>Método</th>
+                                        <th>Valor</th>
+                                        <th>Resultado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-tachometer-alt"></i> Caracteristicas dimensionales</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Buscador:</label>
+                                <div class="input-group">
+                                    <select class="form-control select2" style="width: 100%;" name="inspeccion_dimensional">
+    
+                                    </select>
+                                </div>
+                            </div>
+                            <hr>
+                            <table class="table table-bordered" id="tblInspeccionDimensiones">
+                                <thead>
+                                    <tr>
+                                        <th>Eliminar</th>
+                                        <th>Dimensión</th>
+                                        <th>Valor FT</th>
+                                        <th>Tolerancia FT</th>
+                                        <th>Promedio</th>
+                                        <th>Resultado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fab fa-creative-commons-by"></i> Atributos</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Buscador:</label>
+                                <div class="input-group">
+                                    <select class="form-control select2" style="width: 100%;" name="inspeccion_atributos">
+    
+                                    </select>
+                                </div>
+                            </div>
+                            <hr>
+                            <table class="table table-bordered" id="tblInspeccionAtributos">
+                                <thead>
+                                    <tr>
+                                        <th>Eliminar</th>
+                                        <th>Atributo</th>
+                                        <th>Especificación</th>
+                                        <th>Observación</th>
+                                        <th>Resultado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            {% block card-footer %}
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Guardar inspección
+            </button>
+            &nbsp;
+            <a href="{{ list_url }}" class="btn btn-danger">
+                <i class="fas fa-times"></i> Cancelar
+            </a>
+            &nbsp;
+            {% endblock %}
+        </div>
+    </div>
+</form>
+{% endblock %}

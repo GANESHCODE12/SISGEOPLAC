@@ -1,0 +1,33 @@
+{% extends "lista.html" %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'lib/moment-2.25.3/moment-with-locales.js' %}"></script>
+    <script src="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js' %}"></script>
+    <link href="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
+
+    <script src="{% static 'js/Listas/documentos.js' %}"></script>
+{% endblock %}
+
+{% block columnas %}
+
+<tr>
+    <th style="width: 12.5%;">Código</th>
+    <th style="width: 12.5%;">Titulo</th>
+    <th style="width: 12.5%;">Tipo documento</th>
+    <th style="width: 12.5%;">Proceso</th>
+    <th style="width: 12.5%;">Versión</th>
+    <th style="width: 12.5%;">Fecha</th>
+    <th style="width: 12.5%;">Estado documento</th>
+    <th style="width: 12.5%;">Opciones</th>
+</tr>
+
+{% endblock %}
+
+{% block card-footer %}
+    <a href="{% url 'Documentación:Crear_documento' %}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Crear un documento
+    </a> 
+{% endblock %}
+{% block javascript %}
+
+{% endblock %}

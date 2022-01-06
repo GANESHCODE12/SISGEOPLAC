@@ -1,0 +1,17 @@
+{% extends 'lista.html' %}
+{% block columnas %}
+<tr>
+    <th style="text-align: center;">Código</th>
+    <th style="text-align: center;">Titulo</th>
+</tr>
+{% endblock %}
+{% block filas %}
+<tr id="lista_productos">
+    <td>{{ instance.codigo }}</td>
+    <td>{{ instance.titulo}}</td>
+{% endblock %}
+{% block card-footer %}
+    <a href="{% url 'Productos:Nueva_norma' %}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Crear un registro
+    </a>        
+{% endblock %}

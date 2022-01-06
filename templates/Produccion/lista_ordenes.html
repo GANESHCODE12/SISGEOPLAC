@@ -1,0 +1,28 @@
+{% extends 'lista.html' %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'lib/moment-2.25.3/moment-with-locales.js' %}"></script>
+    <script src="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js' %}"></script>
+    <link href="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
+
+    <script src="{% static 'js/Listas/produccion.js' %}"></script>
+{% endblock %}
+{% block columnas %}
+<tr>
+    <th style="text-align: center; width: 9%">No. orden</th>
+    <th style="text-align: center; width: 14%">Producto</th>
+    <th style="text-align: center; width: 12.5%">Lote</th>
+    <th style="text-align: center; width: 12.5%">Cliente</th>
+    <th style="text-align: center; width: 12.5%">Cant. requerida</th>
+    <th style="text-align: center; width: 12.5%">Estado Orden</th>
+    <th style="text-align: center; width: 12.5%">Fecha de entrega</th>
+    <th style="text-align: center; width: 14.5%">Opciones</th>
+</tr>
+{% endblock %}
+{% block filas %}
+
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends "body.html" %}
+{% block content %}
+<div class="card card-dark">
+    <div class="card-header">
+        <div class="container">
+            <h2><i class="fas fa-info-circle"></i> PNC de la orden de producción: {{ ProductoNoConforme.numero_op }}</h2>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th colspan="7">Información PNC</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Producto</th>
+                    <th>Número de inspección</th>
+                    <th>Analista de calidad</th>
+                    <th>Fecha del PNC</th>
+                    <th>Cantidad PNC</th>
+                </tr>
+                <tr>
+                    <td>{{ ProductoNoConforme.id_inspeccion.numero_op.producto.Nombre_producto }}</td>
+                    <td>{{ ProductoNoConforme.id_inspeccion_id }}</td>
+                    <td>{{ ProductoNoConforme.inspector_calidad.first_name }} {{ ProductoNoConforme.inspector_calidad.last_name }}</td>
+                    <td>{{ ProductoNoConforme.fecha_creacion }}</td>
+                    <td>{{ ProductoNoConforme.cantidad_pnc }}</td>
+                </tr>
+            </tbody>
+        </table>
+        &nbsp;
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th colspan="5">Tipos de Producto No Conforme</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Tipo PNC 1</th>
+                    <th>Tipo PNC 2</th>
+                    <th>Tipo PNC 3</th>
+                    <th>Tipo PNC 4</th>
+                    <th>Tipo PNC 5</th>
+                </tr>
+                <tr>
+                    <td>{{ ProductoNoConforme.tipo_pnc_1 }}</td>
+                    <td>{{ ProductoNoConforme.tipo_pnc_2 }}</td>
+                    <td>{{ ProductoNoConforme.tipo_pnc_3 }}</td>
+                    <td>{{ ProductoNoConforme.tipo_pnc_4 }}</td>
+                    <td>{{ ProductoNoConforme.tipo_pnc_5 }}</td>
+                </tr>
+            </tbody>
+        </table>
+        &nbsp;
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th colspan="5">Tipos de Producto No Conforme</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Tipo PNC 6</th>
+                    <th>Tipo PNC 7</th>
+                    <th>Tipo PNC 8</th>
+                    <th>Tipo PNC 9</th>
+                    <th>Tipo PNC 10</th>
+                </tr>
+                <tr style="background-color: rgb(255, 255, 255); color: black">
+                    <td>{{ ProductoNoConforme.tipo_pnc_6 }}</td>
+                    <td>{{ ProductoNoConforme.tipo_pnc_7 }}</td>
+                    <td>{{ ProductoNoConforme.tipo_pnc_8 }}</td>
+                    <td>{{ ProductoNoConforme.tipo_pnc_9 }}</td>
+                    <td>{{ ProductoNoConforme.tipo_pnc_10 }}</td>
+                </tr>
+            </tbody>
+        </table>
+        &nbsp;
+        <div class="row">
+            <div class="col-sm-3">
+                <li class="list-group-item list-group-item-dark">Técnico</li>
+                <li class="list-group-item list-group-item-dark">Operario</li>
+                <li class="list-group-item list-group-item-dark">Turno</li>
+                &nbsp;
+                <li class="list-group-item list-group-item-dark">Fecha Inspección</li>
+                <li class="list-group-item list-group-item-dark">Estado PNC</li>
+            </div>
+            <div class="col-sm-9">
+                <li class="list-group-item">{{ control_calidad.tecnico }}</li>
+                <li class="list-group-item">{{ control_calidad.operario }}</li>
+                <li class="list-group-item">{{ control_calidad.turno }}</li>
+                &nbsp;
+                <li class="list-group-item">{{ control_calidad.fecha_creacion }}</li>
+                <li class="list-group-item">{{ ProductoNoConforme.estado_pnc }}</li>
+            </div>
+            &nbsp;
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>OBSERVACIONES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ ProductoNoConforme.observaciones }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

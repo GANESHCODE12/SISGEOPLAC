@@ -1,0 +1,93 @@
+{% extends 'body.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head %}
+<script src="{% static 'lib/moment-2.25.3/moment-with-locales.js' %}"></script>
+<script src="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js' %}"></script>
+<link href="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
+
+<link href="{% static 'js/functions.js' %}" rel="stylesheet" />
+{% block head_form %}
+
+{% endblock %}
+{% endblock %}
+
+
+{% block content %}
+<form method="post" action="." enctype="multipart/form-data">
+    <div class="card card-dark">
+        {% block card-header %}
+        <div class="card-header">
+                {% if action == 'add' %}
+                    <i class="fas fa-plus"></i>
+                {% else %}
+                    <i class="fas fa-edit"></i>
+                {% endif %}
+
+                {{ title }}
+        </div>
+        {% endblock %}
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead class=" table-dark" style="text-align: center;">
+                    <th>
+                        <i class="fas fa-paste"></i> ¡INGRESE LA INFORMACIÓN SOLICITADA!
+                        <p>
+                            <small>Los campos con asterisco (*) son obligatorios</small>
+                        </p>
+                    </th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="{{ action }}">
+                            {% block hidden %}
+                            {% endblock %}
+                            {{ form|crispy }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Cargar
+            </button>
+            &nbsp;
+            <a href="{{ list_url }}" class="btn btn-danger">
+                <i class="fas fa-times"></i> Cancelar
+            </a>
+            &nbsp;
+            {% block button %}
+
+            {% endblock %}
+        </div>
+    </div>
+</form>
+<script>
+    {% if form.errors %}
+    var errors = '';
+        {% for field in form %}
+            {% for error in field.errors %}
+                errors += '{{ error }}\n'
+            {% endfor %}
+        {% endfor %}
+        Swal.fire({
+            title: 'Error!',
+            text: errors,
+            icon: 'error',
+          })
+    {% endif %}
+
+    $('form').on('submit', function(e){
+        e.preventDefault();
+        //var parameters = $(this).serializeArray();
+        var parameters = new FormData(this);
+        submit_with_ajax(window.location.pathname, parameters, 'Notificación', 'Esta segur@ que desea crear el siguiente registro?', function(){
+            location.href = '{{ list_url }}';
+        });
+    });
+
+</script>
+{% endblock %}

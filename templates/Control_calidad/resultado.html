@@ -1,0 +1,31 @@
+{% extends "body.html" %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+{{ form|as_crispy_errors }}
+<div class="card" id="carta">
+    <div class="card-header" id="titulos-card">
+        <h2 class="mb-6">Resultado inspección</h2>
+    </div>
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <table>
+                <tbody>
+                    <tr>
+                        <td colspan="4">{{ form.resultado|as_crispy_field }}</td>
+                        <td colspan="4">{{ form.evidencia|as_crispy_field }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            &nbsp;
+            <div class="d-flex justify-content-end" id="botones_form">
+                <button type="submit" class="btn btn-outline-success" name="crear">
+                    Terminar inspección
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

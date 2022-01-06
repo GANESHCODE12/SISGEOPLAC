@@ -1,0 +1,27 @@
+{% extends "lista.html" %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'lib/moment-2.25.3/moment-with-locales.js' %}"></script>
+    <script src="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js' %}"></script>
+    <link href="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
+
+    <script src="{% static 'js/Listas/pnc.js' %}"></script>
+{% endblock %}
+{% block columnas %}
+<tr>
+    <th style="width: 10%;">Id PNC</th>
+    <th style="width: 10%;">Fecha PNC</th>
+    <th style="width: 10%;">No. orden</th>
+    <th style="width: 10%;">No. inspección</th>
+    <th style="width: 10%;">Técnico</th>
+    <th style="width: 10%;">Operario</th>
+    <th style="width: 10%;">Estado</th>
+    <th style="width: 10%;">Cant. PNC</th>
+    <th style="width: 10%;">Inspector</th>
+    <th style="width: 10%;">Opciones</th>
+</tr>
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

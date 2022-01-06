@@ -1,0 +1,142 @@
+{% extends 'body.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block head %}
+<link href="{% static 'lib/jquery-ui-1.12.1/jquery-ui.min.css' %}" rel="stylesheet" />
+<script src="{% static 'lib/jquery-ui-1.12.1/jquery-ui.min.js' %}"></script>
+
+<link href="{% static 'lib/select2-4.0.13/css/select2.min.css' %}" rel="stylesheet" />
+<link href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}" rel="stylesheet" />
+<script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
+<script src="{% static 'lib/select2-4.0.13/js/i18n/es.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<form method="POST" enctype="multipart/form-data">
+    <div class="card card-dark">
+        {% block card-header %}
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-plus"></i>
+                {{ title }}
+            </h3>
+        </div>
+        {% endblock %}
+        <div class="card-body">
+            <div class="form-group">
+                <label>Productos</label>
+                {{ form.id_producto }}
+            </div>
+            <div class="form-group">
+                <label>Dimensiones</label>
+                {{ form.id_dimensiones }}
+            </div>
+            <div class="form-group">
+                <label>Buscador</label>
+                {{ form.search }}
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    var select_id_dimensiones = $('select[name="id_dimensiones"]');
+    $(function () {
+
+        $('.select2').select2({
+            theme: "bootstrap4",
+            language: 'es'
+        });
+
+        $('select[name="id_producto"]').on('change', function () {
+            var id = $(this).val();
+            var options = '<option value="">------------------</option>';
+            if (id === '') {
+                select_id_dimensiones.html(options);
+                return false;
+            }
+            $.ajax({
+                url: window.location.pathname,
+                type: 'POST',
+                data: {
+                    'action': 'search_product_id',
+                    'id': id
+                },
+                dataType: 'json',
+            }).done(function (data) {
+                if (!data.hasOwnProperty('error')) {
+                    select_id_dimensiones.html('').select2({
+                        theme: "bootstrap4",
+                        language: 'es',
+                        data: data
+                    });
+                    /*$.each(data, function(key, value){
+                        options+='<option value="'+value.id+'">'+value.name+'</option>'
+                    });Esto es sin el select2*/
+                    return false;
+                }
+                message_error(data.error);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                alert(textStatus + ': ' + errorThrown);
+            }).always(function (data) {
+                //select_id_dimensiones.html(options); esta es sin select2
+            });
+        });
+        select_id_dimensiones.on('change', function () {
+            var value = select_id_dimensiones.select2('data')[0];
+
+        });
+
+        $('input[name="search"]').autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: window.location.pathname,
+                    type: 'POST',
+                    data: {
+                        'action': 'autocomplete',
+                        'term': request.term
+                    },
+                    dataType: 'json',
+                }).done(function (data) {
+                    response(data);
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    //alert(textStatus + ': ' + errorThrown);
+                }).always(function (data) {
+
+                });
+            },
+            delay: 500,
+            minLength: 2,
+            select: function (event, ui) {
+                console.log(ui.item);
+            }
+        });
+
+        $('select[name="search"]').select2({
+            theme: "bootstrap4",
+            language: 'es',
+            allowClear: true,
+            ajax: {
+                delay:250,
+                type: 'POST',
+                url: window.location.pathname,
+                data: function(params){
+                    var queryParameters = {
+                        term: params.term,
+                        action: 'autocomplete'
+                    }
+
+                    return queryParameters;
+                },
+                processResults: function(data){
+                    return{
+                        results: data
+                    };
+                },
+            },
+            placeholder: 'Ingrese el nombre de un producto',
+            minimumInputLength: 1,
+        });
+    });
+</script>
+{% endblock %}

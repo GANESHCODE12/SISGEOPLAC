@@ -1,0 +1,116 @@
+{% load static %}
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{% url 'inicio' %}" class="brand-link">
+        <i class="nav-icon fas fa-wine-bottle"></i>
+        <span class="brand-text font-weight-light">PLASMOTEC</span>
+    </a>
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-header">APLICACIONES</li>
+                <li class="nav-item">
+                    <a href="{% url 'users:listado_usuarios' %}" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>Gestión de usuarios</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'Produccion:Ordenes_produccion' %}" class="nav-link">
+                        <i class="nav-icon fas fa-paste"></i>
+                        <p>Ordenes de producción</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'Control_produccion:Control_orden' %}" class="nav-link">
+                        <i class="nav-icon fas fa-gamepad"></i>
+                        <p>Control producción</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'PNC:Productos_no_conformes' %}" class="nav-link">
+                        <i class="nav-icon fas fa-times-circle"></i>
+                        <p>Producto No Conforme</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'Control_calidad:Inspecciones_calidad' %}" class="nav-link">
+                        <i class="nav-icon fas fa-vial"></i>
+                        <p>Inspecciones de calidad</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-boxes"></i>
+                        <p>
+                            Productos
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right">5</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'Productos:Productos' %}" class="nav-link">
+                                <i class=" nav-icon fas fa-clipboard-list"></i>
+                                <p>Listado Productos</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'Productos:Dimensiones' %}" class="nav-link">
+                                <i class=" nav-icon fas fa-tachometer-alt"></i>
+                                <p>Dimensiones</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'Productos:Atributos' %}" class="nav-link">
+                                <i class=" nav-icon fab fa-creative-commons-by"></i>
+                                <p>Atributos</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'Productos:Pruebas' %}" class="nav-link">
+                                <i class=" nav-icon fas fa-vials"></i>
+                                <p>Pruebas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'Productos:Normas' %}" class="nav-link">
+                                <i class=" nav-icon fas fa-suitcase"></i>
+                                <p>Normas</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-file-pdf"></i>
+                        <p>
+                            Documentos
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right">2</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'Documentación:Documentos' %}" class="nav-link">
+                                <i class=" nav-icon fas fa-clipboard-list"></i>
+                                <p>Listado Documentos</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'Documentación:Crear_documento' %}" class="nav-link">
+                                <i class="nav-icon fas fa-plus"></i>
+                                <p>Nuevo Documento</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

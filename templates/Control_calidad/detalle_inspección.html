@@ -1,0 +1,166 @@
+{% extends "body.html" %}
+
+{% block content %}
+{% load static %}
+
+<div class="card">
+    <div class="card-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <img src="{% static 'img/logo.png' %}">
+                </div>
+                <div class="col">
+                    <h3 style="color: black; text-align: center">SISTEMA DE GESTIÓN DE CALIDAD</h3>
+                    <h4 style="color: black; text-align: center">DETALLE INSPECCIÓN</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <li class="list-group-item list-group-item-dark">Realizada por</li>
+                <li class="list-group-item list-group-item-dark">Fecha de inspección</li>
+                <li class="list-group-item list-group-item-dark">Número de orden</li>
+                <li class="list-group-item list-group-item-dark">Cliente</li>
+                <li class="list-group-item list-group-item-dark">Nombre producto</li>
+                &nbsp;
+                <li class="list-group-item list-group-item-dark">Número de lote</li>
+                <li class="list-group-item list-group-item-dark">Color</li>
+                <li class="list-group-item list-group-item-dark">Materia prima</li>
+                <li class="list-group-item list-group-item-dark d-print-none">Fecha de fabricación</li>
+                &nbsp;
+                <li class="list-group-item list-group-item-dark">Fecha de despacho</li>
+                <li class="list-group-item list-group-item-dark">Técnico</li>
+                <li class="list-group-item list-group-item-dark">Operario</li>
+                <li class="list-group-item list-group-item-dark">Cantidad solicitada</li>
+            </div>
+
+            <div class="col-sm-9">
+                <li class="list-group-item">{{ ControlCalidad.inspector.first_name }} {{ ControlCalidad.inspector.last_name}}</li>
+                <li class="list-group-item">{{ ControlCalidad.fecha_creacion }}</li>
+                <li class="list-group-item">{{ ControlCalidad.numero_op }}</>
+                <li class="list-group-item">{{ ControlCalidad.numero_op.cliente }}</li>
+                <li class="list-group-item">{{ ControlCalidad.numero_op.producto.Nombre_producto }}</li>
+                &nbsp;
+                <li class="list-group-item">{{ ControlCalidad.numero_op.lote }}</li>
+                <li class="list-group-item">{{ ControlCalidad.numero_op.color }}</li>
+                <li class="list-group-item">{{ ControlCalidad.numero_op.producto.material }}</li>
+                <li class="list-group-item d-print-none">{{ ControlCalidad.numero_op.fecha_creacion }}</li>
+                &nbsp;
+                <li class="list-group-item">{{ ControlCalidad.fecha_despacho }}</>
+                <li class="list-group-item">{{ ControlCalidad.tecnico }}</li>
+                <li class="list-group-item">{{ ControlCalidad.operario }}</li>
+                <li class="list-group-item">{{ ControlCalidad.cantidad_solicitada }}</li>
+            </div>
+        </div>
+        &nbsp;
+        <table class="table table-bordered">
+            <thead class="table table-dark">
+                <tr>
+                    <th colspan="4" style="text-align: center;">INSPECCIÓN DIMENSIONAL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th class="table table-dark" style="text-align: center; width: 25%;">CARACTERISTICAS</th>
+                    <th class="table table-dark" style="text-align: center; width: 25%;">METODO</th>
+                    <th class="table table-dark" style="text-align: center; width: 25%;">ESPECIFICACIÓN TÉCNICA</th>
+                    <th class="table table-dark" style="text-align: center; width: 25%;">RESULTADOS</th>
+                </tr>
+                {% for instance in inspecciondimensional.all %}
+                <tr>
+                    <td>{{ instance.inspeccion_dimensional.id_dimensiones.caracteristicas_control }}</td>
+                    <td style="text-align: center;">Medición directa</td>
+                    <td style="text-align: center;">{{ instance.inspeccion_dimensional.valor_nominal }} +/- {{instance.inspeccion_dimensional.tolerancia_d }} mm</td>
+                    <td style="text-align: center;">{{ instance.resultado_id }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        &nbsp;
+        <div class="card card-dark">
+            <div class="card-header" id="subtitulos-card">
+                <div class="container" style="text-align: center; border-collapse: collapse;">
+                    <h2 style="font-size: 17px; font-family: 'Roboto', sans-serif; font-weight: bold;">
+                        CONTROL POR ATRIBUTOS
+                    </h2>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th style="text-align: center;">Caracteristicas</th>
+                                    <th style="text-align: center;">Método</th>
+                                    <th style="text-align: center;">Resultado</th>
+                                </tr>
+                                {% for instance in inspeccionatributos.all %}
+                                <tr>
+                                    <td>{{ instance.inspeccion_atributos.id_atributo.caracteristicas }}</td>
+                                    <td>Visual</td>
+                                    <td>{{ instance.resultado_ia }}</td>
+                                </tr>
+                                {% endfor %}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th colspan="4">CONTROL PRUEBAS/ENSAYOS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th id="ldf1">PRUEBA / ENSAYO</th>
+                            <th id="ldf1">ESPECIFICACIÓN</th>
+                            <th id="ldf1">MEDIO DE CONTROL</th>
+                            <th id="ldf1">RESULTADOS</th>
+                        </tr>
+                        {% for instance in pruebas.all %}
+                        <tr>
+                            <td class="ldf">{{ instance.pruebas_y_o_ensayos.id_pruebas.variables }}</td>
+                            <td class="ldf">{{ instance.pruebas_y_o_ensayos.id_pruebas.descripcion_prueba }}</td>
+                            <td class="ldf">{{ instance.pruebas_y_o_ensayos.id_pruebas.medio_control }}</td>
+                            <td class="ldf">{{ instance.resultado_p }}</td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            &nbsp;
+            <div class="container-fluid">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <th>EMPAQUE Y EMBALAJE</th>
+                    </thead>
+                    <tbody>
+                        <td>{{ ControlCalidad.empaque_y_embalaje }}</td>
+                    </tbody>
+                </table>
+            </div>
+            &nbsp;
+            <div class="container-fluid">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <th>OBSERVACIONES</th>
+                    </thead>
+                    <tbody>
+                        <td>{{ ControlCalidad.observaciones }}</td>
+                    </tbody>
+                </table>
+            </div>
+            &nbsp;
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends "body.html" %}
+
+{% block content %}
+<div class="card card-dark">
+    <div class="card-header">
+        <div class="container">
+            <h4><i class="fas fa-info-circle"></i> Control a la orden de producción: &nbsp; {{ Control_produccion.numero_op }}</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead class="table-dark" style="text-align: center;">
+                <tr>
+                    <th colspan="7">Información orden de producción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th class="table-dark">Producto</th>
+                    <th class="table-dark">Cliente</th>
+                    <th class="table-dark">Cantidad Requerida</th>
+                    <th class="table-dark">Cantidad esperada</th>
+                    <th class="table-dark">Ciclo</th>
+                    <th class="table-dark">Cavidades</th>
+                    <th class="table-dark">Fecha de entrega</th>
+                </tr>
+                <tr>
+                    <td>{{ Control_produccion.numero_op.producto.Nombre_producto }}</td>
+                    <td>{{ Control_produccion.numero_op.cliente }}</td>
+                    <td>{{ Control_produccion.numero_op.cantidad_requerida }}</td>
+                    <td>{{ Control_produccion.numero_op.cantidad_planeada }}</td>
+                    <td>{{ Control_produccion.numero_op.producto.ciclo }}</td>
+                    <td>{{ Control_produccion.numero_op.producto.cavidades }}</td>
+                    <td>{{ Control_produccion.numero_op.fecha_entrega }}</td>
+                </tr>
+            </tbody>
+        </table>
+        &nbsp;
+        <div class="row">
+            <div class="col-sm-3">
+                <li class="list-group-item list-group-item-dark">Supervisor</li>
+                <li class="list-group-item list-group-item-dark">Técnico</li>
+                <li class="list-group-item list-group-item-dark">Operario</li>
+                <li class="list-group-item list-group-item-dark">Turno</li>
+                &nbsp;
+                <li class="list-group-item list-group-item-dark">Fecha Inicio</li>
+                <li class="list-group-item list-group-item-dark">Fecha Final</li>
+                <li class="list-group-item list-group-item-dark">Tiempo paradas</li>
+                <li class="list-group-item list-group-item-dark">Cantidad producida</li>
+            </div>
+            <div class="col-sm-9">
+                <li class="list-group-item">{{ Control_produccion.supervisor.get_full_name }}</li>
+                <li class="list-group-item">{{ Control_produccion.tecnico }}</li>
+                <li class="list-group-item">{{ Control_produccion.operario }}</li>
+                <li class="list-group-item">{{ Control_produccion.turno }}</li>
+                &nbsp;
+                <li class="list-group-item">{{ Control_produccion.hora_inicio }}</li>
+                <li class="list-group-item">{{ Control_produccion.hora_final }}</li>
+                <li class="list-group-item">{{ Control_produccion.tiempo_paradas }}</li>
+                <li class="list-group-item">{{ Control_produccion.cantidad_producida }}</li>
+            </div>
+            <div class="col-sm-12">
+                &nbsp;
+                <div class="row">
+                    <div class="col-sm-3">
+                        <li class="list-group-item list-group-item-dark">Ciclo turno</li>
+                        <li class="list-group-item list-group-item-dark">Cavidades operación</li>
+                    </div>
+                    <div class="col-sm-9">
+                        <li class="list-group-item">{{ Control_produccion.ciclo_turno }}</li>
+                        <li class="list-group-item">{{ Control_produccion.cavidades_operacion }}</li>
+                    </div>
+                </div>
+                &nbsp;
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Tiempo producción</th>
+                            <th>Bolsas completadas</th>
+                            <th>Cantidad acumulada</th>
+                            <th>Saldo orden</th>
+                            <th>Rendimiento Producción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ Control_produccion.tiempo_produccion }}</td>
+                            <td>{{ Control_produccion.bolsas_completadas|floatformat:"2" }}</td>
+                            <td>{{ Control_produccion.cantidad_acumulada|floatformat:"2" }}</td>
+                            <td>{{ Control_produccion.saldo_orden }}</td>
+                            <td>{{ Control_produccion.rendimiento_produccion|floatformat:"2" }}%</td>
+                        </tr>
+                    </tbody>
+                </table>
+                &nbsp;
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="table-dark">Observaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align: justify;">{{ Control_produccion.observaciones }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

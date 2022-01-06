@@ -1,0 +1,87 @@
+{% extends "body.html" %}
+
+{% block content %}
+    <div class="card card-dark">
+        <div class="card-header">
+            <div class="container">
+                <h2><i class="fas fa-info-circle"></i> Detalle documento: {{ Documentacion.titulo }}</h2>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <li class="list-group-item list-group-item-dark">Titulo</li>
+                    <li class="list-group-item list-group-item-dark">Código</li>
+                    <li class="list-group-item list-group-item-dark">Estado documento</li>
+                    <li class="list-group-item list-group-item-dark">Cargado por</li>
+                    &nbsp;
+                    <li class="list-group-item list-group-item-dark">Tipo documento</li>
+                    <li class="list-group-item list-group-item-dark">Proceso</li>
+                    <li class="list-group-item list-group-item-dark">Ubicación</li>
+                </div>
+                <div class="col-sm-9">
+                    <li class="list-group-item">{{ Documentacion.titulo }}</li>
+                    <li class="list-group-item">{{ Documentacion.codigo }}</li>
+                    <li class="list-group-item">{{ Documentacion.estado_documento }}</li>
+                    <li class="list-group-item">{{ Documentacion.creado_por.first_name }} {{ Documentacion.creado_por.last_name }}</li>
+                    &nbsp;
+                    <li class="list-group-item">{{ Documentacion.tipo_documento }}</li>
+                    <li class="list-group-item">{{ Documentacion.proceso }}</li>
+                    <li class="list-group-item">{{ Documentacion.ubicacion }}</li>
+                </div>
+            <div class="col-sm-12">
+                &nbsp;
+                <table class="table table-bordered">
+                    <thead class="table table-dark">
+                        <tr>
+                            <th>Fecha vigencia</th>
+                            <th>Medio Almacenamiento</th>
+                            <th>Versión</th>
+                            <th>Se convierte en registro?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ Documentacion.fecha }}</td>
+                            <td>{{ Documentacion.medio_almacenamiento }}</td>
+                            <td>{{ Documentacion.versión }}</td>
+                            <td>{{ Documentacion.se_trasnforma_registro }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                &nbsp;
+                <table class="table table-bordered">
+                    <thead class="table table-dark">
+                        <tr>
+                            <th>Dependecia lider</th>
+                            <th>Descargar Documento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ Documentacion.dependencia_lider }}</td>
+                            <td>
+                                <a href="{{ Documentacion.documento.url }}" download="{{ Documentacion.documento.url }}">
+                                    <button type="button" class="btn btn-success "><i class="fas fa-download"></i></button>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                &nbsp;
+                <table class="table table-bordered">
+                    <thead class="table table-dark">
+                        <tr>
+                            <th>Control de cambios</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align: left;">{{ Documentacion.control_cambios }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,273 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>PLASMOTEC | Inicio</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- ======= Top Bar ======= -->
+  <section id="topbar" class="d-flex align-items-center">
+    <div class="container d-flex justify-content-center justify-content-md-between">
+      <div class="contact-info d-flex align-items-center">
+      {% if request.user.is_authenticated %}
+        <a href="{% url 'inicio' %}">
+          <i class="bi bi-hand-thumbs-up-fill"></i>&nbsp; !Bienvenido! <small>&nbsp;{{ user.first_name }} {{ user.last_name }}</small>
+        </a>
+      {% else %}
+          <a href="{% url 'users:login' %}">
+              <i class="bx bx-door-open"></i> INICIAR SESIÓN
+          </a>
+      {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <h1 class="logo"><a href="{% url 'inicio' %}">PLASMOTEC</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="logo"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto active" href="#home">Inicio</a></li>
+          <li><a class="nav-link scrollto" href="#about">Acerca de nosotros</a></li>
+          <li><a class="nav-link scrollto" href="#services">Servicios del sistema</a></li>
+          <li><a class="nav-link scrollto" href="{% url 'Produccion:Ordenes_produccion' %}">Producción</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center" style="background: url({% static 'assets/img/hero-bg.jpg' %});">
+    <div class="container position-relative" data-aos="fade-up" data-aos-delay="500">
+      <h1>Bienvenido a SISGEOPLAC</h1>
+      <h2>Sistema para la gestión de producción y calidad</h2>
+      <a href="#about" class="btn-get-started scrollto">Empecemos!</a>
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about">
+      <div class="container">
+
+        <div class="row">
+          <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-left">
+            <img src="{% static 'img/Foto_equipo.jpeg' %}" class="img-fluid" alt="">
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content" data-aos="fade-right">
+            <h3>Equipo humano profesional, con amplia experiencia en el sector</h3>
+            <p class="fst-italic">
+              En PLASMOTEC, contamos con un equipo humano profesional, altamente cualificado, con una amplia experiencia
+              en el sector, preocupado en todo momento de la calidad final de los productos que elaboramos para nuestros
+              clientes. Ponemos a disposición de nuestros equipos de maquinaria y procesos, con la única finalidad de
+              que trabajen de una forma cómoda y eficaz para poder ofrecer productos con la mejor calidad final.
+              Teniendo en cuenta los siguientes tópicos:
+            </p>
+            <ul>
+              <li><i class="bi bi-check-circle"></i>Estamos comprometidos con el medio ambiente</li>
+              <li><i class="bi bi-check-circle"></i>Innovamos nuestros proceso con técnilogia de última generación</li>
+              <li><i class="bi bi-check-circle"></i>Estamos comprometidos con la salud y seguridad de nuestros empleados
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Section -->
+
+    <!-- ======= Why Us Section ======= -->
+    <section id="about" class="why-us">
+      <div class="container">
+
+        <div class="row">
+
+          <div class="col-lg-4" data-aos="fade-up">
+            <div class="box">
+              <span>01</span>
+              <h4>Misión</h4>
+              <p>En los procesos de manufactura, agregar valor a nuestros productos plásticos, con la incorporación de
+                talento humano competente, realizando las operaciones con calidad y eficiencia, entregando productos con
+                el cumplimiento de las especificaciones técnicas y con los requerimientos exigidos por nuestros clientes
+                de la industria cosmética, farmacéutica, alimenticia y juguetería a nivel nacional.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="150">
+            <div class="box">
+              <span>02</span>
+              <h4>Visión</h4>
+              <p>A mediano plazo, ser reconocida como una empresa líder en el mercado nacional de los plásticos para
+                empaque y que mejore exponencialmente la satisfacción de los clientes al hacer entrega de productos de
+                excelente calidad, al generar resultados favorables de rentabilidad, mediante la aplicación de la
+                ideología del mejoramiento continuo, fundamentados en los mejores estándares de calidad y servicio, y
+                fortaleciendo las relaciones de manera beneficiosas con nuestros proveedores.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="300">
+            <div class="box">
+              <span>03</span>
+              <h4>Calidad</h4>
+              <p>Contamos con un sistema de gestión de calidad, a través del cual mejoramos de manera continua nuestros
+                procesos, productos y equipo de trabajo; también no permite identificar de manera oportuna los errores 
+                ocurridos en nuestra de cadena de proceso para evitar la afectación de nuestros clientes y 
+                retroalimentación oportuna a nuestro personal</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Why Us Section -->
+
+    <!-- ======= Services Section ======= -->
+    <section id="services" class="services">
+      <div class="container">
+
+        <div class="section-title">
+          <span>Servicios del sistema</span>
+          <h2>Servicios del sistema</h2>
+          <p>A continuación encontrara los diferentes servicios que ofrece SISGEOPLAC</p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
+            <div class="icon-box">
+              <div class="icon"><i class="bx bxs-factory"></i></div>
+              <h4>Producción</h4>
+              <p>
+                Por medio de esta aplicación usted podrá crear, ver y monitorear las ordenes 
+                generadas para satisfacer la demanda de los clientes
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="fade-up"
+            data-aos-delay="150">
+            <div class="icon-box">
+              <div class="icon"><i class="bx bx-file"></i></div>
+              <h4>Productos</h4>
+              <p>
+                Base de datos con los productos ofrecidos por plasmotec
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="fade-up"
+            data-aos-delay="300">
+            <div class="icon-box">
+              <div class="icon"><i class="bx bx-tachometer"></i></div>
+              <h4>Control Producción</h4>
+              <p>
+                Por medio de esta aplicación usted podrá monitorear la productividad de cada uno de los 
+                turnos.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="450">
+            <div class="icon-box">
+              <div class="icon"><i class="bx bx-folder-open"></i></div>
+              <h4>Documentos</h4>
+              <p>
+                Por medio de esta aplicación usted podrá consultar y descargar la documentación del sistema de gestión
+                de calidad
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="600">
+            <div class="icon-box">
+              <div class="icon"><i class="bx bxs-vial"></i></div>
+              <h4>Inspecciones De Calidad</h4>
+              <p>
+                En esta aplicación usted podrá monitorear la calidad del producto antes, durante y después
+                de la elaboración del mismo
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="fade-up" data-aos-delay="750">
+            <div class="icon-box">
+              <div class="icon"><i class="bx bxs-calendar-x"></i></div>
+              <h4>Productos No Conformes</h4>
+              <p>
+                En esta aplicación usted podrá realizar seguimiento a los productos que no han cumplido 
+                con los estandares de calidad requeridos por la compañia
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Services Section -->
+
+    <!-- ======= Cta Section ======= -->
+    <section id="cta" class="cta">
+      <div class="container" data-aos="zoom-in">
+
+        <div class="text-center">
+          <h3>Recuerde</h3>
+          <p> 
+            Para acceder a cada uno de los modulos anteriormente descritos
+            ustede debe contar con los respectivos permisos, si no puede acceder
+            debe consultarlo con su jefe inmediato.
+          </p>
+        </div>
+
+      </div>
+    </section><!-- End Cta Section -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+</html>
