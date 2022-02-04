@@ -173,12 +173,13 @@ class CrearInspeccionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, C
 
     def post(self, request, *args, **kwargs):
         data = {}
+        pk = self.kwargs.get('pk')
         try:
             action = request.POST['action']
             if action == 'search_pruebas':
                 data = []
                 term = request.POST['term']
-                busqueda = PruebasEnsayo.objects.filter(Q(id_pruebas__variables__icontains=term) | Q(id_producto_p__Nombre_producto__icontains=term))[0:50]
+                busqueda = PruebasEnsayo.objects.filter(Q(id_pruebas__variables__icontains=term) | Q(id_producto_p__Nombre_producto__icontains=term)).filter(id_producto_p__id=pk)
                 for i in busqueda:
                     item = i.toJSON()
                     item['text'] = i.id_pruebas.variables
@@ -188,7 +189,7 @@ class CrearInspeccionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, C
             elif action == 'search_dimensiones':
                 data = []
                 term = request.POST['term']
-                busqueda = CaracteristicasDimensionale.objects.filter(Q(id_dimensiones__caracteristicas_control__icontains=term) | Q(id_producto_c__Nombre_producto__icontains=term))[0:10]
+                busqueda = CaracteristicasDimensionale.objects.filter(Q(id_dimensiones__caracteristicas_control__icontains=term) | Q(id_producto_c__Nombre_producto__icontains=term)).filter(id_producto_c__id=pk)
                 for i in busqueda:
                     item = i.toJSON()
                     item['text'] = i.id_dimensiones.caracteristicas_control
@@ -198,7 +199,7 @@ class CrearInspeccionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, C
             elif action == 'search_atributos':
                 data = []
                 term = request.POST['term']
-                busqueda = ControlAtributo.objects.filter(Q(id_atributo__caracteristicas__icontains=term) | Q(id_producto_a__Nombre_producto__icontains=term))[0:10]
+                busqueda = ControlAtributo.objects.filter(Q(id_atributo__caracteristicas__icontains=term) | Q(id_producto_a__Nombre_producto__icontains=term)).filter(id_producto_a__id=pk)
                 for i in busqueda:
                     item = i.toJSON()
                     item['text'] = i.id_atributo.caracteristicas
