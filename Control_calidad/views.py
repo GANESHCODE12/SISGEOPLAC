@@ -47,6 +47,9 @@ class ListaInspecciones(LoginRequiredMixin, ValidatePermissionRequiredMixin, Lis
                     item = i.toJSON()
                     item['producto'] = i.numero_op.producto.Nombre_producto
                     item['cliente'] = i.numero_op.cliente
+                    item['maquina'] = i.numero_op.maquina
+                    item['lote'] = i.numero_op.lote
+                    item['fecha_creacion'] = i.fecha_creacion
                     item['inspector'] = i.inspector.get_full_name()
                     item['saldo'] = i.numero_op.cantidad_requerida - i.cantidad_solicitada
                     data.append(item)
@@ -173,42 +176,9 @@ class CrearInspeccionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, C
 
     def post(self, request, *args, **kwargs):
         data = {}
-        pk = self.kwargs.get('pk')
         try:
             action = request.POST['action']
-            if action == 'search_pruebas':
-                data = []
-                term = request.POST['term']
-                busqueda = PruebasEnsayo.objects.filter(Q(id_pruebas__variables__icontains=term) | Q(id_producto_p__Nombre_producto__icontains=term)).filter(id_producto_p__id=pk)
-                for i in busqueda:
-                    item = i.toJSON()
-                    item['text'] = i.id_pruebas.variables
-                    item['Nombre_producto'] = i.id_producto_p.Nombre_producto
-                    item['version'] = i.id_producto_p.version
-                    data.append(item)
-            elif action == 'search_dimensiones':
-                data = []
-                term = request.POST['term']
-                busqueda = CaracteristicasDimensionale.objects.filter(Q(id_dimensiones__caracteristicas_control__icontains=term) | Q(id_producto_c__Nombre_producto__icontains=term)).filter(id_producto_c__id=pk)
-                for i in busqueda:
-                    item = i.toJSON()
-                    item['text'] = i.id_dimensiones.caracteristicas_control
-                    item['Nombre_producto'] = i.id_producto_c.Nombre_producto
-                    item['version'] = i.id_producto_c.version
-                    data.append(item)
-            elif action == 'search_atributos':
-                data = []
-                term = request.POST['term']
-                busqueda = ControlAtributo.objects.filter(Q(id_atributo__caracteristicas__icontains=term) | Q(id_producto_a__Nombre_producto__icontains=term)).filter(id_producto_a__id=pk)
-                for i in busqueda:
-                    item = i.toJSON()
-                    item['text'] = i.id_atributo.caracteristicas
-                    item['especificacion'] = i.id_atributo.especificacion
-                    item['observacion'] = i.id_atributo.observacion
-                    item['Nombre_producto'] = i.id_producto_a.Nombre_producto
-                    item['version'] = i.id_producto_a.version
-                    data.append(item)
-            elif action == 'add':
+            if action == 'add':
                 with transaction.atomic():
                     inspeccion = json.loads(request.POST['inspeccion'])
 
@@ -253,6 +223,54 @@ class CrearInspeccionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, C
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
 
+    def get_pruebas(self):
+        data = []
+        try:
+            pk = self.kwargs.get('pk')
+            for i in PruebasEnsayo.objects.filter(id_producto_p_id = Produccion.objects.get(pk=pk).producto_id):
+                item = i.toJSON()
+                item['text'] = i.id_pruebas.variables
+                item['Nombre_producto'] = i.id_producto_p.Nombre_producto
+                item['version'] = i.id_producto_p.version
+                item['metodo_p'] = '',
+                item['resultado_p'] = '',
+                data.append(item)
+        except:
+            pass
+        return data
+
+    def get_dimensiones(self):
+        data = []
+        try:
+            pk = self.kwargs.get('pk')
+            for i in CaracteristicasDimensionale.objects.filter(id_producto_c_id = Produccion.objects.get(pk=pk).producto_id):
+                item = i.toJSON()
+                item['text'] = i.id_dimensiones.caracteristicas_control
+                item['Nombre_producto'] = i.id_producto_c.Nombre_producto
+                item['version'] = i.id_producto_c.version
+                item['resultado_id'] = '',
+                data.append(item)
+        except:
+            pass
+        return data
+
+    def get_atributos(self):
+        data = []
+        try:
+            pk = self.kwargs.get('pk')
+            for i in ControlAtributo.objects.filter(id_producto_a_id = Produccion.objects.get(pk=pk).producto_id):
+                item = i.toJSON()
+                item['text'] = i.id_atributo.caracteristicas
+                item['especificacion'] = i.id_atributo.especificacion
+                item['observacion'] = i.id_atributo.observacion
+                item['Nombre_producto'] = i.id_producto_a.Nombre_producto
+                item['version'] = i.id_producto_a.version
+                item['resultado_ia'] = '',
+                data.append(item)
+        except:
+            pass
+        return data
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs.get('pk')
@@ -261,4 +279,7 @@ class CrearInspeccionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, C
         context['list_url'] = reverse_lazy('Control_calidad:Inspecciones_calidad')
         context['entity'] = 'Inspecciones'
         context['action'] = 'add'
+        context['inspeccionpruebasyoensayos'] = json.dumps(self.get_pruebas())
+        context['inspecciondimensiones'] = json.dumps(self.get_dimensiones())
+        context['inspeccionatributos'] = json.dumps(self.get_atributos())
         return context

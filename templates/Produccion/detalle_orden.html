@@ -1,4 +1,12 @@
 {% extends "body.html" %}
+{% load static %}
+
+{% block head %}
+
+<!-- CSS style -->
+<link rel="stylesheet" href="{% static '../static/assets/css/styleprint.css' %}">
+
+{% endblock %}
 
 {% block head_content %}
     <title>Plasmotec | orden {{ Produccion.numero_op }}</title>
@@ -6,10 +14,20 @@
 
 {% block content %}
 
-    <div class="card card-dark">
+    <div class="card">
         <div class="card-header">
-            <div class="container">
-                <h4><i class="fas fa-info-circle"></i> ORDEN DE PRODUCCIÓN: &nbsp; {{ Produccion.numero_op }}</h4>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col">
+                        <img src="{% static 'img/logo.png' %}" class="rounded float-start" style="width: 250px;">
+                    </div>
+                    <div class="col-6">
+                        <h4 style="color: black; text-align: center">ORDEN DE PRODUCCIÓN NÚMERO:</h4>
+                        <h5 style="color: black; text-align: center">{{ Produccion.numero_op }}</h5>
+                    </div>
+                    <div class="col">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card-body">
@@ -52,42 +70,42 @@
                 <div class="col-sm-12">
                     &nbsp;
                     <table class="table table-bordered">
-                        <thead class="table-dark" style="text-align: center">
+                        <thead class="bg-dark" id="titulos" style="text-align: center">
                             <tr>
-                                <th colspan="4">UNIDAD DE EMPAQUE</th>
+                                <th colspan="4" id="titulo-tabla">UNIDAD DE EMPAQUE</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr scope="row">
-                                <td class="table-dark">Caja</td>
+                                <td class="bg-secondary" id="titulos">Caja</td>
                                 <td>{{ Produccion.producto.caja }}</td>
-                                <td class="table-dark">Unidad de empaque</td>
+                                <td class="bg-secondary" id="titulos">Unidad de empaque</td>
                                 <td>{{ Produccion.producto.unidad_empaque }}</td>
                             </tr>
                             <tr scope="row">
-                                <td class="table-dark">Bolsa</td>
+                                <td class="bg-secondary" id="titulos">Bolsa</td>
                                 <td>{{ Produccion.producto.bolsa }}</td>
-                                <td class="table-dark">Forma de empaque</td>
+                                <td class="bg-secondary" id="titulos">Forma de empaque</td>
                                 <td>{{ Produccion.producto.forma_empaque }}</td>
                             </tr>
                             <tr scope="row">
-                                <td class="table-dark">Tipo</td>
+                                <td class="bg-secondary" id="titulos">Tipo</td>
                                 <td colspan="3">{{ Produccion.producto.tipo }}</td>
                             </tr>
                             <tr scope="row">
-                                <td class="table-dark">Número de cajas</td>
+                                <td class="bg-secondary" id="titulos">Número de cajas</td>
                                 <td colspan="3">{{ Produccion.numero_cajas|floatformat:"2" }}</td>
                             </tr>
                         </tbody>
                     </table>
                     <table class="table table-bordered">
-                        <thead class="table-dark" style="text-align: center">
+                        <thead class="bg-secondary" id="titulos" style="text-align: center">
                             <tr id="lista_detalle">
-                                <th>Peso</th>
-                                <th>Maquina</th>
-                                <th>Ciclo</th>
-                                <th>Número de cavidades</th>
-                                <th>Cantidad planeada por turno</th>
+                                <th class="bg-secondary" id="titulos">Peso</th>
+                                <th class="bg-secondary" id="titulos">Maquina</th>
+                                <th class="bg-secondary" id="titulos">Ciclo</th>
+                                <th class="bg-secondary" id="titulos">Número de cavidades</th>
+                                <th class="bg-secondary" id="titulos">Cantidad planeada por turno</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -102,14 +120,14 @@
                     </table>
                 &nbsp;
                 <table class="table table-bordered">
-                    <thead class="table-dark" style="text-align: center">
+                    <thead class="bg-secondary" id="titulos" style="text-align: center">
                         <tr>
-                            <th>Observaciones</th>
+                            <th class="bg-secondary" id="titulos">Observaciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="text-align: left;">{{ Produccion.observaciones }}</td>
+                            <td style="text-align: left;">{{ Produccion.observaciones|linebreaks }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -129,4 +147,11 @@
             </a>
         </div>
     </div>
+    {% if Produccion.producto.proceso == 'Inyección' %}
+        <div class="card-footer text-muted">
+            <h5 style="text-align: center;">
+                En el arranque de la producción se tiene que pesar 500 unidades para sacar el peso promedio
+            </h5>
+        </div>
+    {% endif %}
 {% endblock %}

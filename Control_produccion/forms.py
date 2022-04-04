@@ -7,7 +7,6 @@ from django.forms import *
 from Control_produccion.models import *
 
 
-
 #Modelo Control producción
 class CrearControlForm(ModelForm):
     """Modelo de formulario para creación de control
@@ -24,30 +23,60 @@ class CrearControlForm(ModelForm):
             'supervisor_actualizo'
         ]
         widgets = {
-            'numero_op': Select(
-                attrs={
-                    'class': 'form-control select2',
-                    'style': 'width: 100%'
-                }
-            ),
+            'tecnico': TextInput(attrs={
+                'class': 'form-control',
+                'style': 'width: 100%'
+            }),
+            'operario': TextInput(attrs={
+                'class': 'form-control',
+                'style': 'width: 100%'
+            }),
+            'turno': Select(attrs={
+                'class': 'form-control',
+                'style': 'width: 100%'
+            }),
+            'cantidad_producida': NumberInput(attrs={
+                'class': 'form-control',
+                'style': 'width: 100%'
+            }),
+            'ciclo_turno': NumberInput(attrs={
+                'class': 'form-control',
+                'style': 'width: 100%'
+            }),
+            'cavidades_operacion': NumberInput(attrs={
+                'class': 'form-control',
+                'style': 'width: 100%'
+            }),
             'hora_inicio': DateTimeInput(
-                attrs={
-                    
+                format = ['%d/%m/%Y %H:%M'],
+                attrs = {
+                    'autocomplete': 'off',
                     'class': "form-control datetimepicker-input",
+                    'id': 'hora_inicio',
+                    'data-target': '#hora_inicio',
+                    'data-toggle': 'datetimepicker'
                 }
             ),
             'hora_final': DateTimeInput(
+                format = ['%d/%m/%Y %H:%M'],
                 attrs={
                     'autocomplete': 'off',
                     'class': "form-control datetimepicker-input",
+                    'id': 'hora_final',
+                    'data-target': '#hora_final',
+                    'data-toggle': 'datetimepicker'
                 }
             ),
             'tiempo_paradas': TimeInput(
                 attrs={
                     'autocomplete': 'off',
-                    'class': "form-control datetimepicker-input",
+                    'class': "form-control",
                 }
             ),
+            'observaciones': Textarea(attrs={
+                'class': 'form-control',
+                'style': 'width: 100%'
+            }),
         }
         
 

@@ -1,6 +1,13 @@
 {% extends "body.html" %}
 {% load static %}
 
+{% block head %}
+
+<!-- CSS style -->
+<link rel="stylesheet" href="{% static '../static/assets/css/styleprint.css' %}">
+
+{% endblock %}
+
 {% block content %}
 <div class="card">
     <div class="card-header">
@@ -21,152 +28,122 @@
             </div>
         </div>
     </div>
+</div>
+<div class="card card-dark" id="line-card">
+    <div class="card-header">
+        <div class="container-fluid" style="text-align: center;">
+            DATOS GENERALES
+        </div>
+    </div>
     <div class="card-body">
         <table class="table table-bordered">
-            <thead class="table-dark">
-                <tr>
-                    <th colspan="4" style="text-align: center;">DATOS GENERALES</th>
-                </tr>
-            </thead>
             <tbody>
                 <tr scope="row">
-                    <td class="table-active">Cliente</td>
-                    <td style="text-align: center;" >{{ ControlCalidad.numero_op.cliente }}</td>
-                    <td class="table-active">Certificado No.</td>
+                    <td class="bg-secondary" id="titulos">Cliente</td>
+                    <td style="text-align: center;">{{ ControlCalidad.numero_op.cliente }}</td>
+                    <td class="bg-secondary" id="titulos">Certificado No.</td>
                     <td style="text-align: center;">{{ ControlCalidad.id }}</td>
                 </tr>
                 <tr scope="row">
-                    <td class="table-active">Producto</td>
+                    <td class="bg-secondary" id="titulos">Producto</td>
                     <td style="text-align: center;">{{ ControlCalidad.numero_op.producto.Nombre_producto }}</td>
-                    <td class="table-active">No. de lote</td>
+                    <td class="bg-secondary"id="titulos">No. de lote</td>
                     <td style="text-align: center;">{{ ControlCalidad.numero_op.lote }}</td>
                 </tr>
                 <tr scope="row">
-                    <td class="table-active">Color</td>
+                    <td class="bg-secondary"id="titulos">Color</td>
                     <td style="text-align: center;">{{ ControlCalidad.numero_op.color }}</td>
-                    <td class="table-active">Materia prima</td>
+                    <td class="bg-secondary" id="titulos">Materia prima</td>
                     <td style="text-align: center;">{{ ControlCalidad.numero_op.producto.material }}</td>
                 </tr>
                 <tr scope="row">
-                    <td class="table-active">Fecha fabricación</td>
+                    <td class="bg-secondary" id="titulos">Fecha fabricación</td>
                     <td style="text-align: center;">{{ ControlCalidad.numero_op.fecha_creacion|date:"F Y"}}</td>
-                    <td class="table-active">Fecha despacho</td>
+                    <td class="bg-secondary" id="titulos">Fecha despacho</td>
                     <td style="text-align: center;">{{ ControlCalidad.fecha_despacho }}</td>
                 </tr>
                 <tr scope="row">
-                    <td class="table-active">No. op</td>
+                    <td class="bg-secondary" id="titulos">No. op</td>
                     <td style="text-align: center;">{{ ControlCalidad.numero_op }}</td>
-                    <td class="table-active">Cant. solicitada</td>
+                    <td class="bg-secondary" id="titulos">Cant. solicitada</td>
                     <td style="text-align: center;">{{ ControlCalidad.cantidad_solicitada }}</td>
                 </tr>
             </tbody>
         </table>
-        &nbsp;
-        <table class="table table-bordered">
-            <thead class="table-dark">
-                <tr id="lista_detalle">
-                    <th style="text-align: center;" colspan="5">INSPECCIÓN DIMENSIONAL</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr scope="row">
-                    <th class="table-active" style="text-align: center;">CARACTERISTICAS</th>
-                    <th class="table-active" style="text-align: center;">METODO</th>
-                    <th class="table-active" style="text-align: center;">ESPECIFICACIÓN TÉCNICA</th>
-                    <th class="table-active" style="text-align: center;">PROMEDIO</th>
-                    <th class="table-active" style="text-align: center;">RESULTADO</th>
-                </tr>
-                {% for instance in inspecciondimensional.all %}
-                <tr>
-                    <td>{{ instance.inspeccion_dimensional.id_dimensiones.caracteristicas_control }}</td>
-                    <td style="text-align: center;">Medición directa</td>
-                    <td style="text-align: center;">{{ instance.inspeccion_dimensional.valor_nominal }} &nbsp; +/- &nbsp;{{instance.inspeccion_dimensional.tolerancia_d }} mm</td>
-                    <td style="text-align: center;">{{ instance.promedio }}</td>
-                    <td style="text-align: center;">{{ instance.resultado_id }}</td>
-                </tr>
-                {% endfor %}
-                <tr style="background-color: white; color:gray; text-align: center; border: inset 0pt;">
-                    <td colspan="5" id="comentario">
-                        <em>
-                            Plan de muestreo simple para inspección normal / Nivel especial S-2 / Usada para variables
-                        </em>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        &nbsp;
-        <div class="card card-dark">
-            <div class="card-header">
-                <div class="container-fluid" style="text-align: center;">
-                    <h6 style="font-family: 'Roboto', sans-serif; font-weight: bold;">
-                        CONTROL POR ATRIBUTOS
-                    </h6>
+    </div>
+</div>
+<div class="card card-dark" id="line-card">
+    <div class="card-header">
+        <div class="container-fluid" style="text-align: center;">
+            CONTROL POR ATRIBUTOS
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr scope="row">
+                                <th class="bg-secondary" id="titulos" style="text-align: center;">Caracteristicas</th>
+                                <th class="bg-secondary" id="titulos" style="text-align: center;">Método</th>
+                                <th class="bg-secondary" id="titulos" style="text-align: center;">Resultado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for instance in inspeccionatributos.all %}
+                            <tr id="tabla_atributos">
+                                <td>{{ instance.inspeccion_atributos.id_atributo.caracteristicas }}</td>
+                                <td>Visual</td>
+                                <td>{{ instance.resultado_ia }}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr style="background-color: white; color:gray; text-align: center; border: inset 0pt;">
+                                <td colspan="4">
+                                    <em>
+                                        Plan de muestreo simple para inspección normal / Nivel general II /
+                                        Usada para atributos
+                                    </em>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            <div class="card-body">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm">
-                            <table class="table table-bordered">
-                                <thead class="table-dark">
-                                <tr>
-                                    <th style="text-align: center;">Caracteristicas</th>
-                                    <th style="text-align: center;">Método</th>
-                                    <th style="text-align: center;">Resultado</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    {% for instance in inspeccionatributos.all %}
-                                    <tr id="tabla_atributos">
-                                        <td>{{ instance.inspeccion_atributos.id_atributo.caracteristicas }}</td>
-                                        <td>Visual</td>
-                                        <td>{{ instance.resultado_ia }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                    <tr style="background-color: white; color:gray; text-align: center; border: inset 0pt;">
-                                        <td colspan="4">
-                                            <em>
-                                                Plan de muestreo simple para inspección normal / Nivel general II /
-                                                Usada para atributos
-                                            </em>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-sm" style="font-family: 'Roboto', sans-serif;">
-                            <table class="table table-bordered">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th style="text-align: center;">Diagrama</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <img class="img-fluid" src="{{ ControlCalidad.numero_op.producto.diagrama.url }}" alt="{{ FichasTecnica.plano }}" />
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                <div class="col-sm" style="font-family: 'Roboto', sans-serif;">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="bg-secondary" id="titulos" style="text-align: center;">Diagrama</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img class="img-fluid" src="{{ ControlCalidad.numero_op.producto.diagrama.url }}"
+                                        alt="{{ FichasTecnica.plano }}" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-        &nbsp;
+    </div>
+</div>
+<div class="card card-dark" id="salto-pagina">
+    <div class="card-header">
+        <div class="container-fluid" style="text-align: center;">
+            CONTROL PRUEBAS/ENSAYOS
+        </div>
+    </div>
+    <div class="card-body">
         <table class="table table-bordered">
-            <thead class="table-dark">
-                <tr>
-                    <th style="text-align: center;" colspan="4">CONTROL PRUEBAS/ENSAYOS</th>
-                </tr>
-            </thead>
             <tbody>
-                <tr>
-                    <td class="table-active">PRUEBA / ENSAYO</td>
-                    <td class="table-active">ESPECIFICACIÓN</td>
-                    <td class="table-active">MEDIO DE CONTROL</td>
-                    <td class="table-active">RESULTADOS</td>
+                <tr scope="row">
+                    <th class="bg-secondary" id="titulos" style="text-align: center;">PRUEBA / ENSAYO</th>
+                    <th class="bg-secondary" id="titulos" style="text-align: center;">ESPECIFICACIÓN</th>
+                    <th class="bg-secondary" id="titulos" style="text-align: center;">MEDIO DE CONTROL</th>
+                    <th class="bg-secondary" id="titulos" style="text-align: center;">RESULTADOS</th>
                 </tr>
                 {% for instance in pruebas.all %}
                 <tr>
@@ -185,27 +162,66 @@
                 </tr>
             </tbody>
         </table>
-        &nbsp;
+    </div>
+</div>
+<div class="card card-dark" id="salto-pagina">
+    <div class="card-header">
+        <div class="container-fluid" style="text-align: center;">
+            INSPECCIÓN DIMENSIONAL
+        </div>
+    </div>
+    <div class="card-body">
         <table class="table table-bordered">
-            <thead class="table-dark">
-                <th style="text-align: center;">EMPAQUE Y EMBALAJE</th>
-            </thead>
             <tbody>
-                <td>{{ ControlCalidad.empaque_y_embalaje }}</td>
+                <tr scope="row">
+                    <th class="bg-secondary" id="titulos" style="text-align: center;">CARACTERISTICAS</th>
+                    <th class="bg-secondary" id="titulos" style="text-align: center;">METODO</th>
+                    <th class="bg-secondary" id="titulos" style="text-align: center;">ESPECIFICACIÓN TÉCNICA</th>
+                    <th class="bg-secondary" id="titulos" style="text-align: center;">PROMEDIO</th>
+                    <th class="bg-secondary" id="titulos" style="text-align: center;">RESULTADO</th>
+                </tr>
+                {% for instance in inspecciondimensional.all %}
+                <tr>
+                    <td>{{ instance.inspeccion_dimensional.id_dimensiones.caracteristicas_control }}</td>
+                    <td style="text-align: center;">Medición directa</td>
+                    <td style="text-align: center;">{{ instance.inspeccion_dimensional.valor_nominal }} &nbsp; +/-
+                        &nbsp;{{instance.inspeccion_dimensional.tolerancia_d }} mm</td>
+                    <td style="text-align: center;">{{ instance.promedio }}</td>
+                    <td style="text-align: center;">{{ instance.resultado_id }}</td>
+                </tr>
+                {% endfor %}
+                <tr style="background-color: white; color:gray; text-align: center; border: inset 0pt;">
+                    <td colspan="5" id="comentario">
+                        <em>
+                            Plan de muestreo simple para inspección normal / Nivel especial S-2 / Usada para variables
+                        </em>
+                    </td>
+                </tr>
             </tbody>
         </table>
-        &nbsp;
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col">
-                    <h6 style="color: black; text-align: center">______________________________</h6>
-                    <h6 style="color: black; text-align: center"">REALIZADO POR</h6>
+    </div>
+</div>
+<div class="card card-dark" id="line-card">
+    <div class="card-header">
+        <div class="container-fluid" style="text-align: center;">
+            EMPAQUE Y EMBALAJE
+        </div>
+    </div>
+    <div class="card-body">
+            <div>{{ ControlCalidad.empaque_y_embalaje }}</div>
+    </div>
+</div>
+&nbsp;
+&nbsp;
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <h6 style="color: black; text-align: center">______________________________</h6>
+            <h6 style="color: black; text-align: center"">REALIZADO POR</h6>
                     </div>
                     <div class=" col">
-                        <h6 style="color: black; text-align: center">______________________________</h6>
-                        <h6 style="color: black; text-align: center">RECIBE</h6>
-                </div>
-            </div>
+                <h6 style="color: black; text-align: center">______________________________</h6>
+                <h6 style="color: black; text-align: center">RECIBE</h6>
         </div>
     </div>
 </div>

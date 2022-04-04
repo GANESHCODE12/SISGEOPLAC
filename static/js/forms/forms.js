@@ -5,7 +5,37 @@ var tblAtributos;
 
 var ficha = {
     items: {
-        producto: [],
+        Nombre_producto: '',
+        numero_ficha: '',
+        codigo_producto: '',
+        proceso: '',
+        version: '',
+        fecha_vigencia: '',
+        tipo_producto: '',
+        cliente_especifico: '',
+        estado_ficha: '',
+        cavidades: '',
+        peso: '',
+        material: '',
+        ciclo: '',
+        descripción_especificaciones: '',
+        color: '',
+        olor: '',
+        sabor: '',
+        pigmento: '',
+        tipo: '',
+        unidad_empaque: '',
+        forma_empaque: '',
+        caja: '',
+        bolsa: '',
+        plano: '',
+        fecha_plano: '',
+        diagrama: '',
+        vida_util: '',
+        elaborado: '',
+        revisado: '',
+        aprobado: '',
+        notas: '',
         normas: [],
         pruebas: [],
         dimensiones: [],
@@ -188,28 +218,6 @@ var ficha = {
     }
 };
 
-function formatRepo(repo) {
-    if (repo.loading) {
-        return repo.text;
-    }
-
-    var option = $(
-        '<div class="wrapper container">'+
-        '<div class="row">' +
-        '<div class="text-left shadow-sm">' +
-        //'<br>' +
-        '<p style="margin-bottom: 0;">' +
-        '<b>Nombre:</b> ' + repo.Nombre_producto + '<br>' +
-        '<b>Cliente:</b> ' + repo.cliente_especifico + '<br>' +
-        '<b>Versión:</b> <span class="badge badge-warning">'+repo.version+'</span>'+
-        '</p>' +
-        '</div>' +
-        '</div>' +
-        '</div>');
-
-    return option;
-}
-
 $(function () {
 
     // buscador de normas
@@ -315,8 +323,8 @@ $(function () {
         $(this).val('').trigger('change.select2');
     });
 
-      // buscador de dimensiones
-      $('select[name="id_dimensiones"]').select2({
+    // buscador de dimensiones
+    $('select[name="id_dimensiones"]').select2({
         theme: "bootstrap4",
         language: 'es',
         allowClear: true,
@@ -349,39 +357,6 @@ $(function () {
         ficha.dimensiones();
 
         $(this).val('').trigger('change.select2');
-    });
-
-    // buscador de productos
-    $('select[name="id_producto"]').select2({
-        theme: "bootstrap4",
-        language: 'es',
-        allowClear: true,
-        ajax: {
-            delay: 250,
-            type: 'POST',
-            url: window.location.pathname,
-            data: function (params) {
-                var queryParameters = {
-                    term: params.term,
-                    action: 'search_producto'
-                }
-
-                return queryParameters;
-            },
-            processResults: function (data) {
-                return {
-                    results: data
-                };
-            },
-        },
-        placeholder: 'Ingrese un producto!',
-        minimumInputLength: 1,
-        templateResult: formatRepo,
-    }).on('select2:select', function (e) {
-        var data = e.params.data;
-
-        ficha.items.producto.push(data)
-
     });
 
     //Eventos: valor, tolerancia y eliminar de pruebas
@@ -446,18 +421,56 @@ $(function () {
             ficha.atributos();
         });
     });
+    
 
     //Guardado de datos
     $('form').on('submit', function(e){
         e.preventDefault();
 
-        ficha.items.id_producto = $('select[name="id_producto"]').val();
-        var parameters = new FormData();
+        ficha.items.Nombre_producto = $('input[name="Nombre_producto"]').val();
+        ficha.items.numero_ficha = $('input[name="numero_ficha"]').val();
+        ficha.items.codigo_producto = $('input[name="codigo_producto"]').val();
+        ficha.items.proceso = $('input[name="proceso"]').val();
+        ficha.items.version = $('input[name="version"]').val();
+        ficha.items.fecha_vigencia = $('input[name="fecha_vigencia"]').val();
+        ficha.items.tipo_producto = $('input[name="tipo_producto"]').val();
+        ficha.items.cliente_especifico = $('input[name="cliente_especifico"]').val();
+        ficha.items.estado_ficha = $('select[name="estado_ficha"]').val();
+        ficha.items.cavidades = $('input[name="cavidades"]').val();
+        ficha.items.peso = $('input[name="peso"]').val();
+        ficha.items.material = $('input[name="material"]').val();
+        ficha.items.ciclo = $('input[name="ciclo"]').val();
+        ficha.items.descripción_especificaciones = $('input[name="descripción_especificaciones"]').val();
+        ficha.items.color = $('input[name="color"]').val();
+        ficha.items.olor = $('input[name="olor"]').val();
+        ficha.items.sabor = $('input[name="sabor"]').val();
+        ficha.items.pigmento = $('input[name="pigmento"]').val();
+        ficha.items.tipo = $('input[name="tipo"]').val();
+        ficha.items.unidad_empaque = $('input[name="unidad_empaque"]').val();
+        ficha.items.forma_empaque = $('input[name="forma_empaque"]').val();
+        ficha.items.caja = $('input[name="caja"]').val();
+        ficha.items.bolsa = $('input[name="bolsa"]').val();
+        ficha.items.plano = $('input[name="plano"]').val();
+        ficha.items.fecha_plano = $('input[name="fecha_plano"]').val();
+        ficha.items.diagrama = $('input[name="diagrama"]').val();
+        ficha.items.vida_util = $('textarea[name="vida_util"]').val();
+        ficha.items.elaborado = $('input[name="elaborado"]').val();
+        ficha.items.revisado = $('input[name="revisado"]').val();
+        ficha.items.aprobado = $('input[name="aprobado"]').val();
+        ficha.items.notas = $('textarea[name="notas"]').val();
+
+        var parameters = new FormData(this);
         parameters.append('action', $('input[name="action"]').val());
         parameters.append('ficha', JSON.stringify(ficha.items));
         submit_with_ajax(window.location.pathname, parameters, 'Notificación', 'Esta segur@ que desea crear el siguiente registro', function(){
-            location.href = 'listado_productos';
+            location.href = '/productos/listado_productos';
         });
     });
+
+    // Inicializar tablas
+    ficha.dimensiones();
+    ficha.normas();
+    ficha.atributos();
+    ficha.pruebas();
 
 });

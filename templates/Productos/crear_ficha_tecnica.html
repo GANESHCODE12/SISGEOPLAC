@@ -1,0 +1,344 @@
+{% extends "lista.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_list %}
+<link href="{% static 'lib/jquery-ui-1.12.1/jquery-ui.min.css' %}" rel="stylesheet" />
+<script src="{% static 'lib/jquery-ui-1.12.1/jquery-ui.min.js' %}"></script>
+
+<link href="{% static 'lib/select2-4.0.13/css/select2.min.css' %}" rel="stylesheet" />
+<link href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}" rel="stylesheet" />
+<script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
+<script src="{% static 'lib/select2-4.0.13/js/i18n/es.js' %}"></script>
+
+<link href="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.css' %}" rel="stylesheet" />
+<script src="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.js' %}"></script>
+
+<script src="{% static 'js/forms/forms.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<form method="POST" enctype="multipart/form-data">
+    <div class="card">
+        <div class="card-header bg-dark">
+            <h3 class="card-title">
+                <i class="fas fa-plus"></i>
+                {{ title }}
+            </h3>
+        </div>
+        <div class="card-body">
+            <input type="hidden" name="action" value="{{ action }}">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-boxes"></i> Datos del producto</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col">
+                                        <label>Nombre del producto:</label>
+                                        {{ form.Nombre_producto }}
+                                        <label class="my-2">Código del producto:</label>
+                                        {{ form.codigo_producto }}
+                                        <label class="my-2">Versión:</label>
+                                        {{ form.version }}
+                                        <label class="my-2">Tipo de producto:</label>
+                                        {{ form.tipo_producto }}
+                                        <div class="row">
+                                            <div class="col">
+                                                <label class="my-2">Cavidades:</label>
+                                                {{ form.cavidades }}
+                                            </div>
+                                            <div class="col">
+                                                <label class="my-2">Peso:</label>
+                                                {{ form.peso }}
+                                            </div>
+                                            <div class="col">
+                                                <label class="my-2">Ciclo:</label>
+                                                {{ form.ciclo }}
+                                            </div>
+                                        </div>
+                                        <label class="my-2">Material:</label>
+                                        {{ form.material }}
+                                    </div>
+                                    <div class="col">
+                                        <label>Número de ficha:</label>
+                                        {{ form.numero_ficha }}
+                                        <label class="my-2">Proceso:</label>
+                                        {{ form.proceso }}
+                                        <label class="my-2">Fecha de vigencia:</label>
+                                        {{ form.fecha_vigencia }}
+                                        <label class="my-2">Cliente:</label>
+                                        {{ form.cliente_especifico }}
+                                        <label class="my-2">Estado de la ficha:</label>
+                                        {{ form.estado_ficha }}
+                                        <label class="my-2">Pigmento:</label>
+                                        {{ form.pigmento }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="my-2">Descripción de especificaciones:</label>
+                                        {{ form.descripción_especificaciones }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="my-2">Color:</label>
+                                        {{ form.color }}
+                                    </div>
+                                    <div class="col">
+                                        <label class="my-2">Olor:</label>
+                                        {{ form.olor }}
+                                    </div>
+                                    <div class="col">
+                                        <label class="my-2">Sabor:</label>
+                                        {{ form.sabor }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="my-2">Vida útil:</label>
+                                        {{ form.vida_util }}
+                                    </div>
+                                    <div class="col">
+                                        <label class="my-2">Notas:</label>
+                                        {{ form.notas }}
+                                    </div>
+                                </div>
+                                &nbsp;
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title"><i class="fas fa-box"></i> Información de empaque</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <label>Tipo:</label>
+                                                {{ form.tipo }}
+                                            </div>
+                                            <div class="col">
+                                                <label>Unidad de empaque:</label>
+                                                {{ form.unidad_empaque }}
+                                            </div>
+                                            <div class="col">
+                                                <label>Forma de empacar:</label>
+                                                {{ form.forma_empaque }}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <label class="my-2">Tamaño de la caja:</label>
+                                                {{ form.caja }}
+                                            </div>
+                                            <div class="col">
+                                                <label class="my-2">Tipo de bolsa:</label>
+                                                {{ form.bolsa }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title"><i class="fas fa-calculator"></i> Información del plano</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <label>Código del plano:</label>
+                                                {{ form.plano }}
+                                            </div>
+                                            <div class="col">
+                                                <label>Fecha del plano:</label>
+                                                {{ form.fecha_plano }}
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin: 12px 0 0px 2px;">
+                                            {{ form.diagrama }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-suitcase"></i> Normas aplicables</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Buscador:</label>
+                                <div class="input-group">
+                                    <select class="form-control select2" style="width: 100%;" name="id_normas">
+
+                                    </select>
+                                    </span>
+                                </div>
+                            </div>
+                            <hr>
+                            <table class="table table-bordered" id="tblNormas">
+                                <thead>
+                                    <tr>
+                                        <th>Eliminar</th>
+                                        <th>Código</th>
+                                        <th>Titulo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-vials"></i> Pruebas y/o ensayos
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Buscador:</label>
+                                <div class="input-group">
+                                    <select class="form-control select2" style="width: 100%;" name="id_pruebas">
+
+                                    </select>
+                                </div>
+                            </div>
+                            <hr>
+                            <table class="table table-bordered" id="tblPruebas">
+                                <thead>
+                                    <tr>
+                                        <th>Eliminar</th>
+                                        <th>Prueba y/o ensayo</th>
+                                        <th>Valor</th>
+                                        <th>Tolerancia</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-tachometer-alt"></i> Caracteristicas dimensionales
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Buscador:</label>
+                                <div class="input-group">
+                                    <select class="form-control select2" style="width: 100%;" name="id_dimensiones">
+
+                                    </select>
+                                </div>
+                            </div>
+                            <hr>
+                            <table class="table table-bordered" id="tblDimensiones">
+                                <thead>
+                                    <tr>
+                                        <th>Eliminar</th>
+                                        <th>Dimensión</th>
+                                        <th>Valor</th>
+                                        <th>Tolerancia</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fab fa-creative-commons-by"></i> Atributos</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Buscador:</label>
+                                <div class="input-group">
+                                    <select class="form-control select2" style="width: 100%;" name="id_atributos">
+
+                                    </select>
+                                </div>
+                            </div>
+                            <hr>
+                            <table class="table table-bordered" id="tblAtributos">
+                                <thead>
+                                    <tr>
+                                        <th>Eliminar</th>
+                                        <th>Atributo</th>
+                                        <th>Especificación</th>
+                                        <th>Observación</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-users"></i> Control del documento</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <label>Elaborado por:</label>
+                            {{ form.elaborado }}
+                        </div>
+                        <div class="col">
+                            <label>Revisado por:</label>
+                            {{ form.revisado }}
+                        </div>
+                        <div class="col">
+                            <label>Aprobado por:</label>
+                            {{ form.aprobado }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            {% block card-footer %}
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Guardar ficha
+            </button>
+            &nbsp;
+            <a href="{{ list_url }}" class="btn btn-danger">
+                <i class="fas fa-times"></i> Cancelar
+            </a>
+            &nbsp;
+            {% endblock %}
+        </div>
+    </div>
+</form>
+<script>
+    ficha.items.normas = {{ normas|safe }};
+    ficha.items.dimensiones = {{ dimensiones|safe }};
+    ficha.items.pruebas = {{ pruebas|safe }};
+    ficha.items.atributos = {{ atributos|safe }};
+</script>
+{% endblock %}

@@ -111,6 +111,7 @@ class ControlProduccion(models.Model):
 
     def toJSON(self):
         item = model_to_dict(self)
+        item['saldo_orden'] = self.cantidad_acumulada
         return item
 
     @property

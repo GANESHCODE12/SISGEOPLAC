@@ -43,15 +43,15 @@ urlpatterns = [
     #Actualizar
     path(
         route='actualizar_producto/<int:pk>/', 
-        view=views.ActualizarProducto.as_view(), 
+        view=views.ActualizarPlano.as_view(), 
         name='Actualizar_ficha'
     ),
-    #Crear
     path(
-        route='nuevo_producto/',
-        view=views.NuevoProductoView.as_view(),
-        name='Nuevo_producto'
+        route='actualizar_ficha/<int:pk>/',
+        view=views.ActualizarFichaTecnica.as_view(),
+        name='Actualizar_ficha_tecnica'
     ),
+    #Crear
     path(
         route='nueva_dimension',
         view=views.NuevaDimensionView.as_view(),

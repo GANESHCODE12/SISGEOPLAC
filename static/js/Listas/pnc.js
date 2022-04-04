@@ -6,6 +6,7 @@ $(function () {
         autoWidth: false,
         destroy: true,
         deferRender: true,
+        order: [0, 'desc'],
         ajax: {
             url: window.location.pathname,
             type: 'POST',

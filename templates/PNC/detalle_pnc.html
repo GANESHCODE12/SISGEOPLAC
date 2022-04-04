@@ -3,23 +3,23 @@
 <div class="card card-dark">
     <div class="card-header">
         <div class="container">
-            <h2><i class="fas fa-info-circle"></i> PNC de la orden de producción: {{ ProductoNoConforme.numero_op }}</h2>
+            <h5><i class="fas fa-info-circle"></i> PNC de la orden de producción: {{ ProductoNoConforme.id_inspeccion.numero_op }}</h5>
         </div>
     </div>
     <div class="card-body">
         <table class="table table-bordered">
             <thead class="table-dark">
                 <tr>
-                    <th colspan="7">Información PNC</th>
+                    <th colspan="7" style="text-align: center;">INFORMACIÓN GENERAL DEL PRODUCTO NO CONFORME</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <th>Producto</th>
-                    <th>Número de inspección</th>
-                    <th>Analista de calidad</th>
-                    <th>Fecha del PNC</th>
-                    <th>Cantidad PNC</th>
+                    <th class=" bg-secondary">Producto</th>
+                    <th class=" bg-secondary">Número de inspección</th>
+                    <th class=" bg-secondary">Analista Crea</th>
+                    <th class=" bg-secondary">Fecha del PNC</th>
+                    <th class=" bg-secondary">Cantidad PNC</th>
                 </tr>
                 <tr>
                     <td>{{ ProductoNoConforme.id_inspeccion.numero_op.producto.Nombre_producto }}</td>
@@ -28,54 +28,74 @@
                     <td>{{ ProductoNoConforme.fecha_creacion }}</td>
                     <td>{{ ProductoNoConforme.cantidad_pnc }}</td>
                 </tr>
+                <tr>
+                    <th colspan="2" class=" bg-secondary">Analista Modifica</th>
+                    <th colspan="3" class=" bg-secondary">Fecha</th>
+                </tr>
+                <tr>
+                    <td colspan="2">{{ ProductoNoConforme.inspector_calidad_actualiza.first_name }} {{ ProductoNoConforme.inspector_calidad_actualiza.last_name }}</td>
+                    <td colspan="3">{{ ProductoNoConforme.fecha_actualizacion }}</td>
+                </tr>
             </tbody>
         </table>
         &nbsp;
         <table class="table table-bordered">
-            <thead class="table-dark">
+            <thead class="table table-dark">
                 <tr>
-                    <th colspan="5">Tipos de Producto No Conforme</th>
+                    <th colspan="2" style="text-align: center;">TIPOS DE PRODUCTO NO CONFORME</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th>Tipo PNC 1</th>
-                    <th>Tipo PNC 2</th>
-                    <th>Tipo PNC 3</th>
-                    <th>Tipo PNC 4</th>
-                    <th>Tipo PNC 5</th>
-                </tr>
+                {% if ProductoNoConforme.tipo_pnc_1 %}
                 <tr>
                     <td>{{ ProductoNoConforme.tipo_pnc_1 }}</td>
+                </tr>
+                {% endif %}
+                {% if ProductoNoConforme.tipo_pnc_2 %}
+                <tr>
                     <td>{{ ProductoNoConforme.tipo_pnc_2 }}</td>
+                </tr>
+                {% endif %}
+                {% if ProductoNoConforme.tipo_pnc_3 %}
+                <tr>
                     <td>{{ ProductoNoConforme.tipo_pnc_3 }}</td>
+                </tr>
+                {% endif %}
+                {% if ProductoNoConforme.tipo_pnc_4 %}
+                <tr>
                     <td>{{ ProductoNoConforme.tipo_pnc_4 }}</td>
+                </tr>
+                {% endif %}
+                {% if ProductoNoConforme.tipo_pnc_5 %}
+                <tr>
                     <td>{{ ProductoNoConforme.tipo_pnc_5 }}</td>
                 </tr>
-            </tbody>
-        </table>
-        &nbsp;
-        <table class="table table-bordered">
-            <thead class="table-dark">
+                {% endif %}
+                {% if ProductoNoConforme.tipo_pnc_6 %}
                 <tr>
-                    <th colspan="5">Tipos de Producto No Conforme</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>Tipo PNC 6</th>
-                    <th>Tipo PNC 7</th>
-                    <th>Tipo PNC 8</th>
-                    <th>Tipo PNC 9</th>
-                    <th>Tipo PNC 10</th>
-                </tr>
-                <tr style="background-color: rgb(255, 255, 255); color: black">
                     <td>{{ ProductoNoConforme.tipo_pnc_6 }}</td>
+                </tr>
+                {% endif %}
+                {% if ProductoNoConforme.tipo_pnc_7 %}
+                <tr>
                     <td>{{ ProductoNoConforme.tipo_pnc_7 }}</td>
+                </tr>
+                {% endif %}
+                {% if ProductoNoConforme.tipo_pnc_8 %}
+                <tr>
                     <td>{{ ProductoNoConforme.tipo_pnc_8 }}</td>
+                </tr>
+                {% endif %}
+                {% if ProductoNoConforme.tipo_pnc_9 %}
+                <tr>
                     <td>{{ ProductoNoConforme.tipo_pnc_9 }}</td>
+                </tr>
+                {% endif %}
+                {% if ProductoNoConforme.tipo_pnc_10 %}
+                <tr>
                     <td>{{ ProductoNoConforme.tipo_pnc_10 }}</td>
                 </tr>
+                {% endif %}
             </tbody>
         </table>
         &nbsp;
@@ -105,7 +125,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ ProductoNoConforme.observaciones }}</td>
+                        <td>{{ ProductoNoConforme.observaciones|linebreaks }}</td>
                     </tr>
                 </tbody>
             </table>

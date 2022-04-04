@@ -40,6 +40,8 @@ class ListaControl(LoginRequiredMixin, ValidatePermissionRequiredMixin, ListView
                     item = i.toJSON()
                     item['producto'] = i.numero_op.producto.Nombre_producto
                     item['supervisor'] = i.supervisor.get_full_name()
+                    item['saldo_orden'] = i.saldo_orden
+                    item['fecha_creacion'] = i.fecha_creacion
                     data.append(item)
             else:
                 data['error'] = 'Ha ocurrido un error'

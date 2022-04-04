@@ -5,6 +5,8 @@ $(function () {
         responsive: true,
         autoWidth: false,
         destroy: true,
+        order: [0, 'desc'],
+        pageLength: 25,
         deferRender: true,
         ajax: {
             url: window.location.pathname,
@@ -35,6 +37,14 @@ $(function () {
                     buttons += '<a href="/Control_produccion/Crear_nuevo_control/' + row.numero_op + '/" type="button" class="btn btn-info btn-xs btn-flat"><i class="fas fa-gamepad"></i></a> ';
                     buttons += '<a href="/Control_calidad/Crear_inspeccion/' + row.numero_op + '" type="button" class="btn btn-success btn-xs btn-flat"><i class="fas fa-vials"></i></a> ';
                     return buttons;
+                }
+            },
+            {
+                targets: [4],
+                render: function (data, type, row) {
+                    return data.toString().replace(
+                        /\B(?=(\d{3})+(?!\d))/g, "."
+                    );
                 }
             },
             {

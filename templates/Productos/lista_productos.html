@@ -9,28 +9,21 @@
 {% endblock %}
 {% block columnas %}
 <tr>
-    <th style="text-align: center; width: 17.5%">Nombre del producto</th>
+    <th style="text-align: center; width: 2%">Id</th>
+    <th style="text-align: center; width: 16.5%">Nombre del producto</th>
     <th style="text-align: center; width: 14.5%">Cliente</th>
     <th style="text-align: center; width: 10.5%">Número de ficha</th>
     <th style="text-align: center; width: 8.5%">Proceso</th>
     <th style="text-align: center; width: 9.5%">Version</th>
     <th style="text-align: center; width: 12.5%">Fecha de vigencia</th>
-    <th style="text-align: center; width: 12.5%">Estado Ficha</th>
+    <th style="text-align: center; width: 11.5%">Estado Ficha</th>
     <th style="text-align: center; width: 12.5%">Opciones</th>
 </tr>
 {% endblock %}
 {% block filas %}
 
 {% endblock %}
-{% block card-footer %}
-    <a href="{% url 'Productos:Nuevo_producto' %}" class="btn btn-primary">
-        <i class="fas fa-plus"></i> Crear un producto
-    </a>
-    <a href="{% url 'Productos:Nueva_ficha' %}" class="btn btn-secondary">
-        <i class="fas fa-plus"></i> Crear una ficha
-    </a> 
-{% endblock %}
 {% block javascript %}
 
 {% endblock %}
-           
+

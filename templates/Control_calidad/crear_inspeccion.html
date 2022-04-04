@@ -11,7 +11,7 @@
 <script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
 <script src="{% static 'lib/select2-4.0.13/js/i18n/es.js' %}"></script>
 
-<link href="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.css' %}" rel="stylesheet"/>
+<link href="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.css' %}" rel="stylesheet" />
 <script src="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.js' %}"></script>
 
 <script src="{% static 'js/forms/inspeccion.js' %}"></script>
@@ -32,7 +32,8 @@
                 <div class="col-lg-12">
                     <div class="card card-secondary">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-info-circle"></i> Información general de la inspección</h3>
+                            <h3 class="card-title"><i class="fas fa-info-circle"></i> Información general de la
+                                inspección</h3>
                         </div>
                         <div class="card-body">
                             {{ form|crispy }}
@@ -49,19 +50,10 @@
                             </h3>
                         </div>
                         <div class="card-body">
-                            <div class="form-group">
-                                <label>Buscador:</label>
-                                <div class="input-group">
-                                    <select class="form-control select2" style="width: 100%;" name="pruebas_y_o_ensayos">
-    
-                                    </select>
-                                </div>
-                            </div>
                             <hr>
                             <table class="table table-bordered" id="tblPruebasEnsayos">
                                 <thead>
                                     <tr>
-                                        <th>Eliminar</th>
                                         <th>Prueba y/o ensayo</th>
                                         <th>Valor FT</th>
                                         <th>Tolerancia FT</th>
@@ -71,7 +63,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-    
+
                                 </tbody>
                             </table>
                         </div>
@@ -82,22 +74,14 @@
                 <div class="col-lg-12">
                     <div class="card card-secondary">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-tachometer-alt"></i> Caracteristicas dimensionales</h3>
+                            <h3 class="card-title"><i class="fas fa-tachometer-alt"></i> Caracteristicas dimensionales
+                            </h3>
                         </div>
                         <div class="card-body">
-                            <div class="form-group">
-                                <label>Buscador:</label>
-                                <div class="input-group">
-                                    <select class="form-control select2" style="width: 100%;" name="inspeccion_dimensional">
-    
-                                    </select>
-                                </div>
-                            </div>
                             <hr>
                             <table class="table table-bordered" id="tblInspeccionDimensiones">
                                 <thead>
                                     <tr>
-                                        <th>Eliminar</th>
                                         <th>Dimensión</th>
                                         <th>Valor FT</th>
                                         <th>Tolerancia FT</th>
@@ -106,7 +90,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-    
+
                                 </tbody>
                             </table>
                         </div>
@@ -120,19 +104,10 @@
                             <h3 class="card-title"><i class="fab fa-creative-commons-by"></i> Atributos</h3>
                         </div>
                         <div class="card-body">
-                            <div class="form-group">
-                                <label>Buscador:</label>
-                                <div class="input-group">
-                                    <select class="form-control select2" style="width: 100%;" name="inspeccion_atributos">
-    
-                                    </select>
-                                </div>
-                            </div>
                             <hr>
                             <table class="table table-bordered" id="tblInspeccionAtributos">
                                 <thead>
                                     <tr>
-                                        <th>Eliminar</th>
                                         <th>Atributo</th>
                                         <th>Especificación</th>
                                         <th>Observación</th>
@@ -140,7 +115,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-    
+
                                 </tbody>
                             </table>
                         </div>
@@ -162,4 +137,9 @@
         </div>
     </div>
 </form>
+<script>
+    inspeccion.items.pruebasensayos = {{ inspeccionpruebasyoensayos | safe }};
+    inspeccion.items.inspecciondimensiones = {{ inspecciondimensiones | safe }};
+    inspeccion.items.inspeccionatributos = {{ inspeccionatributos | safe }};
+</script>
 {% endblock %}

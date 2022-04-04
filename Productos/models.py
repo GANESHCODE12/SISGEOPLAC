@@ -8,6 +8,9 @@ from django.forms import model_to_dict
 from crum import get_current_user
 from django.conf import settings
 
+# Settings
+from Plasmotec.settings import MEDIA_URL, STATIC_URL
+
 
 class Producto(models.Model):
     """Modelo de los datos generales del producto"""
@@ -150,7 +153,10 @@ class Producto(models.Model):
     )
     diagrama = models.ImageField(
         upload_to='Produccion/plane',
-        verbose_name='Diagrama'
+        verbose_name='Diagrama',
+        null=True,
+        blank=True,
+        
     )
 
     """Condiciones de almacenamiento"""
@@ -191,11 +197,18 @@ class Producto(models.Model):
             self.Nombre_producto, str(self.version), self.cliente_especifico
         )
 
+    def get_plane(self):
+        if self.diagrama:
+            return '{}{}'.format(MEDIA_URL, self.diagrama)
+        return '{}{}'.format(STATIC_URL, 'img/empty.png')
+
     def toJSON(self):
         item = model_to_dict(
             self, 
             exclude=[
-                'diagrama'
+                'diagrama',
+                'fecha_vigencia',
+                'fecha_plano'
             ]
         )
         return item
@@ -239,12 +252,14 @@ class CaracteristicasDimensionale(models.Model):
     id_producto_c = models.ForeignKey(
         'Productos.Producto',
         on_delete=models.CASCADE,
+        db_constraint=False,
         verbose_name='Nombre del Producto'
     )
 
     id_dimensiones = models.ForeignKey(
         'Productos.Dimensiones',
         on_delete=models.CASCADE,
+        db_constraint=False,
         verbose_name='Dimensión'
     )
 
@@ -311,12 +326,14 @@ class PruebasEnsayo(models.Model):
     id_producto_p = models.ForeignKey(
         'Productos.Producto',
         on_delete=models.CASCADE,
+        db_constraint=False,
         verbose_name='Nombre del Producto'
     )
 
     id_pruebas = models.ForeignKey(
         'Productos.Pruebas',
         on_delete=models.CASCADE,
+        db_constraint=False,
         verbose_name='Prueba y/o ensayo'
     )
 
@@ -383,12 +400,14 @@ class ControlAtributo(models.Model):
     id_producto_a = models.ForeignKey(
         'Productos.Producto',
         on_delete=models.CASCADE,
+        db_constraint=False,
         verbose_name='Nombre del Producto'
     )
 
     id_atributo = models.ForeignKey(
         'Productos.Atributos',
         on_delete=models.CASCADE,
+        db_constraint=False,
         verbose_name='Atributo'
     )
 
@@ -447,12 +466,14 @@ class NormasAplicable(models.Model):
     id_producto_n = models.ForeignKey(
         'Productos.Producto',
         on_delete=models.CASCADE,
+        db_constraint=False,
         verbose_name='Nombre del Producto'
     )
 
     id_norma = models.ForeignKey(
         'Productos.Normas',
         on_delete=models.CASCADE,
+        db_constraint=False,
         verbose_name='Norma'
     )
 

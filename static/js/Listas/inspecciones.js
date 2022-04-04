@@ -5,6 +5,8 @@ $(function () {
         responsive: true,
         autoWidth: false,
         destroy: true,
+        order: [0, 'desc'],
+        pageLength: 25,
         deferRender: true,
         ajax: {
             url: window.location.pathname,
@@ -18,7 +20,9 @@ $(function () {
             {"data": "id"},
             {"data": "fecha_creacion"},
             {"data": "turno"},
+            {"data": "maquina"},
             {"data": "numero_op"},
+            {"data": "lote"},
             {"data": "inspector"},
             {"data": "producto"},
             {"data": "cliente"},
@@ -51,6 +55,10 @@ $(function () {
             {
                 targets: [0, 2, 3, -2],
                 class: 'text-center',
+            },
+            {
+                targets: [0, 1, 2, 4, 5, 6, 7, 8],
+                searchable: false,
             },
         ],
         initComplete: function (settings, json) {

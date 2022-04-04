@@ -9,6 +9,7 @@ from crum import get_current_user
 
 #Modelos
 from users.models import User
+from Control_produccion.models import ControlProduccion
 
 
 class Produccion(models.Model):
