@@ -1,0 +1,21 @@
+@media print { 
+    #titulos { 
+        background-color: rgb(151, 151, 151) !important;
+    }
+    #line-card {
+        border: solid 1px rgb(192, 187, 187) !important;
+    }
+    #salto-pagina {
+        border: solid 1px rgb(192, 187, 187) !important;
+        display: block !important;
+        page-break-before:auto !important;
+    }
+    #titulo-tabla {
+        background-color: #212529 !important;
+    }
+    #salto-pagina-ficha {
+        border: solid 1px rgb(192, 187, 187) !important;
+        display: block !important;
+        page-break-before:always !important;
+    }
+}
