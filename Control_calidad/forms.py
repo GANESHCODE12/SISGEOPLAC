@@ -51,10 +51,14 @@ class ActualizarInspeccionForm(ModelForm):
         model = ControlCalidad
         fields = [
             'fecha_despacho',
+            'cliente',
             'cantidad_solicitada',
             'empaque_y_embalaje',
             'observaciones',
         ]
+        widgets = {
+            'fecha_despacho': DateInput()
+        }
     
     def save(self, commit:True):
         data = {}

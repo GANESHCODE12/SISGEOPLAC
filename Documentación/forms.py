@@ -51,6 +51,9 @@ class ActualizarDocumentoForm(forms.ModelForm):
 
         model = Documentacion
         fields = [
+            'codigo',
+            'titulo',
+            'cliente',
             'estado_documento',
             'control_cambios',
         ]

@@ -159,7 +159,7 @@ class DetalleFichaView(LoginRequiredMixin, ValidatePermissionRequiredMixin, Deta
 
 
 #Actualizar
-class ActualizarPlano(LoginRequiredMixin, ValidatePermissionRequiredMixin, UpdateView):
+class ActualizarFichaTecnica(LoginRequiredMixin, ValidatePermissionRequiredMixin, UpdateView):
 
     model = Producto
     form_class = ActualizarProductoForm
@@ -184,9 +184,7 @@ class ActualizarPlano(LoginRequiredMixin, ValidatePermissionRequiredMixin, Updat
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
-
     
-
     def get_context_data(self, **kwargs):
         """Agrega la información a la vista de actualización"""
         
@@ -195,192 +193,6 @@ class ActualizarPlano(LoginRequiredMixin, ValidatePermissionRequiredMixin, Updat
         context['list_url'] = reverse_lazy('Productos:Productos')
         context['entity'] = 'Productos'
         context['action'] = 'edit'
-        return context
-
-
-class ActualizarFichaTecnica(LoginRequiredMixin, ValidatePermissionRequiredMixin, UpdateView):
-    """Vista para crear las fichas técnicas"""
-
-    model = Producto
-    form_class = CrearProductoForm
-    template_name = 'Productos/crear_ficha_tecnica.html'
-    success_url = reverse_lazy('Productos:Producto')
-    permission_required = 'change_producto'
-
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        data = {}
-        try:
-            action = request.POST['action']
-            if action == 'search_normas':
-                data = []
-                busqueda = Normas.objects.filter(titulo__icontains=request.POST['term'])[0:10]
-                for i in busqueda:
-                    item = i.toJSON()
-                    item['text'] = i.titulo
-                    data.append(item)
-            elif action == 'search_pruebas':
-                data = []
-                busqueda = Pruebas.objects.filter(variables__icontains=request.POST['term'])[0:10]
-                for i in busqueda:
-                    item = i.toJSON()
-                    item['text'] = i.variables
-                    data.append(item)
-            elif action == 'search_dimensiones':
-                data = []
-                busqueda = Dimensiones.objects.filter(caracteristicas_control__icontains=request.POST['term'])[0:10]
-                for i in busqueda:
-                    item = i.toJSON()
-                    item['text'] = i.caracteristicas_control
-                    data.append(item)
-            elif action == 'search_atributos':
-                data = []
-                busqueda = Atributos.objects.filter(caracteristicas__icontains=request.POST['term'])[0:10]
-                for i in busqueda:
-                    item = i.toJSON()
-                    item['text'] = i.caracteristicas
-                    data.append(item)
-            elif action == 'search_producto':
-                data = []
-                busqueda = Producto.objects.filter(Nombre_producto__icontains=request.POST['term'])[0:10]
-                for i in busqueda:
-                    item = i.toJSON()
-                    item['text'] = i.Nombre_producto
-                    data.append(item)
-            elif action == 'edit':
-                with transaction.atomic():
-                    ficha = json.loads(request.POST['ficha'])
-
-                    producto = self.get_object()
-                    producto.Nombre_producto = ficha['Nombre_producto']
-                    producto.numero_ficha = int(ficha['numero_ficha'])
-                    producto.codigo_producto = ficha['codigo_producto']
-                    producto.proceso = ficha['proceso']
-                    producto.version = int(ficha['version'])
-                    producto.fecha_vigencia = ficha['fecha_vigencia']
-                    producto.tipo_producto = ficha['tipo_producto']
-                    producto.cliente_especifico = ficha['cliente_especifico']
-                    producto.estado_ficha = ficha['estado_ficha']
-                    producto.cavidades = int(ficha['cavidades'])
-                    producto.peso = float(ficha['peso'])
-                    producto.material = ficha['material']
-                    producto.ciclo = int(ficha['ciclo'])
-                    producto.descripción_especificaciones = ficha['descripción_especificaciones']
-                    producto.color = ficha['color']
-                    producto.olor = ficha['olor']
-                    producto.sabor = ficha['sabor']
-                    producto.pigmento = ficha['pigmento']
-                    producto.tipo = ficha['tipo']
-                    producto.unidad_empaque = int(ficha['unidad_empaque'])
-                    producto.forma_empaque = ficha['forma_empaque']
-                    producto.caja = ficha['caja']
-                    producto.bolsa = ficha['bolsa']
-                    producto.plano = ficha['plano']
-                    producto.fecha_plano = ficha['fecha_plano']
-                    producto.diagrama = ficha['diagrama']
-                    producto.vida_util = ficha['vida_util']
-                    producto.elaborado = ficha['elaborado']
-                    producto.revisado = ficha['revisado']
-                    producto.aprobado = ficha['aprobado']
-                    producto.notas = ficha['notas']
-                    producto.save()
-                    NormasAplicable.objects.all().filter(id_producto_n_id = self.get_object().id).delete()
-                    PruebasEnsayo.objects.all().filter(id_producto_p_id = self.get_object().id).delete()
-                    CaracteristicasDimensionale.objects.all().filter(id_producto_c_id = self.get_object().id).delete()
-                    ControlAtributo.objects.all().filter(id_producto_a_id = self.get_object().id).delete()
-
-                    for i in ficha['normas']:
-                        normas = NormasAplicable()
-                        normas.id_producto_n_id = producto.id
-                        normas.id_norma_id = i['id']
-                        normas.save()
-
-                    for i in ficha['pruebas']:
-                        pruebas = PruebasEnsayo()
-                        pruebas.id_producto_p_id = producto.id
-                        pruebas.id_pruebas_id = i['id']
-                        pruebas.valor = float(i['valor'])
-                        pruebas.tolerancia_p = float(i['tolerancia_p'])
-                        pruebas.save()
-
-                    for i in ficha['dimensiones']:
-                        dimensiones = CaracteristicasDimensionale()
-                        dimensiones.id_producto_c_id = producto.id
-                        dimensiones.id_dimensiones_id = i['id']
-                        dimensiones.valor_nominal = float(i['valor_nominal'])
-                        dimensiones.tolerancia_d = float(i['tolerancia_d'])
-                        dimensiones.save()
-
-                    for i in ficha['atributos']:
-                        atributos = ControlAtributo()
-                        atributos.id_producto_a_id = producto.id
-                        atributos.id_atributo_id = i['id']
-                        atributos.save()
-            else:
-                data['error'] = 'No ha ingresado a ninguna opción!'
-        except Exception as e:
-            data['error'] = str(e)
-        return JsonResponse(data, safe=False)
-
-    def get_normas(self):
-        data = []
-        try:
-            for i in NormasAplicable.objects.filter(id_producto_n_id = self.get_object().id):
-                item = i.id_norma.toJSON()
-                data.append(item)
-        except:
-            pass
-        return data
-
-    def get_pruebas(self):
-        data = []
-        try:
-            for i in PruebasEnsayo.objects.filter(id_producto_p_id = self.get_object().id):
-                item = i.id_pruebas.toJSON()
-                item['variables'] = i.id_pruebas.variables
-                item['valor'] = i.valor
-                item['tolerancia_p'] = i.tolerancia_p
-                data.append(item)
-        except:
-            pass
-        return data
-
-    def get_dimensiones(self):
-        data = []
-        try:
-            for i in CaracteristicasDimensionale.objects.filter(id_producto_c_id = self.get_object().id):
-                item = i.id_dimensiones.toJSON()
-                item['caracteristicas_control'] = i.id_dimensiones.caracteristicas_control
-                item['valor_nominal'] = i.valor_nominal
-                item['tolerancia_d'] = i.tolerancia_d
-                data.append(item)
-        except:
-            pass
-        return data
-
-    def get_atributos(self):
-        data = []
-        try:
-            for i in ControlAtributo.objects.filter(id_producto_a_id = self.get_object().id):
-                item = i.id_atributo.toJSON()
-                data.append(item)
-        except:
-            pass
-        return data
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Actualizar ficha técnica'
-        context['list_url'] = reverse_lazy('Productos:Productos')
-        context['entity'] = 'Actualizar Ficha Técnica'
-        context['action'] = 'edit'
-        context['normas'] = json.dumps(self.get_normas())
-        context['dimensiones'] = json.dumps(self.get_dimensiones())
-        context['pruebas'] = json.dumps(self.get_pruebas())
-        context['atributos'] = json.dumps(self.get_atributos())
         return context
 
 

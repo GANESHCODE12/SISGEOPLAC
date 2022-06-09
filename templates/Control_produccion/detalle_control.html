@@ -28,7 +28,7 @@
                     <td>{{ Control_produccion.numero_op.producto.Nombre_producto }}</td>
                     <td>{{ Control_produccion.numero_op.cliente }}</td>
                     <td>{{ Control_produccion.numero_op.cantidad_requerida }}</td>
-                    <td>{{ Control_produccion.numero_op.cantidad_planeada }}</td>
+                    <td>{{ Control_produccion.cantidad_esperada_turno|floatformat:"2" }}</td>
                     <td>{{ Control_produccion.numero_op.producto.ciclo }}</td>
                     <td>{{ Control_produccion.numero_op.producto.cavidades }}</td>
                     <td>{{ Control_produccion.numero_op.fecha_entrega }}</td>

@@ -1,6 +1,10 @@
 {% extends 'body.html' %}
 {% load static %}
 
+{% block head %}
+    <link href="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.css' %}" rel="stylesheet" />
+    <script src="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.js' %}"></script>
+{% endblock %}
 
 {% block content %}
 <form method="post" action="." enctype="multipart/form-data">
@@ -116,6 +120,21 @@
                 'up': "fa fa-arrow-up",
                 'down': "fa fa-arrow-down"
             }
+        });
+        $("#tiempo_paradas").datetimepicker({
+            format: 'HH:mm:ss',
+            icons: {
+                'time': "fa fa-clock",
+                'date': "fa fa-calendar",
+                'up': "fa fa-arrow-up",
+                'down': "fa fa-arrow-down"
+            }
+        });
+        $("input[name='cantidad_producida']").TouchSpin({
+            min: 0,
+            max: '{{ saldo|cut:"." }}',
+            boostat: 5,
+            maxboostedstep: 10,
         });
     });
 

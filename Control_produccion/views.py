@@ -39,9 +39,9 @@ class ListaControl(LoginRequiredMixin, ValidatePermissionRequiredMixin, ListView
                 for i in ControlProduccion.objects.all():
                     item = i.toJSON()
                     item['producto'] = i.numero_op.producto.Nombre_producto
-                    item['supervisor'] = i.supervisor.get_full_name()
                     item['saldo_orden'] = i.saldo_orden
                     item['fecha_creacion'] = i.fecha_creacion
+                    item['maquina'] = i.numero_op.maquina
                     data.append(item)
             else:
                 data['error'] = 'Ha ocurrido un error'
@@ -96,12 +96,17 @@ class CrearNuevoControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin,
         de producción"""
 
         pk = self.kwargs.get('pk')
+
+        control = ControlProduccion.objects.all().filter(numero_op_id= pk).aggregate(numero_op_id=Sum('cantidad_producida'))
+        produccion = Produccion.objects.get(pk=pk)
+
         context = super().get_context_data(**kwargs)
         context['produccion'] = Produccion.objects.get(pk=pk)
         context['title'] = "Nuevo Control"
         context['list_url'] = reverse_lazy('Control_produccion:Control_orden')
         context['entity'] = 'Controles'
         context['action'] = 'add'
+        context['saldo'] = (produccion.cantidad_requerida - control['numero_op_id']) if control['numero_op_id'] is not None else produccion.cantidad_requerida
         return context
         
 

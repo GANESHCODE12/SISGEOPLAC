@@ -141,5 +141,14 @@
     inspeccion.items.pruebasensayos = {{ inspeccionpruebasyoensayos | safe }};
     inspeccion.items.inspecciondimensiones = {{ inspecciondimensiones | safe }};
     inspeccion.items.inspeccionatributos = {{ inspeccionatributos | safe }};
+
+    $(function () {
+        $("input[name='cantidad_solicitada']").TouchSpin({
+            min: 0,
+            max: '{{ saldo|cut:"." }}',
+            boostat: 5,
+            maxboostedstep: 10,
+        });
+    });
 </script>
 {% endblock %}

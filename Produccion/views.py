@@ -43,8 +43,19 @@ class ListaOrdenesView(LoginRequiredMixin, ListView):
             if action == 'searchdata':
                 data = []
                 for i in Produccion.objects.all():
+                    saldo_a =ControlProduccion.objects.all(
+                    ).filter(numero_op_id = i.numero_op
+                    ).aggregate(numero_op_id=Sum('cantidad_producida'))
+
+                    saldo_cliente_a =ControlCalidad.objects.all(
+                    ).filter(numero_op_id = i.numero_op
+                    ).aggregate(numero_op_id=Sum('cantidad_solicitada'))
+
                     item = i.toJSON()
                     item['Nombre_producto'] = i.producto.Nombre_producto
+                    item['saldo'] = (i.cantidad_requerida - saldo_a['numero_op_id']) if saldo_a['numero_op_id'] is not None else i.cantidad_requerida
+                    item['saldo_cliente'] = (i.cantidad_requerida - saldo_cliente_a['numero_op_id']) if saldo_cliente_a['numero_op_id'] is not None else i.cantidad_requerida
+                    item['color'] = i.color
                     data.append(item)
             else:
                 data['error'] = 'Ha ocurrido un error'

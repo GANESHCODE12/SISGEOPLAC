@@ -42,11 +42,6 @@ urlpatterns = [
     ),
     #Actualizar
     path(
-        route='actualizar_producto/<int:pk>/', 
-        view=views.ActualizarPlano.as_view(), 
-        name='Actualizar_ficha'
-    ),
-    path(
         route='actualizar_ficha/<int:pk>/',
         view=views.ActualizarFichaTecnica.as_view(),
         name='Actualizar_ficha_tecnica'

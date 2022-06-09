@@ -49,6 +49,8 @@ class Documentacion(models.Model):
         ('Programa','Programa'),
         ('Documento externo','Documento externo'),
         ('Norma','Norma'),
+        ('Ficha Técnica','Ficha Técnica'),
+        ('Certificado', 'Certificado'),
     ]
     tipo_documento = models.CharField(
         max_length=50,
@@ -56,6 +58,13 @@ class Documentacion(models.Model):
         verbose_name='Tipo de documento'
     )
     
+    cliente = models.CharField(
+        max_length=100,
+        verbose_name='Cliente',
+        blank=True,
+        null=True
+    )
+
     proceso = models.CharField(
         max_length=100,
         verbose_name='Proceso'
@@ -63,7 +72,9 @@ class Documentacion(models.Model):
 
     codigo = models.CharField(
         max_length=20,
-        verbose_name='Código'
+        verbose_name='Código',
+        null=True,
+        blank=True
     )
 
     titulo = models.CharField(
@@ -81,7 +92,9 @@ class Documentacion(models.Model):
 
     ubicacion = models.CharField(
         max_length=50,
-        verbose_name='Ubicación'
+        verbose_name='Ubicación',
+        null=True,
+        blank=True
     )
 
     lista_medio_almacenamiento = [

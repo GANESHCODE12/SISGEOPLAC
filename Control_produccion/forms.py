@@ -71,6 +71,9 @@ class CrearControlForm(ModelForm):
                 attrs={
                     'autocomplete': 'off',
                     'class': "form-control",
+                    'id': 'tiempo_paradas',
+                    'data-target': '#tiempo_paradas',
+                    'data-toggle': 'datetimepicker'
                 }
             ),
             'observaciones': Textarea(attrs={

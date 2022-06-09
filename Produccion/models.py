@@ -135,7 +135,7 @@ class Produccion(models.Model):
 
         cantidad = (self.producto.cavidades)/self.producto.ciclo
 
-        return cantidad * 28800
+        return cantidad
 
     @property
     def numero_cajas(self):

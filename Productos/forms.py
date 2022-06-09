@@ -128,7 +128,8 @@ class CrearProductoForm(ModelForm):
         }
         exclude = [
             'elaborado_por', 
-            'modificado_por'
+            'modificado_por',
+            'diagrama'
         ]
     
     def save(self, commit:True):
@@ -246,8 +247,10 @@ class ActualizarProductoForm(ModelForm):
         """Configuración del formulario"""
 
         model = Producto
-        fields = [
-            'diagrama'
+        fields = '__all__'
+        exclude = [
+            'elaborado_por',
+            'modificado_por'
         ]
     
     def save(self, commit:True):

@@ -285,6 +285,7 @@ $(function () {
 
         ficha.items.pruebas.push(data);
         ficha.pruebas();
+        console.log(data);
 
         $(this).val('').trigger('change.select2');
     });

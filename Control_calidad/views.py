@@ -2,7 +2,7 @@
 
 #Django
 from django.http.response import JsonResponse
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.urls import reverse_lazy
 from django.db import transaction
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -127,10 +127,16 @@ class ActualizarCertificado(LoginRequiredMixin, ValidatePermissionRequiredMixin,
         técnica"""
 
         pk = self.kwargs.get('pk')
+        pk1 = ControlCalidad.objects.get(id=pk).numero_op_id
+
+        produccion = Produccion.objects.get(numero_op=pk1)
+        inspeccion = ControlCalidad.objects.all().filter(numero_op_id= pk1).aggregate(numero_op_id= Sum('cantidad_solicitada'))
+
         context = super().get_context_data(**kwargs)
         context['title'] = 'Actualizar Certificado'
         context['list_url'] = reverse_lazy('Control_calidad:Inspecciones_calidad')
         context['entity'] = 'Inspecciones'
+        context['saldo'] = (produccion.cantidad_requerida - inspeccion['numero_op_id']) if inspeccion['numero_op_id'] is not None or 0 else produccion.cantidad_requerida
         context['action'] = 'edit'
         return context
 
@@ -274,11 +280,16 @@ class CrearInspeccionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, C
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs.get('pk')
+
+        produccion = Produccion.objects.get(pk=pk)
+        inspeccion = ControlCalidad.objects.all().filter(numero_op_id= pk).aggregate(numero_op_id= Sum('cantidad_solicitada'))
+
         context['produccion'] = Produccion.objects.get(pk=pk)
         context['title'] = "Nueva Inspección De Calidad"
         context['list_url'] = reverse_lazy('Control_calidad:Inspecciones_calidad')
         context['entity'] = 'Inspecciones'
         context['action'] = 'add'
+        context['saldo'] = (produccion.cantidad_requerida - inspeccion['numero_op_id']) if inspeccion['numero_op_id'] is not None else produccion.cantidad_requerida
         context['inspeccionpruebasyoensayos'] = json.dumps(self.get_pruebas())
         context['inspecciondimensiones'] = json.dumps(self.get_dimensiones())
         context['inspeccionatributos'] = json.dumps(self.get_atributos())

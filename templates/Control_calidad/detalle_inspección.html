@@ -21,9 +21,11 @@
         <div class="row">
             <div class="col">
                 <li class="list-group-item list-group-item-dark">Realizada por</li>
+                <li class="list-group-item list-group-item-dark">Actualizada por</li>
                 <li class="list-group-item list-group-item-dark">Fecha de inspección</li>
                 <li class="list-group-item list-group-item-dark">Número de orden</li>
-                <li class="list-group-item list-group-item-dark">Cliente</li>
+                <li class="list-group-item list-group-item-dark">Cliente orden</li>
+                <li class="list-group-item list-group-item-dark">Cliente despacho</li>
                 <li class="list-group-item list-group-item-dark">Nombre producto</li>
                 &nbsp;
                 <li class="list-group-item list-group-item-dark">Número de lote</li>
@@ -39,9 +41,15 @@
 
             <div class="col-sm-9">
                 <li class="list-group-item">{{ ControlCalidad.inspector.first_name }} {{ ControlCalidad.inspector.last_name}}</li>
+                <li class="list-group-item">{{ ControlCalidad.inspector_actualizo.first_name }} {{ ControlCalidad.inspector_actualizo.last_name}}</li>
                 <li class="list-group-item">{{ ControlCalidad.fecha_creacion }}</li>
                 <li class="list-group-item">{{ ControlCalidad.numero_op }}</>
                 <li class="list-group-item">{{ ControlCalidad.numero_op.cliente }}</li>
+                {% if ControlCalidad.cliente %}
+                        <li class="list-group-item">{{ ControlCalidad.cliente }}</li>
+                    {% else %}
+                        <li class="list-group-item">{{ ControlCalidad.numero_op.cliente }}</li>
+                    {% endif %}
                 <li class="list-group-item">{{ ControlCalidad.numero_op.producto.Nombre_producto }}</li>
                 &nbsp;
                 <li class="list-group-item">{{ ControlCalidad.numero_op.lote }}</li>
@@ -59,7 +67,7 @@
         <table class="table table-bordered">
             <thead class="table table-dark">
                 <tr>
-                    <th colspan="4" style="text-align: center;">INSPECCIÓN DIMENSIONAL</th>
+                    <th colspan="5" style="text-align: center;">INSPECCIÓN DIMENSIONAL</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,6 +75,7 @@
                     <th class="table table-dark" style="text-align: center; width: 25%;">CARACTERISTICAS</th>
                     <th class="table table-dark" style="text-align: center; width: 25%;">METODO</th>
                     <th class="table table-dark" style="text-align: center; width: 25%;">ESPECIFICACIÓN TÉCNICA</th>
+                    <th class="table table-dark" style="text-align: center; width: 25%;">VALOR</th>
                     <th class="table table-dark" style="text-align: center; width: 25%;">RESULTADOS</th>
                 </tr>
                 {% for instance in inspecciondimensional.all %}
@@ -74,6 +83,7 @@
                     <td>{{ instance.inspeccion_dimensional.id_dimensiones.caracteristicas_control }}</td>
                     <td style="text-align: center;">Medición directa</td>
                     <td style="text-align: center;">{{ instance.inspeccion_dimensional.valor_nominal }} +/- {{instance.inspeccion_dimensional.tolerancia_d }} mm</td>
+                    <td style="text-align: center;">{{ instance.promedio }}</td>
                     <td style="text-align: center;">{{ instance.resultado_id }}</td>
                 </tr>
                 {% endfor %}
@@ -115,7 +125,7 @@
                 <table class="table table-bordered">
                     <thead class="table-dark">
                         <tr>
-                            <th colspan="4">CONTROL PRUEBAS/ENSAYOS</th>
+                            <th colspan="5">CONTROL PRUEBAS/ENSAYOS</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -123,6 +133,7 @@
                             <th id="ldf1">PRUEBA / ENSAYO</th>
                             <th id="ldf1">ESPECIFICACIÓN</th>
                             <th id="ldf1">MEDIO DE CONTROL</th>
+                            <th id="ldf1">VALOR</th>
                             <th id="ldf1">RESULTADOS</th>
                         </tr>
                         {% for instance in pruebas.all %}
@@ -130,6 +141,7 @@
                             <td class="ldf">{{ instance.pruebas_y_o_ensayos.id_pruebas.variables }}</td>
                             <td class="ldf">{{ instance.pruebas_y_o_ensayos.id_pruebas.descripcion_prueba }}</td>
                             <td class="ldf">{{ instance.pruebas_y_o_ensayos.id_pruebas.medio_control }}</td>
+                            <td class="ldf">{{ instance.pruebas_y_o_ensayos.valor }}</td>
                             <td class="ldf">{{ instance.resultado_p }}</td>
 
                         </tr>

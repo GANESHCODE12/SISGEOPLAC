@@ -139,7 +139,7 @@ class ControlProduccion(models.Model):
     def rendimiento_produccion(self):
         """Retorna en porcentaje el rendimiento de producción"""
         
-        return (self.cantidad_producida / self.numero_op.cantidad_planeada) * 100
+        return (self.cantidad_producida / (self.numero_op.cantidad_planeada * self.tiempo_produccion.total_seconds())) * 100
 
     @property
     def cantidad_acumulada(self):
@@ -161,6 +161,15 @@ class ControlProduccion(models.Model):
 
         for self.numero_op.numero_op, value in cantidad.items():
             return self.numero_op.cantidad_requerida  - value
+
+    
+    @property
+    def cantidad_esperada_turno(self):
+        """Retorna la cantida esperada por turno"""
+
+        cantidad = (self.numero_op.producto.cavidades / self.numero_op.producto.ciclo)
+
+        return cantidad * self.tiempo_produccion.total_seconds()
         
         
     class Meta:

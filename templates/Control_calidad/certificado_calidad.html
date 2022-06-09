@@ -40,7 +40,11 @@
             <tbody>
                 <tr scope="row">
                     <td class="bg-secondary" id="titulos">Cliente</td>
-                    <td style="text-align: center;">{{ ControlCalidad.numero_op.cliente }}</td>
+                    {% if ControlCalidad.cliente %}
+                        <td style="text-align: center;">{{ ControlCalidad.cliente }}</td>
+                    {% else %}
+                        <td style="text-align: center;">{{ ControlCalidad.numero_op.cliente }}</td>
+                    {% endif %}
                     <td class="bg-secondary" id="titulos">Certificado No.</td>
                     <td style="text-align: center;">{{ ControlCalidad.id }}</td>
                 </tr>
@@ -216,7 +220,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col">
-            <h6 style="color: black; text-align: center">______________________________</h6>
+            <h6 style="color: black; text-align: center">{{ ControlCalidad.inspector.first_name }} {{ ControlCalidad.inspector.last_name }}</h6>
             <h6 style="color: black; text-align: center"">REALIZADO POR</h6>
                     </div>
                     <div class=" col">
