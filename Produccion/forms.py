@@ -48,7 +48,6 @@ class ActuaizarOrden(forms.ModelForm):
             'maquina',
             'estado_op',
             'fecha_entrega',
-            'lote',
             'observaciones',
             'aprobacion_orden',
             'materia_prima_adicional',
