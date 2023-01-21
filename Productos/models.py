@@ -12,6 +12,28 @@ from django.conf import settings
 from Plasmotec.settings import MEDIA_URL, STATIC_URL
 
 
+class Colores(models.Model):
+    color = models.CharField(
+        max_length=255,
+        verbose_name='Color'
+    )
+
+    def __str__(self):
+        return self.color
+
+    def toJSON(self):
+        item = model_to_dict(self)
+        return item
+
+    class Meta:
+        """Configuración del modelo"""
+
+        verbose_name = 'Color'
+        verbose_name_plural = 'Colores'
+        db_table = 'Colores'
+        ordering = ['-id']
+
+
 class Producto(models.Model):
     """Modelo de los datos generales del producto"""
 
@@ -47,10 +69,6 @@ class Producto(models.Model):
     numero_ficha = models.PositiveIntegerField(
         unique=True,
         verbose_name='Número de ficha'
-    )
-    codigo_producto = models.CharField(
-        max_length=255,
-        verbose_name='Código de producto'
     )
     proceso = models.CharField(
         max_length=50,
@@ -102,20 +120,10 @@ class Producto(models.Model):
         max_length=255,
         verbose_name='Descripción de especificaciones'
     )
-
     """Caracteristicas organolepticas"""
-    color = models.CharField(
-        max_length=60,
-        default='Según lo acordado por el cliente',
-        verbose_name='Color'
-    )
     olor = models.CharField(
         max_length=255,
         verbose_name='Olor'
-    )
-    sabor = models.CharField(
-        max_length=255,
-        verbose_name='Sabor'
     )
     pigmento = models.CharField(
         max_length=255,
@@ -155,8 +163,7 @@ class Producto(models.Model):
         upload_to='Produccion/plane',
         verbose_name='Diagrama',
         null=True,
-        blank=True,
-        
+        blank=True,   
     )
 
     """Condiciones de almacenamiento"""
@@ -211,6 +218,7 @@ class Producto(models.Model):
                 'fecha_plano'
             ]
         )
+        item['color'] = [i.toJSON() for i in self.productos_colores_set.all()]
         return item
 
     class Meta:
@@ -219,6 +227,45 @@ class Producto(models.Model):
         verbose_name = 'Producto'
         verbose_name_plural = 'Productos'
         db_table = 'Productos'
+        ordering = ['-id']
+
+
+class Productos_colores(models.Model):
+    color = models.ForeignKey(
+        Colores,
+        on_delete=models.CASCADE,
+        verbose_name="Color"
+    )
+    productos = models.ForeignKey(
+        Producto,
+        on_delete=models.CASCADE,
+        verbose_name="Producto"
+    )
+    codigo_producto = models.CharField(
+        max_length=255,
+        verbose_name='Código de producto',
+        null=True
+    )
+
+    def __str__(self):
+        return '{} V.{}, Cliente: {}, Color: {}'.format(
+            self.productos.Nombre_producto, 
+            str(self.productos.version), 
+            self.productos.cliente_especifico,
+            self.color.color
+        )
+
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['color'] = self.color.toJSON()
+        return item
+
+    class Meta:
+        """Configuración del modelo"""
+
+        verbose_name = 'Producto Color'
+        verbose_name_plural = 'Productos por color'
+        db_table = 'Productos Color'
         ordering = ['-id']
 
 
@@ -250,7 +297,7 @@ class CaracteristicasDimensionale(models.Model):
     )
 
     id_producto_c = models.ForeignKey(
-        'Productos.Producto',
+        Producto,
         on_delete=models.CASCADE,
         db_constraint=False,
         verbose_name='Nombre del Producto'
@@ -272,7 +319,11 @@ class CaracteristicasDimensionale(models.Model):
     )
 
     def __str__(self):
-        return self.id_dimensiones.caracteristicas_control
+        return '{}, Producto: {}, Cliente: {}'.format(
+            self.id_dimensiones.caracteristicas_control, 
+            self.id_producto_c.Nombre_producto,
+            self.id_producto_c.cliente_especifico
+        )
 
     def save(self, force_insert=False, force_update= False, using=None, update_fields=None):
         user = get_current_user()
@@ -324,7 +375,7 @@ class PruebasEnsayo(models.Model):
     )
 
     id_producto_p = models.ForeignKey(
-        'Productos.Producto',
+        Producto,
         on_delete=models.CASCADE,
         db_constraint=False,
         verbose_name='Nombre del Producto'
@@ -366,7 +417,7 @@ class PruebasEnsayo(models.Model):
 
         verbose_name = 'Prueba y/o Ensayo'
         verbose_name_plural = 'Pruebas y/o Ensayos'
-        db_table = 'Prueba_Ensayo'
+        db_table = 'Pruebas Ensayos'
         ordering = ['-id']
 
 
@@ -398,7 +449,7 @@ class ControlAtributo(models.Model):
     )
 
     id_producto_a = models.ForeignKey(
-        'Productos.Producto',
+        Producto,
         on_delete=models.CASCADE,
         db_constraint=False,
         verbose_name='Nombre del Producto'
@@ -464,7 +515,7 @@ class NormasAplicable(models.Model):
     )
 
     id_producto_n = models.ForeignKey(
-        'Productos.Producto',
+        Producto,
         on_delete=models.CASCADE,
         db_constraint=False,
         verbose_name='Nombre del Producto'

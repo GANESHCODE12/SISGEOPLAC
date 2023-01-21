@@ -23,14 +23,6 @@ class CrearControlForm(ModelForm):
             'supervisor_actualizo'
         ]
         widgets = {
-            'tecnico': TextInput(attrs={
-                'class': 'form-control',
-                'style': 'width: 100%'
-            }),
-            'operario': TextInput(attrs={
-                'class': 'form-control',
-                'style': 'width: 100%'
-            }),
             'turno': Select(attrs={
                 'class': 'form-control',
                 'style': 'width: 100%'
@@ -67,15 +59,6 @@ class CrearControlForm(ModelForm):
                     'data-toggle': 'datetimepicker'
                 }
             ),
-            'tiempo_paradas': TimeInput(
-                attrs={
-                    'autocomplete': 'off',
-                    'class': "form-control",
-                    'id': 'tiempo_paradas',
-                    'data-target': '#tiempo_paradas',
-                    'data-toggle': 'datetimepicker'
-                }
-            ),
             'observaciones': Textarea(attrs={
                 'class': 'form-control',
                 'style': 'width: 100%'
@@ -83,3 +66,25 @@ class CrearControlForm(ModelForm):
         }
         
 
+
+class CrearMotivoForm(ModelForm):
+    """Formulario para creación de elementos de inventario de materia prima"""
+
+    class Meta:
+        """Configuración del formulario"""
+
+        model = MotivosParadasControlProduccion
+        fields = '__all__'
+
+    def save(self, commit:True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                instance = form.save()
+                data = instance.toJSON()
+            else:
+                data['error'] = form.errors
+        except Exception  as e:
+            data['error'] = str(e)
+        return data

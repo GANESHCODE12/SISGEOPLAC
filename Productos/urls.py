@@ -34,6 +34,11 @@ urlpatterns = [
         view=views.ListaNormas.as_view(),
         name='Normas'
     ),
+    path(
+        route='listado_colores', 
+        view=views.ListaColorView.as_view(),
+        name='Colores'
+    ),
     #Detalle
     path(
         route='ficha_<int:pk>/',
@@ -45,6 +50,11 @@ urlpatterns = [
         route='actualizar_ficha/<int:pk>/',
         view=views.ActualizarFichaTecnica.as_view(),
         name='Actualizar_ficha_tecnica'
+    ),
+    path(
+        route='actualizar_diagrama/<int:pk>/',
+        view=views.ActualizarDiagramaView.as_view(),
+        name='Actualizar_diagrama'
     ),
     #Crear
     path(
@@ -68,8 +78,18 @@ urlpatterns = [
         name='Nueva_norma'
     ),
     path(
+        route='producto_color',
+        view=views.ProductoColorView.as_view(),
+        name='Producto_color'
+    ),
+    path(
         route='nueva_ficha',
         view=views.NuevaFichaTecnica.as_view(),
         name='Nueva_ficha'
+    ),
+    path(
+        route='nuevo_color',
+        view=views.NuevoColorView.as_view(),
+        name='Nuevo_color'
     ),
 ]

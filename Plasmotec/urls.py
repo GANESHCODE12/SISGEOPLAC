@@ -17,14 +17,30 @@ urlpatterns = [
         view= views.InicioView.as_view(),
         name='inicio'
     ),
-
     #test
     path(
         route = 'test/',
         view= views.TestView.as_view(),
         name='test'
     ),
-    
+    #Notificación leida
+    path(
+        route = 'notificacion-leida',
+        view= views.NotificacionLeida.as_view(),
+        name='notificacion-leida'
+    ),
+    #Notificaciones
+    path(
+        route = 'Notificaciones',
+        view= views.Notificaciones.as_view(),
+        name='Notificaciones'
+    ),
+    #Notificaciones
+    path(
+        route = 'Reportes',
+        view= views.ReporteView.as_view(),
+        name='Reportes'
+    ),
     #Admin urls
     path('admin/', admin.site.urls),
 
@@ -78,6 +94,20 @@ urlpatterns = [
         include(
             ('Control_calidad.urls', 'Control_calidad'), 
             namespace='Control_calidad'
+            )
+    ),
+    path(
+        'Inventario/', 
+        include(
+            ('Inventario.urls', 'Inventario'), 
+            namespace='Inventario'
+            )
+    ),
+    path(
+        'Gestión_humana/', 
+        include(
+            ('Gestion_Humana.urls', 'Gestion_Humana'), 
+            namespace='Gestion_humana'
             )
     ),
     

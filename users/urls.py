@@ -51,5 +51,15 @@ urlpatterns = [
         view=views.UserChangePasswordView.as_view(), 
         name='Cambiar_contraseña'
     ),
+    path(
+        route='reset-password/', 
+        view=views.ResetPasswordView.as_view(), 
+        name='reset-password'
+    ),
+    path(
+        route='change-password/<str:token>', 
+        view=views.ChangePasswordView.as_view(), 
+        name='change-password'
+    ),
 
 ]

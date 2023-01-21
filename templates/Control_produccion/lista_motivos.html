@@ -1,0 +1,17 @@
+{% extends 'lista.html' %}
+{% block columnas %}
+<tr>
+    <th style="text-align: center;">Id</th>
+    <th style="text-align: center;">Motivo</th>
+</tr>
+{% endblock %}
+{% block filas %}
+<tr id="lista_motivos">
+    <td>{{ instance.id }}</td>
+    <td>{{ instance.motivo }}</td>
+{% endblock %}
+{% block card-footer %}
+    <a href="{% url 'Control_produccion:nuevo-motivo-de-parada' %}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Crear un registro
+    </a>        
+{% endblock %}

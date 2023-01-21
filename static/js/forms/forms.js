@@ -2,12 +2,12 @@ var tblPruebas;
 var tblDimensiones;
 var tblNormas;
 var tblAtributos;
+var tblColores;
 
 var ficha = {
     items: {
         Nombre_producto: '',
         numero_ficha: '',
-        codigo_producto: '',
         proceso: '',
         version: '',
         fecha_vigencia: '',
@@ -19,9 +19,7 @@ var ficha = {
         material: '',
         ciclo: '',
         descripción_especificaciones: '',
-        color: '',
         olor: '',
-        sabor: '',
         pigmento: '',
         tipo: '',
         unidad_empaque: '',
@@ -30,7 +28,6 @@ var ficha = {
         bolsa: '',
         plano: '',
         fecha_plano: '',
-        diagrama: '',
         vida_util: '',
         elaborado: '',
         revisado: '',
@@ -40,6 +37,42 @@ var ficha = {
         pruebas: [],
         dimensiones: [],
         atributos: [],
+        colores: [],
+    },
+    get_ids_normas: function () {
+        var ids_normas = [];
+        $.each(this.items.normas, function (key, value){
+            ids_normas.push(value.id);
+        });
+        return ids_normas;
+    },
+    get_ids_pruebas: function () {
+        var ids_pruebas = [];
+        $.each(this.items.pruebas, function (key, value){
+            ids_pruebas.push(value.id);
+        });
+        return ids_pruebas;
+    },
+    get_ids_dimensiones: function () {
+        var ids_dimensiones = [];
+        $.each(this.items.dimensiones, function (key, value){
+            ids_dimensiones.push(value.id);
+        });
+        return ids_dimensiones;
+    },
+    get_ids_atributos: function () {
+        var ids_atributos = [];
+        $.each(this.items.atributos, function (key, value){
+            ids_atributos.push(value.id);
+        });
+        return ids_atributos;
+    },
+    get_ids_colores: function () {
+        var ids_colores = [];
+        $.each(this.items.colores, function (key, value){
+            ids_colores.push(value.id);
+        });
+        return ids_colores;
     },
     normas: function () {
         tblNormas = $('#tblNormas').DataTable({
@@ -215,6 +248,40 @@ var ficha = {
 
             }
         });
+    },
+    colores: function () {
+        tblColores = $('#tblColores').DataTable({
+            responsive: true,
+            autoWidth: false,
+            destroy: true,
+            data: this.items.colores,
+            columns: [
+                { "data": "id" },
+                { "data": "color" },
+                { "data": "codigo_producto" }
+            ],
+            columnDefs: [
+                {
+                    targets: [0],
+                    class: 'text-center',
+                    orderable: false,
+                    render: function (data, type, row) {
+                        return '<a rel="remove" type="button" class="btn btn-danger btn-xs" style="color: white"><i class="fas fa-trash-alt"></i></a>';
+                    }
+                },
+                {
+                    targets: [-1],
+                    class: 'text-center',
+                    orderable: false,
+                    render: function (data, type, row) {
+                        return '<input type="text" name="codigo_producto" class="form-control form-control-sm input-sm" autocomplete="off" value="' + row.codigo_producto + '">';
+                    }
+                },
+            ],
+            initComplete: function (settings, json) {
+
+            }
+        });
     }
 };
 
@@ -232,7 +299,8 @@ $(function () {
             data: function (params) {
                 var queryParameters = {
                     term: params.term,
-                    action: 'search_normas'
+                    action: 'search_normas',
+                    ids_normas: JSON.stringify(ficha.get_ids_normas())
                 }
 
                 return queryParameters;
@@ -264,7 +332,8 @@ $(function () {
             data: function (params) {
                 var queryParameters = {
                     term: params.term,
-                    action: 'search_pruebas'
+                    action: 'search_pruebas',
+                    ids_pruebas: JSON.stringify(ficha.get_ids_pruebas())
                 }
 
                 return queryParameters;
@@ -285,7 +354,6 @@ $(function () {
 
         ficha.items.pruebas.push(data);
         ficha.pruebas();
-        console.log(data);
 
         $(this).val('').trigger('change.select2');
     });
@@ -302,7 +370,8 @@ $(function () {
             data: function (params) {
                 var queryParameters = {
                     term: params.term,
-                    action: 'search_atributos'
+                    action: 'search_atributos',
+                    ids_atributos: JSON.stringify(ficha.get_ids_atributos())
                 }
 
                 return queryParameters;
@@ -336,7 +405,8 @@ $(function () {
             data: function (params) {
                 var queryParameters = {
                     term: params.term,
-                    action: 'search_dimensiones'
+                    action: 'search_dimensiones',
+                    ids_dimensiones: JSON.stringify(ficha.get_ids_dimensiones())
                 }
 
                 return queryParameters;
@@ -360,15 +430,46 @@ $(function () {
         $(this).val('').trigger('change.select2');
     });
 
+    // buscador de color
+    $('select[name="id_colores"]').select2({
+        theme: "bootstrap4",
+        language: 'es',
+        allowClear: true,
+        ajax: {
+            delay: 250,
+            type: 'POST',
+            url: window.location.pathname,
+            data: function (params) {
+                var queryParameters = {
+                    term: params.term,
+                    action: 'search_colores',
+                    ids_colores: JSON.stringify(ficha.get_ids_colores())
+                }
+
+                return queryParameters;
+            },
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+        },
+        placeholder: 'Ingrese un color!',
+        minimumInputLength: 1,
+    }).on('select2:select', function (e) {
+        var data = e.params.data;
+        ficha.items.colores.push(data);
+        ficha.colores();
+        $(this).val('').trigger('change.select2');
+    });
+
     //Eventos: valor, tolerancia y eliminar de pruebas
     $('#tblPruebas tbody').on('change', 'input[name="valor"]', function () {
-        console.clear();
         var valor = parseFloat($(this).val());
         var tr = tblPruebas.cell($(this).closest('td, li')).index();
         ficha.items.pruebas[tr.row].valor = valor;
     })
     .on('change', 'input[name="tolerancia_p"]', function () {
-        console.clear();
         var tolerancia_p = parseFloat($(this).val());
         var tr = tblPruebas.cell($(this).closest('td, li')).index();
         ficha.items.pruebas[tr.row].tolerancia_p = tolerancia_p; 
@@ -383,7 +484,6 @@ $(function () {
 
     //Evento: valor, tolerancia y eliminar de dimensiones
     $('#tblDimensiones tbody').on('change', 'input[name="valor_nominal"]', function () {
-        console.clear();
         var valor_nominal = parseFloat($(this).val());
         var tr = tblDimensiones.cell($(this).closest('td, li')).index();
         console.log(tr)
@@ -391,7 +491,6 @@ $(function () {
         ficha.items.dimensiones[tr.row].valor_nominal = valor_nominal
     })
     .on('change', 'input[name="tolerancia_d"]', function () {
-        console.clear();
         var tolerancia_d = parseFloat($(this).val());
         var tr = tblDimensiones.cell($(this).closest('td, li')).index();
         var data = tblDimensiones.row(tr.row).node();
@@ -423,6 +522,19 @@ $(function () {
         });
     });
     
+    //Eliminar colores
+    $('#tblColores tbody').on('click', 'a[rel="remove"]', function () {
+        var tr = tblColores.cell($(this).closest('td, li')).index();
+        alert_action('Notificación', '¿Est@ seguro de eliminar este color de la ficha técnica?', function () {
+            ficha.items.colores.splice(tr.row, 1);
+            ficha.colores();
+        });
+    })
+    .on('change', 'input[name="codigo_producto"]', function () {
+        var codigo_producto = $(this).val();
+        var tr = tblColores.cell($(this).closest('td, li')).index();
+        ficha.items.colores[tr.row].codigo_producto = codigo_producto; 
+    });
 
     //Guardado de datos
     $('form').on('submit', function(e){
@@ -430,7 +542,6 @@ $(function () {
 
         ficha.items.Nombre_producto = $('input[name="Nombre_producto"]').val();
         ficha.items.numero_ficha = $('input[name="numero_ficha"]').val();
-        ficha.items.codigo_producto = $('input[name="codigo_producto"]').val();
         ficha.items.proceso = $('input[name="proceso"]').val();
         ficha.items.version = $('input[name="version"]').val();
         ficha.items.fecha_vigencia = $('input[name="fecha_vigencia"]').val();
@@ -442,9 +553,7 @@ $(function () {
         ficha.items.material = $('input[name="material"]').val();
         ficha.items.ciclo = $('input[name="ciclo"]').val();
         ficha.items.descripción_especificaciones = $('input[name="descripción_especificaciones"]').val();
-        ficha.items.color = $('input[name="color"]').val();
         ficha.items.olor = $('input[name="olor"]').val();
-        ficha.items.sabor = $('input[name="sabor"]').val();
         ficha.items.pigmento = $('input[name="pigmento"]').val();
         ficha.items.tipo = $('input[name="tipo"]').val();
         ficha.items.unidad_empaque = $('input[name="unidad_empaque"]').val();
@@ -453,7 +562,6 @@ $(function () {
         ficha.items.bolsa = $('input[name="bolsa"]').val();
         ficha.items.plano = $('input[name="plano"]').val();
         ficha.items.fecha_plano = $('input[name="fecha_plano"]').val();
-        ficha.items.diagrama = $('input[name="diagrama"]').val();
         ficha.items.vida_util = $('textarea[name="vida_util"]').val();
         ficha.items.elaborado = $('input[name="elaborado"]').val();
         ficha.items.revisado = $('input[name="revisado"]').val();
@@ -473,5 +581,6 @@ $(function () {
     ficha.normas();
     ficha.atributos();
     ficha.pruebas();
+    ficha.colores();
 
 });

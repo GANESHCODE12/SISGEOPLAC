@@ -1,0 +1,90 @@
+{% extends "lista.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_list %}
+<link href="{% static 'lib/select2-4.0.13/css/select2.min.css' %}" rel="stylesheet" />
+<link href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}" rel="stylesheet" />
+<script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
+<script src="{% static 'lib/select2-4.0.13/js/i18n/es.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<form method="post" action="." enctype="multipart/form-data">
+  <div class="card card-dark">
+      {% block card-header %}
+      <div class="card-header">
+              {% if action == 'add' %}
+                  <i class="fas fa-plus"></i>
+              {% else %}
+                  <i class="fas fa-edit"></i>
+              {% endif %}
+
+              {{ title }}
+      </div>
+      {% endblock %}
+      <div class="card-body">
+          <table class="table table-bordered">
+              <thead class=" table-dark" style="text-align: center;">
+                  <th>
+                      <i class="fas fa-paste"></i> ¡INGRESE LA INFORMACIÓN SOLICITADA!
+                      <p>
+                          <small>Los campos con asterisco (*) son obligatorios</small>
+                      </p>
+                  </th>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>
+                          {% csrf_token %}
+                          <input type="hidden" name="action" value="{{ action }}">
+                          {% block hidden %}
+                          {% endblock %}
+                          {{ form|crispy }}
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+      <div class="card-footer d-flex justify-content-end">
+          <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i> Cargar
+          </button>
+          &nbsp;
+          <a href="{{ list_url }}" class="btn btn-danger">
+              <i class="fas fa-times"></i> Cancelar
+          </a>
+          &nbsp;
+      </div>
+  </div>
+</form>
+<script>
+  {% if form.errors %}
+    var errors = '';
+    {% for field in form %}
+    {% for error in field.errors %}
+    errors += '{{ error }}\n'
+    {% endfor %}
+    {% endfor %}
+    Swal.fire({
+        title: 'Error!',
+        text: errors,
+        icon: 'error',
+    })
+    {% endif %}
+
+    $('form').on('submit', function (e) {
+        e.preventDefault();
+        //var parameters = $(this).serializeArray();
+        var parameters = new FormData(this);
+        submit_with_ajax(window.location.pathname, parameters, 'Notificación', 'Esta segur@ que desea crear el siguiente registro?', function () {
+            location.href = '{{ list_url }}';
+        });
+    });
+    $(function () {
+        $('.select').select2({
+
+        })
+    });
+</script>
+{% endblock %}

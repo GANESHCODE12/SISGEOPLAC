@@ -6,8 +6,6 @@ from django.forms import *
 #Models
 from Control_calidad.models import *
 
-#Utilidades
-from datetime import datetime
 
 #Campos especiales
 class DateInput(DateInput):
@@ -30,12 +28,7 @@ class CrearInspeccionForm(ModelForm):
 
         model = ControlCalidad
         fields = [
-            'tecnico',
-            'operario',
             'turno',
-            'fecha_despacho',
-            'cantidad_solicitada',
-            'empaque_y_embalaje',
             'observaciones',
         ]
         widgets = {
@@ -43,31 +36,40 @@ class CrearInspeccionForm(ModelForm):
         }  
 
 
-class ActualizarInspeccionForm(ModelForm):
+class CrearCertificadoForm(ModelForm):
     
     class Meta:
         """Configuración del formulario"""
 
-        model = ControlCalidad
+        model = CertificadosCalidad
         fields = [
             'fecha_despacho',
-            'cliente',
+            'cliente_despacho',
             'cantidad_solicitada',
             'empaque_y_embalaje',
-            'observaciones',
         ]
         widgets = {
             'fecha_despacho': DateInput()
         }
-    
-    def save(self, commit:True):
-        data = {}
-        form = super()
-        try:
-            if form.is_valid():
-                form.save()
-            else:
-                data['error'] = form.errors
-        except Exception  as e:
-            data['error'] = str(e)
-        return data
+
+
+class CrearInspeccionMpForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+
+    class Meta:
+        """Configuración del formulario"""
+
+        model = MateriaPrimaInsumos
+        fields = [
+            'arte_cliente',
+            'unidades_muestra',
+            'proveedor',
+            'arte_ingreso',
+            'unidades_empaque',
+            'revisado_por',
+            'estado',
+            'observaciones'
+        ]

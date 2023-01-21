@@ -1,0 +1,235 @@
+{% extends "body.html" %}
+{% load static %}
+
+{% block head %}
+
+<!-- CSS style -->
+<link rel="stylesheet" href="{% static '../static/css/colaborador.css' %}">
+
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header portada">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col generales">
+          <img class="img-fluid foto-perfil" src="{{ Colaborador.get_foto }}" alt="">
+          <h4>{{ Colaborador.nombres }} {{ Colaborador.apellidos }}</h4>
+          <h5>{{ Colaborador.cargo }}</h5>
+          <h5>{{ Colaborador.proceso }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <ul class="list-group list-group-horizontal info-general list-portada">
+      <ul class="list-group list-group-horizontal">
+        <li class="list-group-item list-title">Documento de identidad</li>
+        <li class="list-group-item">{{ Colaborador.tipo_documento }} {{ Colaborador.numero_documento }}</li>
+      </ul>
+      <ul class="list-group list-group-horizontal list-portada">
+        <li class="list-group-item list-title">Edad</li>
+        <li class="list-group-item">{{ Colaborador.get_edad }} Años</li>
+      </ul>
+      <ul class="list-group list-group-horizontal list-portada">
+        <li class="list-group-item list-title">Antigüedad</li>
+        <li class="list-group-item">{{ Colaborador.get_antiguedad }}</li>
+      </ul>
+    </ul>
+    <ul class="list-group list-group-horizontal-xxl list-portada-hidden">
+      <li class="list-group-item list-title">Documento de identidad</li>
+      <li class="list-group-item">{{ Colaborador.tipo_documento }} {{ Colaborador.numero_documento }}</li>
+    </ul>
+    <ul class="list-group list-group-horizontal-xxl list-portada-hidden">
+      <li class="list-group-item list-title">Edad</li>
+      <li class="list-group-item">{{ Colaborador.get_edad }} Años</li>
+    </ul>
+    <ul class="list-group list-group-horizontal-xxl list-portada-hidden">
+      <li class="list-group-item list-title">Antigüedad</li>
+      <li class="list-group-item">{{ Colaborador.get_antiguedad }}</li>
+    </ul>
+    <ul class="list-group list-group-horizontal-xxl" style="margin-top: 12px;">
+      <li class="list-group-item documentos">DOCUMENTOS</li>
+      <li class="list-group-item list-documentos">
+        {% if Colaborador.get_hoja_vida %}
+        <a href="{{ Colaborador.get_hoja_vida }}" download="{{ Colaborador.get_hoja_vida }}">
+          <button title="Hoja de vida" class="btn btn-info">
+            <i class="fas fa-briefcase"></i>
+          </button>
+        </a>
+        {% else %}
+        <button title="Sin Hoja de vida" class="btn btn-danger" disabled>
+          <i class="fas fa-briefcase"></i>
+        </button>
+        {% endif %}
+        {% if Colaborador.get_certificado_laboral %}
+        <a href="{{ Colaborador.get_certificado_laboral }}" download="{{ Colaborador.get_certificado_laboral }}">
+          <button title="Certificados Laborales" class="btn btn-info">
+            <i class="fas fa-medal"></i>
+          </button>
+        </a>
+        {% else %}
+        <button title="Sin Certificados Laborales" class="btn btn-danger" disabled>
+          <i class="fas fa-medal"></i>
+        </button>
+        {% endif %}
+        {% if Colaborador.get_certificado_academico %}
+        <a href="{{ Colaborador.get_certificado_academico }}" download="{{ Colaborador.get_certificado_academico }}">
+          <button title="Certificados Académicos" class="btn btn-info">
+            <i class="fas fa-graduation-cap"></i>
+          </button>
+        </a>
+        {% else %}
+        <button title="Sin Certificados Académicos" class="btn btn-danger" disabled>
+          <i class="fas fa-graduation-cap"></i>
+        </button>
+        {% endif %}
+        {% if Colaborador.get_referencias %}
+        <a href="{{ Colaborador.get_referencias }}" download="{{ Colaborador.get_referencias }}">
+          <button title="Referencias" class="btn btn-info">
+            <i class="fas fa-users"></i>
+          </button>
+        </a>
+        {% else %}
+        <button title="Sin Referencias" class="btn btn-danger" disabled>
+          <i class="fas fa-users"></i>
+        </button>
+        {% endif %}
+        {% if Colaborador.get_contrato %}
+        <a href="{{ Colaborador.get_contrato }}" download="{{ Colaborador.get_contrato }}">
+          <button title="Contrato" class="btn btn-info">
+            <i class="fas fa-handshake"></i>
+          </button>
+        </a>
+        {% else %}
+        <button title="Sin Contrato" class="btn btn-danger" disabled>
+          <i class="fas fa-handshake"></i>
+        </button>
+        {% endif %}
+        {% if Colaborador.get_afiliaciones %}
+        <a href="{{ Colaborador.get_afiliaciones}}" download="{{ Colaborador.get_afiliaciones}}">
+          <button title="Afiliaciones" class="btn btn-info">
+            <i class="fas fa-folder-open"></i>
+          </button>
+        </a>
+        {% else %}
+        <button title="Sin Afiliaciones" class="btn btn-danger" disabled>
+          <i class="fas fa-folder-open"></i>
+        </button>
+        {% endif %}
+        {% if Colaborador.get_examen_ingreso %}
+        <a href="{{ Colaborador.get_examen_ingreso }}" download="{{ Colaborador.get_examen_ingreso }}">
+          <button title="Examenes De Ingreso" class="btn btn-info">
+            <i class="fas fa-heartbeat"></i>
+          </button>
+        </a>
+        {% else %}
+        <button title="Sin Examenes De Ingreso" class="btn btn-danger" disabled>
+          <i class="fas fa-heartbeat"></i>
+        </button>
+        {% endif %}
+        {% if Colaborador.get_fotocopia_documento %}
+        <a href="{{ Colaborador.get_fotocopia_documento }}" download="{{ Colaborador.get_fotocopia_documento }}">
+          <button title="Documento De Identidad" class="btn btn-info">
+            <i class="fas fa-address-card"></i>
+          </button>
+        </a>
+        {% else %}
+        <button title="Sin Documento De Identidad" class="btn btn-danger" disabled>
+          <i class="fas fa-address-card"></i>
+        </button>
+        {% endif %}
+        {% if Colaborador.get_carta_terminacion %}
+        <a href="{{ Colaborador.get_carta_terminacion}}" download="{{ Colaborador.get_carta_terminacion}}">
+          <button title="Carta Terminación Contrato" class="btn btn-info">
+            <i class="fas fa-user-alt-slash"></i>
+          </button>
+        </a>
+        {% else %}
+        <button title="Sin Carta Terminación Contrato" class="btn btn-danger" disabled>
+          <i class="fas fa-user-alt-slash"></i>
+        </button>
+        {% endif %}
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="card card-secondary">
+  <div class="card-header">
+    <div class="container-fluid" style="text-align: center;">
+      INFORMACIÓN GENERAL
+    </div>
+  </div>
+  <div class="card-body">
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <th scope="row">Teléfono de contacto</th>
+          <td>{{ Colaborador.telefono_contacto|cut:"." }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Hijos</th>
+          <td>{{ Colaborador.hijos }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="card card-secondary">
+  <div class="card-header">
+    <div class="container-fluid" style="text-align: center;">
+      CONTACTO DE EMERGENCIA
+    </div>
+  </div>
+  <div class="card-body">
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <th scope="row">Nombre Contacto</th>
+          <td>{{ Colaborador.nombre_emergencia }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Parentezco</th>
+          <td>{{ Colaborador.parentezco }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Teléfono</th>
+          <td>{{ Colaborador.telefono_emergencia|cut:"." }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="card card-secondary">
+  <div class="card-header">
+    <div class="container-fluid" style="text-align: center;">
+      INFORMACIÓN DE RELACIÓN LABORAL
+    </div>
+  </div>
+  <div class="card-body">
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <th scope="row">Tipo de contrato</th>
+          <td>{{ Colaborador.tipo_contrato }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Jefe inmediato</th>
+          <td>{{ Colaborador.jefe_inmediato }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Fecha de vinculación</th>
+          <td>{{ Colaborador.fecha_vinculacion }}</td>
+        </tr>
+        {% if Colaborador.fecha_desvinculacion %}
+        <tr>
+          <th scope="row">Fecha de desvinculación</th>
+          <td>{{ Colaborador.fecha_desvinculacion }}</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

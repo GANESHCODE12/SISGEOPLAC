@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     
     #Utilities
     'crispy_forms',
@@ -54,6 +55,9 @@ INSTALLED_APPS = [
     'Produccion',
     'users',
     'Productos',
+    'Inventario',
+    'Gestion_Humana',
+    'notify'
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -142,6 +146,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+#Esto no va en la migración
+STATIC_ROOT = BASE_DIR / 'staticfiles/'
+
+#Esto no va en la migración
 STATICFILES_DIRS = (
     BASE_DIR / 'static'
 ),
@@ -175,3 +183,15 @@ AUTH_USER_MODEL = 'users.User'
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 USE_THOUSAND_SEPARATOR = True
+
+
+#Configuración para envio de correos
+SERVER_EMAIL = 'confidencial <confidencial@plasmotecsas.com>'
+DEFAULT_FROM_EMAIL = 'confidencial <confidencial@plasmotecsas.com>'
+EMAIL_HOST = 'mail.plasmotecsas.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'confidencial@plasmotecsas.com'
+EMAIL_HOST_PASSWORD = 's~A0Br),tA8$'
+EMAIL_USE_TLS = True
+
+DOMAIN = 'https://sistemadegestion.plasmotecsas.com/'

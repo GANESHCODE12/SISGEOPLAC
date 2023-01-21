@@ -11,102 +11,777 @@
                     <img src="{% static 'img/logo.png' %}">
                 </div>
                 <div class="col">
-                    <h3 style="color: black; text-align: center">SISTEMA DE GESTIÓN DE CALIDAD</h3>
-                    <h4 style="color: black; text-align: center">DETALLE INSPECCIÓN</h4>
+                    <h4 style="color: black; text-align: left">SISTEMA DE GESTIÓN DE CALIDAD</h4>
+                    <h4 style="color: black; text-align: left">DETALLE INSPECCIÓN</h4>
+                    <h4 style="color: black; text-align: left">
+                        {{ ControlCalidad.numero_op.producto.productos }}
+                    </h4>
                 </div>
             </div>
         </div>
     </div>
     <div class="card-body">
-        <div class="row">
-            <div class="col">
-                <li class="list-group-item list-group-item-dark">Realizada por</li>
-                <li class="list-group-item list-group-item-dark">Actualizada por</li>
-                <li class="list-group-item list-group-item-dark">Fecha de inspección</li>
-                <li class="list-group-item list-group-item-dark">Número de orden</li>
-                <li class="list-group-item list-group-item-dark">Cliente orden</li>
-                <li class="list-group-item list-group-item-dark">Cliente despacho</li>
-                <li class="list-group-item list-group-item-dark">Nombre producto</li>
-                &nbsp;
-                <li class="list-group-item list-group-item-dark">Número de lote</li>
-                <li class="list-group-item list-group-item-dark">Color</li>
-                <li class="list-group-item list-group-item-dark">Materia prima</li>
-                <li class="list-group-item list-group-item-dark d-print-none">Fecha de fabricación</li>
-                &nbsp;
-                <li class="list-group-item list-group-item-dark">Fecha de despacho</li>
-                <li class="list-group-item list-group-item-dark">Técnico</li>
-                <li class="list-group-item list-group-item-dark">Operario</li>
-                <li class="list-group-item list-group-item-dark">Cantidad solicitada</li>
+        <div class="row py-2">
+            <div class="col col-sm-3">
+                <li class="list-group-item list-group-item-dark">REALIZADA POR</li>
+                <li class="list-group-item list-group-item-dark">ACTUALIZADA POR</li>
+                <li class="list-group-item list-group-item-dark">FECHA DE LA INSPECCIÓN</li>
+                <li class="list-group-item list-group-item-dark">NÚMERO DE ORDEN</li>
+                <li class="list-group-item list-group-item-dark">CLIENTE ORDEN</li>
             </div>
-
-            <div class="col-sm-9">
-                <li class="list-group-item">{{ ControlCalidad.inspector.first_name }} {{ ControlCalidad.inspector.last_name}}</li>
-                <li class="list-group-item">{{ ControlCalidad.inspector_actualizo.first_name }} {{ ControlCalidad.inspector_actualizo.last_name}}</li>
+            <div class="col col-sm-9">
+                <li class="list-group-item">{{ ControlCalidad.inspector.get_full_name }}</li>
+                {% if ControlCalidad.inspector_actualizo %}
+                <li class="list-group-item">{{ ControlCalidad.inspector_actualizo.get_full_name }}</li>
+                {% else %}
+                <li class="list-group-item">No ha actualizado la inspección</li>
+                {% endif %}
                 <li class="list-group-item">{{ ControlCalidad.fecha_creacion }}</li>
-                <li class="list-group-item">{{ ControlCalidad.numero_op }}</>
+                <li class="list-group-item">{{ ControlCalidad.numero_op }}-{{ ControlCalidad.numero_op.fecha_creacion.year }}</li>
                 <li class="list-group-item">{{ ControlCalidad.numero_op.cliente }}</li>
-                {% if ControlCalidad.cliente %}
-                        <li class="list-group-item">{{ ControlCalidad.cliente }}</li>
-                    {% else %}
-                        <li class="list-group-item">{{ ControlCalidad.numero_op.cliente }}</li>
-                    {% endif %}
-                <li class="list-group-item">{{ ControlCalidad.numero_op.producto.Nombre_producto }}</li>
-                &nbsp;
-                <li class="list-group-item">{{ ControlCalidad.numero_op.lote }}</li>
-                <li class="list-group-item">{{ ControlCalidad.numero_op.color }}</li>
-                <li class="list-group-item">{{ ControlCalidad.numero_op.producto.material }}</li>
-                <li class="list-group-item d-print-none">{{ ControlCalidad.numero_op.fecha_creacion }}</li>
-                &nbsp;
-                <li class="list-group-item">{{ ControlCalidad.fecha_despacho }}</>
-                <li class="list-group-item">{{ ControlCalidad.tecnico }}</li>
-                <li class="list-group-item">{{ ControlCalidad.operario }}</li>
-                <li class="list-group-item">{{ ControlCalidad.cantidad_solicitada }}</li>
             </div>
         </div>
-        &nbsp;
-        <table class="table table-bordered">
-            <thead class="table table-dark">
-                <tr>
-                    <th colspan="5" style="text-align: center;">INSPECCIÓN DIMENSIONAL</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th class="table table-dark" style="text-align: center; width: 25%;">CARACTERISTICAS</th>
-                    <th class="table table-dark" style="text-align: center; width: 25%;">METODO</th>
-                    <th class="table table-dark" style="text-align: center; width: 25%;">ESPECIFICACIÓN TÉCNICA</th>
-                    <th class="table table-dark" style="text-align: center; width: 25%;">VALOR</th>
-                    <th class="table table-dark" style="text-align: center; width: 25%;">RESULTADOS</th>
-                </tr>
-                {% for instance in inspecciondimensional.all %}
-                <tr>
-                    <td>{{ instance.inspeccion_dimensional.id_dimensiones.caracteristicas_control }}</td>
-                    <td style="text-align: center;">Medición directa</td>
-                    <td style="text-align: center;">{{ instance.inspeccion_dimensional.valor_nominal }} +/- {{instance.inspeccion_dimensional.tolerancia_d }} mm</td>
-                    <td style="text-align: center;">{{ instance.promedio }}</td>
-                    <td style="text-align: center;">{{ instance.resultado_id }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        &nbsp;
-        <div class="card card-dark">
-            <div class="card-header" id="subtitulos-card">
-                <div class="container" style="text-align: center; border-collapse: collapse;">
-                    <h2 style="font-size: 17px; font-family: 'Roboto', sans-serif; font-weight: bold;">
-                        CONTROL POR ATRIBUTOS
-                    </h2>
-                </div>
+        <div class="row">
+            <div class="col col-sm-3">
+                <li class="list-group-item list-group-item-dark">NÚMERO DE LOTE</li>
+                <li class="list-group-item list-group-item-dark">COLOR</li>
+                <li class="list-group-item list-group-item-dark d-print-none">FECHA DE FABRICACIÓN</li>
+                <li class="list-group-item list-group-item-dark d-print-none">FECHA DE VENCIMIENTO</li>
             </div>
-            <div class="card-body">
-                <div class="container-fluid">
-                    <div class="row">
+            <div class="col col-sm-9">
+                <li class="list-group-item">{{ ControlCalidad.numero_op.lote }}</li>
+                <li class="list-group-item">{{ ControlCalidad.numero_op.producto.color }}</li>
+                <li class="list-group-item d-print-none">{{ ControlCalidad.numero_op.fecha_creacion }}</li>
+                <li class="list-group-item d-print-none">{{ fecha_vencimiento }}</li>
+            </div>
+        </div>
+        <div class="row py-4">
+            <div class="col">
+                <table class="table table-bordered">
+                    <thead class="table-dark" style="text-align: center;">
+                        <tr>
+                            <th colspan="7">NIVEL DE INSPECCIÓN</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="list-group-item-dark" style="text-align: center;">NIVEL</th>
+                            <th class="list-group-item-dark" style="text-align: center;">CÓDIGO</th>
+                            <th class="list-group-item-dark" style="text-align: center;">LETRA</th>
+                            <th class="list-group-item-dark" style="text-align: center;">CANTIDAD</th>
+                        </tr>
+                        {% for nivel in niveles.all %}
+                        <tr>
+                            <td style="text-align: center;">{{ nivel.tipo_nivel }}</td>
+                            <td style="text-align: center;">{{ nivel.codigo_nivel }}</td>
+                            <td style="text-align: center;">{{ nivel.letra }}</td>
+                            <td style="text-align: center;">{{ nivel.cantidades_inspeccionar }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table class="table table-bordered">
+                    <thead class="table-dark" style="text-align: center;">
+                        <tr>
+                            <th colspan="7">TECNICOS &/U OPERARIOS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="list-group-item-dark" style="text-align: center;">NOMBRE</th>
+                            <th class="list-group-item-dark" style="text-align: center;">CARGO</th>
+                            <th class="list-group-item-dark" style="text-align: center;">CÓDIGO</th>
+                        </tr>
+                        {% for tecnico in tecnicos.all %}
+                        <tr>
+                            <td style="text-align: center;">{{ tecnico.colaborador.nombre }}</td>
+                            <td style="text-align: center;">{{ tecnico.colaborador.cargo }}</td>
+                            <td style="text-align: center;">{{ tecnico.colaborador.codigo }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row py-4">
+            <div class="col">
+                <table class="table table-bordered">
+                    <thead class="table-dark" style="text-align: center;">
+                        <tr>
+                            <th colspan="7">MATERIAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="list-group-item-dark" style="text-align: center;">MATERIAL</th>
+                            <th class="list-group-item-dark" style="text-align: center;">CATEGORIA</th>
+                            <th class="list-group-item-dark" style="text-align: center;">REFERENCIA</th>
+                        </tr>
+                        {% for material in materia_prima.all %}
+                        <tr>
+                            <td style="text-align: center;">{{ material.material_solicitado.ingreso_materia_prima.nombre }}</td>
+                            <td style="text-align: center;">{{ material.material_solicitado.ingreso_materia_prima.categoria }}</td>
+                            <td style="text-align: center;">{{ material.material_solicitado.ingreso_materia_prima.referencia }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card card-dark">
+                    <div class="card-header" id="subtitulos-card">
+                        <div class="container" style="text-align: center; border-collapse: collapse;">
+                            <h6>INSPECCIÓN DIMENSIONAL</h6>
+                        </div>
+                    </div>
+                    <div class="card-body">
                         <table class="table table-bordered">
                             <tbody>
                                 <tr>
-                                    <th style="text-align: center;">Caracteristicas</th>
-                                    <th style="text-align: center;">Método</th>
-                                    <th style="text-align: center;">Resultado</th>
+                                    <th class="table table-dark" style="text-align: center; width: 25%;">CARACTERISTICAS</th>
+                                    <th class="table table-dark" style="text-align: center; width: 25%;">METODO</th>
+                                    <th class="table table-dark" style="text-align: center; width: 25%;">ESPECIFICACIÓN TÉCNICA</th>
+                                    <th class="table table-dark" style="text-align: center; width: 25%;">VALOR</th>
+                                    <th class="table table-dark" style="text-align: center; width: 25%;">RESULTADOS</th>
+                                </tr>
+                                {% for instance in inspecciondimensional.all %}
+                                <tr>
+                                    <td>
+                                        {{ instance.inspeccion_dimensional.id_dimensiones.caracteristicas_control }}
+                                    </td>
+                                    <td style="text-align: center;">Medición directa</td>
+                                    <td style="text-align: center;">
+                                        {{ instance.inspeccion_dimensional.valor_nominal }} +/-
+                                        {{instance.inspeccion_dimensional.tolerancia_d }} 
+                                        {{ instance.inspeccion_dimensional.id_dimensiones.unidad_medida }}
+                                    </td>
+                                    <td style="text-align: center;">{{ instance.promedio }}</td>
+                                    <td style="text-align: center;">{{ instance.resultado_id }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <p>
+                            <button class="btn btn-dark btn-lg btn-block" type="button" data-toggle="collapse" data-target="#collapseDimensiones" aria-expanded="false" aria-controls="collapseDimensiones">
+                                <small>DA CLICK ACÁ PARA VER EL RESULTADO POR CAVIDADES</small>
+                            </button>
+                        </p>
+                        <div class="collapse" id="collapseDimensiones">
+                            <div class="card card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <th class="table table-dark" style="text-align: center; width: 25%;">CARACTERISTICAS</th>
+                                                {% if 'cavidad_1' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 1</th>
+                                                {% endif %}
+                                                {% if 'cavidad_2' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 2</th>
+                                                {% endif %}
+                                                {% if 'cavidad_3' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 3</th>
+                                                {% endif %}
+                                                {% if 'cavidad_4' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 4</th>
+                                                {% endif %}
+                                                {% if 'cavidad_5' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 5</th>
+                                                {% endif %}
+                                                {% if 'cavidad_6' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 6</th>
+                                                {% endif %}
+                                                {% if 'cavidad_7' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 7</th>
+                                                {% endif %}
+                                                {% if 'cavidad_8' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 8</th>
+                                                {% endif %}
+                                                {% if 'cavidad_9' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 9</th>
+                                                {% endif %}
+                                                {% if 'cavidad_10' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 10</th>
+                                                {% endif %}
+                                                {% if 'cavidad_11' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 11</th>
+                                                {% endif %}
+                                                {% if 'cavidad_12' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 12</th>
+                                                {% endif %}
+                                                {% if 'cavidad_13' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 13</th>
+                                                {% endif %}
+                                                {% if 'cavidad_14' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 14</th>
+                                                {% endif %}
+                                                {% if 'cavidad_15' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 15</th>
+                                                {% endif %}
+                                                {% if 'cavidad_16' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 16</th>
+                                                {% endif %}
+                                                {% if 'cavidad_17' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 17</th>
+                                                {% endif %}
+                                                {% if 'cavidad_18' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 18</th>
+                                                {% endif %}
+                                                {% if 'cavidad_19' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 19</th>
+                                                {% endif %}
+                                                {% if 'cavidad_20' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 20</th>
+                                                {% endif %}
+                                                {% if 'cavidad_21' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 21</th>
+                                                {% endif %}
+                                                {% if 'cavidad_22' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 22</th>
+                                                {% endif %}
+                                                {% if 'cavidad_23' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 23</th>
+                                                {% endif %}
+                                                {% if 'cavidad_24' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 24</th>
+                                                {% endif %}
+                                                {% if 'cavidad_25' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 25</th>
+                                                {% endif %}
+                                                {% if 'cavidad_26' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 26</th>
+                                                {% endif %}
+                                                {% if 'cavidad_27' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 27</th>
+                                                {% endif %}
+                                                {% if 'cavidad_28' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 28</th>
+                                                {% endif %}
+                                                {% if 'cavidad_29' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 29</th>
+                                                {% endif %}
+                                                {% if 'cavidad_30' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 30</th>
+                                                {% endif %}
+                                                {% if 'cavidad_31' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 31</th>
+                                                {% endif %}
+                                                {% if 'cavidad_32' in muestras_dimensional %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 32</th>
+                                                {% endif %}
+                                            </tr>
+                                            {% for instance in inspecciondimensional.all %}
+                                            <tr>
+                                                <td>
+                                                {{ instance.inspeccion_dimensional.id_dimensiones.caracteristicas_control }}
+                                                </td>
+                                                {% if instance.cavidad_1 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_1 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_2 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_2 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_3 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_3 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_4 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_4 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_5 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_5 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_6 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_6 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_7 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_7 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_8 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_8 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_9 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_9 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_10 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_10 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_11 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_11 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_12 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_12 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_13 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_13 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_14 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_14 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_15 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_15 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_16 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_16 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_17 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_17 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_18 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_18 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_19 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_19 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_20 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_20 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_21 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_21 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_22 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_22 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_23 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_23 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_24 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_24 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_25 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_25 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_26 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_26 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_27 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_27 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_28 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_28 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_29 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_29 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_30 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_30 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_31 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_31 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_32 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_32 }}
+                                                </td>
+                                                {% endif %}
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card card-dark">
+                    <div class="card-header" id="subtitulos-card">
+                        <div class="container" style="text-align: center; border-collapse: collapse;">
+                            <h6>CONTROL PRUEBAS/ENSAYOS</h6>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th class="table table-dark" style="text-align: center; width: 25%;">PRUEBA / ENSAYO</th>
+                                    <th class="table table-dark" style="text-align: center; width: 25%;">ESPECIFICACIÓN</th>
+                                    <th class="table table-dark" style="text-align: center; width: 25%;">MEDIO DE CONTROL</th>
+                                    <th class="table table-dark" style="text-align: center; width: 25%;">VALOR</th>
+                                    <th class="table table-dark" style="text-align: center; width: 25%;">RESULTADOS</th>
+                                </tr>
+                                {% for instance in pruebas.all %}
+                                <tr>
+                                    <td>{{ instance.pruebas_y_o_ensayos.id_pruebas.variables }}</td>
+                                    <td>{{ instance.pruebas_y_o_ensayos.id_pruebas.descripcion_prueba }}</td>
+                                    <td>{{ instance.pruebas_y_o_ensayos.id_pruebas.medio_control }}</td>
+                                    <td>{{ instance.pruebas_y_o_ensayos.valor }}</td>
+                                    <td>{{ instance.resultado_p }}</td>
+        
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <p>
+                            <button class="btn btn-dark btn-lg btn-block" type="button" data-toggle="collapse" data-target="#collapsePruebas" aria-expanded="false" aria-controls="collapsePruebas">
+                                <small>DA CLICK ACÁ PARA VER EL RESULTADO POR CAVIDADES</small>
+                            </button>
+                        </p>
+                        <div class="collapse" id="collapsePruebas">
+                            <div class="card card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <th class="table table-dark" style="text-align: center;">CARACTERISTICAS</th>
+                                                {% if 'cavidad_1' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 1</th>
+                                                {% endif %}
+                                                {% if 'cavidad_2' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 2</th>
+                                                {% endif %}
+                                                {% if 'cavidad_3' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 3</th>
+                                                {% endif %}
+                                                {% if 'cavidad_4' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 4</th>
+                                                {% endif %}
+                                                {% if 'cavidad_5' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 5</th>
+                                                {% endif %}
+                                                {% if 'cavidad_6' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 6</th>
+                                                {% endif %}
+                                                {% if 'cavidad_7' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 7</th>
+                                                {% endif %}
+                                                {% if 'cavidad_8' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 8</th>
+                                                {% endif %}
+                                                {% if 'cavidad_9' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 9</th>
+                                                {% endif %}
+                                                {% if 'cavidad_10' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 10</th>
+                                                {% endif %}
+                                                {% if 'cavidad_11' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 11</th>
+                                                {% endif %}
+                                                {% if 'cavidad_12' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 12</th>
+                                                {% endif %}
+                                                {% if 'cavidad_13' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 13</th>
+                                                {% endif %}
+                                                {% if 'cavidad_14' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 14</th>
+                                                {% endif %}
+                                                {% if 'cavidad_15' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 15</th>
+                                                {% endif %}
+                                                {% if 'cavidad_16' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 16</th>
+                                                {% endif %}
+                                                {% if 'cavidad_17' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 17</th>
+                                                {% endif %}
+                                                {% if 'cavidad_18' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 18</th>
+                                                {% endif %}
+                                                {% if 'cavidad_19' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 19</th>
+                                                {% endif %}
+                                                {% if 'cavidad_20' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 20</th>
+                                                {% endif %}
+                                                {% if 'cavidad_21' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 21</th>
+                                                {% endif %}
+                                                {% if 'cavidad_22' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 22</th>
+                                                {% endif %}
+                                                {% if 'cavidad_23' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 23</th>
+                                                {% endif %}
+                                                {% if 'cavidad_24' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 24</th>
+                                                {% endif %}
+                                                {% if 'cavidad_25' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 25</th>
+                                                {% endif %}
+                                                {% if 'cavidad_26' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 26</th>
+                                                {% endif %}
+                                                {% if 'cavidad_27' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 27</th>
+                                                {% endif %}
+                                                {% if 'cavidad_28' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 28</th>
+                                                {% endif %}
+                                                {% if 'cavidad_29' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 29</th>
+                                                {% endif %}
+                                                {% if 'cavidad_30' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 30</th>
+                                                {% endif %}
+                                                {% if 'cavidad_31' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 31</th>
+                                                {% endif %}
+                                                {% if 'cavidad_32' in muestras_pruebas %}
+                                                <th class="table table-dark" style="text-align: center;">CAVIDAD 32</th>
+                                                {% endif %}
+                                            </tr>
+                                            <tr>
+                                                {% for instance in pruebas.all %}
+                                                <td>
+                                                    {{ instance.pruebas_y_o_ensayos.id_pruebas.variables }}
+                                                </td>
+                                                {% if instance.cavidad_1 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_1 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_2 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_2 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_3 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_3 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_4 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_4 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_5 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_5 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_6 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_6 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_7 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_7 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_8 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_8 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_9 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_9 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_10 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_10 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_11 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_11 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_12 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_12 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_13 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_13 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_14 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_14 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_15 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_15 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_16 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_16 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_17 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_17 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_18 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_18 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_19 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_19 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_20 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_20 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_21 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_21 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_22 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_22 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_23 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_23 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_24 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_24 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_25 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_25 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_26 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_26 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_27 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_27 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_28 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_28 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_29 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_29 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_30 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_30 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_31 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_31 }}
+                                                </td>
+                                                {% endif %}
+                                                {% if instance.cavidad_32 is not None %}
+                                                <td style="text-align: center;">
+                                                    {{ instance.cavidad_32 }}
+                                                </td>
+                                                {% endif %}
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card card-dark">
+                    <div class="card-header" id="subtitulos-card">
+                        <div class="container" style="text-align: center; border-collapse: collapse;">
+                            <h6>CONTROL ATRIBUTOS</h6>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th class="table table-dark" style="text-align: center; width: 25%;">Caracteristicas</th>
+                                    <th class="table table-dark" style="text-align: center; width: 25%;">Método</th>
+                                    <th class="table table-dark" style="text-align: center; width: 25%;">Resultado</th>
                                 </tr>
                                 {% for instance in inspeccionatributos.all %}
                                 <tr>
@@ -121,47 +796,9 @@
                     </div>
                 </div>
             </div>
-            <div class="container-fluid">
-                <table class="table table-bordered">
-                    <thead class="table-dark">
-                        <tr>
-                            <th colspan="5">CONTROL PRUEBAS/ENSAYOS</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th id="ldf1">PRUEBA / ENSAYO</th>
-                            <th id="ldf1">ESPECIFICACIÓN</th>
-                            <th id="ldf1">MEDIO DE CONTROL</th>
-                            <th id="ldf1">VALOR</th>
-                            <th id="ldf1">RESULTADOS</th>
-                        </tr>
-                        {% for instance in pruebas.all %}
-                        <tr>
-                            <td class="ldf">{{ instance.pruebas_y_o_ensayos.id_pruebas.variables }}</td>
-                            <td class="ldf">{{ instance.pruebas_y_o_ensayos.id_pruebas.descripcion_prueba }}</td>
-                            <td class="ldf">{{ instance.pruebas_y_o_ensayos.id_pruebas.medio_control }}</td>
-                            <td class="ldf">{{ instance.pruebas_y_o_ensayos.valor }}</td>
-                            <td class="ldf">{{ instance.resultado_p }}</td>
-
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            &nbsp;
-            <div class="container-fluid">
-                <table class="table table-bordered">
-                    <thead class="table-dark">
-                        <th>EMPAQUE Y EMBALAJE</th>
-                    </thead>
-                    <tbody>
-                        <td>{{ ControlCalidad.empaque_y_embalaje }}</td>
-                    </tbody>
-                </table>
-            </div>
-            &nbsp;
-            <div class="container-fluid">
+        </div>
+        <div class="row">
+            <div class="col">
                 <table class="table table-bordered">
                     <thead class="table-dark">
                         <th>OBSERVACIONES</th>
@@ -171,7 +808,6 @@
                     </tbody>
                 </table>
             </div>
-            &nbsp;
         </div>
     </div>
 </div>

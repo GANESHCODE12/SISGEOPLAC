@@ -1,0 +1,39 @@
+{% extends 'emails/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 21px; color: #555555;">
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Buenos días!!</p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">
+      Se ha modificado la orden de producción: {{ orden }} del producto {{ producto }}
+      con la siguiente información:
+    </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Lote: {{ lote }}</p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Orden de compra: {{ orden_compra }}</p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Cantidad requerida: {{ cantidad_requerida|intcomma }}</p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Máquina: {{ maquina }}</p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Estado de la orden: {{ estado_op }}</p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Fecha de entrega: {{ fecha_entrega }}</p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Materia prima adicional: {{ materia_prima_adicional }}</p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Pigmento adicional: {{ pigmento_adicional }}</p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Aprobación orden: {{ aprobacion_orden }}</p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Aprobación materia prima: {{ aprobacion_materia_prima }}</p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Aprobación pigmento: {{ aprobacion_pigmento }}</p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Observaciones: {{ observaciones|linebreaks }}</p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Saludos!!</p>
+</div>
+{% endblock %}

@@ -14,6 +14,16 @@ urlpatterns = [
         name='Control_orden'
     ),
     path(
+        route='motivos-de-paradas', 
+        view=views.ListaMotivosView.as_view(), 
+        name='motivos-de-paradas'
+    ),
+    path(
+        route='nuevo-motivo-de-parada', 
+        view=views.NuevoMotivoView.as_view(), 
+        name='nuevo-motivo-de-parada'
+    ),
+    path(
         route='Crear_nuevo_control/<int:pk>/', 
         view=views.CrearNuevoControlView.as_view(), 
         name='Crear_nuevo_control'

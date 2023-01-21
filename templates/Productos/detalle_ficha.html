@@ -48,8 +48,8 @@
                     <td style="text-align: center;">{{ FichasTecnica.fecha_vigencia }}</td>
                 </tr>
                 <tr scope="row">
-                    <td class="bg-secondary" id="titulos">Código producto</td>
-                    <td>{{ FichasTecnica.codigo_producto }}</td>
+                    <td class="bg-secondary" id="titulos">Cliente</td>
+                    <td style="text-align: left;">{{ FichasTecnica.cliente_especifico }}</td>
                     <td class="bg-secondary" id="titulos">Versión</td>
                     <td style="text-align: center;">{{ FichasTecnica.version }}</td>
                 </tr>
@@ -58,10 +58,6 @@
                     <td>{{ FichasTecnica.tipo_producto }}</td>
                     <td class="bg-secondary" id="titulos">Estado Ficha</td>
                     <td style="text-align: center;">{{ FichasTecnica.estado_ficha }}</td>
-                </tr>
-                <tr scope="row">
-                    <td class="bg-secondary" id="titulos">Cliente</td>
-                    <td colspan="3">{{ FichasTecnica.cliente_especifico }}</td>
                 </tr>
             </tbody>
         </table>
@@ -172,17 +168,32 @@
         <table class="table table-bordered">
             <tbody>
                 <tr scope="row">
-                    <td class="bg-secondary" id="titulos">Color</td>
-                    <td>{{ FichasTecnica.color }}</td>
                     <td class="bg-secondary" id="titulos">Olor</td>
                     <td>{{ FichasTecnica.olor }}</td>
-                </tr>
-                <tr scope="row">
-                    <td class="bg-secondary" id="titulos">Sabor</td>
-                    <td>{{ FichasTecnica.sabor }}</td>
                     <td class="bg-secondary" id="titulos">Pigmento</td>
                     <td>{{ FichasTecnica.pigmento }}</td>
                 </tr>
+            </tbody>
+        </table>
+        <br>
+        <table class="table table-bordered">
+            <thead>
+                <tr scope="row">
+                    <td class="bg-secondary" id="titulos" colspan="6" style="text-align: center;">
+                        Colores
+                    </td>
+                    <td class="bg-secondary" id="titulos" colspan="6" style="text-align: center;">
+                        Código de producto
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for instance in color.all %}
+                <tr scope="row">
+                    <td colspan="6" style="text-align: center;">{{ instance.color.color }}</td>
+                    <td colspan="6" style="text-align: center;">{{ instance.codigo_producto }}</td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

@@ -1,0 +1,23 @@
+{% extends 'lista.html' %}
+{% load static %}
+{% block head_list %}
+<script src="{% static 'lib/moment-2.25.3/moment-with-locales.js' %}"></script>
+<script src="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js' %}"></script>
+<link href="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
+
+<script src="{% static 'js/Listas/inventario_lote.js' %}"></script>
+{% endblock %}
+{% block columnas %}
+<tr>
+    <th style="text-align: center;">Orden</th>
+    <th style="text-align: center;">Lote</th>
+    <th style="text-align: center;">Producto</th>
+    <th style="text-align: center;">Color</th>
+    <th style="text-align: center;">Código</th>
+    <th style="text-align: center;">Cantidad</th>
+    <th style="text-align: center;">Cajas</th>
+</tr>
+{% endblock %}
+{% block javascript %}
+
+{% endblock %}

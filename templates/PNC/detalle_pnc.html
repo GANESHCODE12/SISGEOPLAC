@@ -7,129 +7,80 @@
         </div>
     </div>
     <div class="card-body">
+        <div class="row">
+            <div class="col col-sm-5">
+                <li class="list-group-item list-group-item-dark">PRODUCTO</li>
+                <li class="list-group-item list-group-item-dark">COLOR</li>
+                <li class="list-group-item list-group-item-dark">ANALISTA QUE CREA PNC</li>
+                <li class="list-group-item list-group-item-dark">FECHA CREACIÓN PNC</li>
+                <li class="list-group-item list-group-item-dark">CANTIDAD PNC</li>
+            </div>
+            <div class="col col-sm-7">
+                <li class="list-group-item">{{ ProductoNoConforme.id_inspeccion.numero_op.producto.productos.Nombre_producto }}</li>
+                <li class="list-group-item">{{ ProductoNoConforme.id_inspeccion.numero_op.producto.color.color }}</li>
+                <li class="list-group-item">{{ ProductoNoConforme.inspector_calidad.get_full_name }}</li>
+                <li class="list-group-item">{{ ProductoNoConforme.fecha_creacion }}</li>
+                <li class="list-group-item">{{ ProductoNoConforme.cantidad_pnc }}</li>
+            </div>
+        </div>
+        <div class="row py-4">
+            <div class="col col-sm-5">
+                <li class="list-group-item list-group-item-dark">TIPO</li>
+                <li class="list-group-item list-group-item-dark">TURNO</li>
+                <li class="list-group-item list-group-item-dark">ESTADO PNC</li>
+                <li class="list-group-item list-group-item-dark">ANALISTA QUE ACTUALIZA EL PNC</li>
+                <li class="list-group-item list-group-item-dark">FECHA DE ACTUALIZACIÓN</li>
+            </div>
+            <div class="col col-sm-7">
+                <li class="list-group-item">{{ ProductoNoConforme.tipo_pnc }}</li>
+                <li class="list-group-item">{{ ProductoNoConforme.id_inspeccion.turno }}</li>
+                <li class="list-group-item">{{ ProductoNoConforme.estado_pnc }}</li>
+                {% if ProductoNoConforme.inspector_calidad_actualiza %}
+                <li class="list-group-item">{{ ProductoNoConforme.inspector_calidad_actualiza.get_full_name }}</li>
+                <li class="list-group-item">{{ ProductoNoConforme.fecha_actualizacion }}</li>
+                {% else %}
+                <li class="list-group-item">Aun no se ha actualizado el producto no conforme</li>
+                <li class="list-group-item">Aun no se ha actualizado el producto no conforme</li>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table class="table table-bordered">
+                    <thead class="table-dark" style="text-align: center;">
+                        <tr>
+                            <th colspan="7">TECNICOS &/U OPERARIOS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="list-group-item-dark" style="text-align: center;">NOMBRE</th>
+                            <th class="list-group-item-dark" style="text-align: center;">CARGO</th>
+                            <th class="list-group-item-dark" style="text-align: center;">CÓDIGO</th>
+                        </tr>
+                        {% for tecnico in tecnicos.all %}
+                        <tr>
+                            <td style="text-align: center;">{{ tecnico.colaborador.nombre }}</td>
+                            <td style="text-align: center;">{{ tecnico.colaborador.cargo }}</td>
+                            <td style="text-align: center;">{{ tecnico.colaborador.codigo }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <table class="table table-bordered">
             <thead class="table-dark">
                 <tr>
-                    <th colspan="7" style="text-align: center;">INFORMACIÓN GENERAL DEL PRODUCTO NO CONFORME</th>
+                    <th>OBSERVACIONES</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <th class=" bg-secondary">Producto</th>
-                    <th class=" bg-secondary">Número de inspección</th>
-                    <th class=" bg-secondary">Analista Crea</th>
-                    <th class=" bg-secondary">Fecha del PNC</th>
-                    <th class=" bg-secondary">Cantidad PNC</th>
-                </tr>
-                <tr>
-                    <td>{{ ProductoNoConforme.id_inspeccion.numero_op.producto.Nombre_producto }}</td>
-                    <td>{{ ProductoNoConforme.id_inspeccion_id }}</td>
-                    <td>{{ ProductoNoConforme.inspector_calidad.first_name }} {{ ProductoNoConforme.inspector_calidad.last_name }}</td>
-                    <td>{{ ProductoNoConforme.fecha_creacion }}</td>
-                    <td>{{ ProductoNoConforme.cantidad_pnc }}</td>
-                </tr>
-                <tr>
-                    <th colspan="2" class=" bg-secondary">Analista Modifica</th>
-                    <th colspan="3" class=" bg-secondary">Fecha</th>
-                </tr>
-                <tr>
-                    <td colspan="2">{{ ProductoNoConforme.inspector_calidad_actualiza.first_name }} {{ ProductoNoConforme.inspector_calidad_actualiza.last_name }}</td>
-                    <td colspan="3">{{ ProductoNoConforme.fecha_actualizacion }}</td>
+                    <td>{{ ProductoNoConforme.observaciones|linebreaks }}</td>
                 </tr>
             </tbody>
         </table>
-        &nbsp;
-        <table class="table table-bordered">
-            <thead class="table table-dark">
-                <tr>
-                    <th colspan="2" style="text-align: center;">TIPOS DE PRODUCTO NO CONFORME</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if ProductoNoConforme.tipo_pnc_1 %}
-                <tr>
-                    <td>{{ ProductoNoConforme.tipo_pnc_1 }}</td>
-                </tr>
-                {% endif %}
-                {% if ProductoNoConforme.tipo_pnc_2 %}
-                <tr>
-                    <td>{{ ProductoNoConforme.tipo_pnc_2 }}</td>
-                </tr>
-                {% endif %}
-                {% if ProductoNoConforme.tipo_pnc_3 %}
-                <tr>
-                    <td>{{ ProductoNoConforme.tipo_pnc_3 }}</td>
-                </tr>
-                {% endif %}
-                {% if ProductoNoConforme.tipo_pnc_4 %}
-                <tr>
-                    <td>{{ ProductoNoConforme.tipo_pnc_4 }}</td>
-                </tr>
-                {% endif %}
-                {% if ProductoNoConforme.tipo_pnc_5 %}
-                <tr>
-                    <td>{{ ProductoNoConforme.tipo_pnc_5 }}</td>
-                </tr>
-                {% endif %}
-                {% if ProductoNoConforme.tipo_pnc_6 %}
-                <tr>
-                    <td>{{ ProductoNoConforme.tipo_pnc_6 }}</td>
-                </tr>
-                {% endif %}
-                {% if ProductoNoConforme.tipo_pnc_7 %}
-                <tr>
-                    <td>{{ ProductoNoConforme.tipo_pnc_7 }}</td>
-                </tr>
-                {% endif %}
-                {% if ProductoNoConforme.tipo_pnc_8 %}
-                <tr>
-                    <td>{{ ProductoNoConforme.tipo_pnc_8 }}</td>
-                </tr>
-                {% endif %}
-                {% if ProductoNoConforme.tipo_pnc_9 %}
-                <tr>
-                    <td>{{ ProductoNoConforme.tipo_pnc_9 }}</td>
-                </tr>
-                {% endif %}
-                {% if ProductoNoConforme.tipo_pnc_10 %}
-                <tr>
-                    <td>{{ ProductoNoConforme.tipo_pnc_10 }}</td>
-                </tr>
-                {% endif %}
-            </tbody>
-        </table>
-        &nbsp;
-        <div class="row">
-            <div class="col-sm-3">
-                <li class="list-group-item list-group-item-dark">Técnico</li>
-                <li class="list-group-item list-group-item-dark">Operario</li>
-                <li class="list-group-item list-group-item-dark">Turno</li>
-                &nbsp;
-                <li class="list-group-item list-group-item-dark">Fecha Inspección</li>
-                <li class="list-group-item list-group-item-dark">Estado PNC</li>
-            </div>
-            <div class="col-sm-9">
-                <li class="list-group-item">{{ control_calidad.tecnico }}</li>
-                <li class="list-group-item">{{ control_calidad.operario }}</li>
-                <li class="list-group-item">{{ control_calidad.turno }}</li>
-                &nbsp;
-                <li class="list-group-item">{{ control_calidad.fecha_creacion }}</li>
-                <li class="list-group-item">{{ ProductoNoConforme.estado_pnc }}</li>
-            </div>
-            &nbsp;
-            <table class="table table-bordered">
-                <thead class="table-dark">
-                    <tr>
-                        <th>OBSERVACIONES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ ProductoNoConforme.observaciones|linebreaks }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
     </div>
 </div>
 {% endblock %}

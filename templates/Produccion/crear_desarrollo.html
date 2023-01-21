@@ -1,0 +1,196 @@
+{% extends "lista.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_list %}
+<link href="{% static 'lib/jquery-ui-1.12.1/jquery-ui.min.css' %}" rel="stylesheet" />
+<script src="{% static 'lib/jquery-ui-1.12.1/jquery-ui.min.js' %}"></script>
+
+<link href="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.css' %}" rel="stylesheet" />
+<script src="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.js' %}"></script>
+
+<link href="{% static 'lib/select2-4.0.13/css/select2.min.css' %}" rel="stylesheet" />
+<link href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}" rel="stylesheet" />
+<script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
+<script src="{% static 'lib/select2-4.0.13/js/i18n/es.js' %}"></script>
+
+<script src="{% static 'js/forms/desarrollo.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<form method="post" action="." enctype="multipart/form-data" id="formControl">
+    <div class="card card-dark">
+        {% block card-header %}
+        <div class="card-header">
+            <i class="fas fa-plus"></i>
+            {{ title }}
+        </div>
+        {% endblock %}
+        <div class="card-body">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="{{ action }}">
+            {% block hidden %}
+            {% endblock %}
+            <div class="row mb-3">
+                <div class="col">
+                    <label>Producto *</label>
+                    {{ form.producto }}
+                </div>
+                <div class="col">
+                    <label>Fecha limite de entrega *</label>
+                    {{ form.fecha_limite_entrega }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <label>Cantidad *</label>
+                    {{ form.cantidad }}
+                </div>
+                <div class="col">
+                    <label>Ciclo *</label>
+                    {{ form.ciclo }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <label>Tipo de empaque *</label>
+                    {{ form.tipo_empaque }}
+                </div>
+                <div class="col">
+                    <label>Solicitado por *</label>
+                    {{ form.solicitado_por }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <label>Color *</label>
+                    {{ form.color }}
+                </div>
+                <div class="col">
+                    <label>Peso solicitado*</label>
+                    {{ form.peso_solicitado }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <label>Molde nuevo? *</label>
+                    {{ form.molde_nuevo }}
+                </div>
+                <div class="col">
+                    <label>Es funcional? *</label>
+                    {{ form.es_funcional }}
+                </div>
+                <div class="col">
+                    <label>Diseño *</label>
+                    {{ form.diseño }}
+                </div>
+                <div class="col">
+                    <label>Variables *</label>
+                    {{ form.variables }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <label>Maquina *</label>
+                    <select class="form-control" name="maquina" id="id_maquina">
+                        <option value="Inyectora 1" selected>Inyectora 1</option>
+                        <option value="Inyectora 2">Inyectora 2</option>
+                        <option value="Inyectora 3">Inyectora 3</option>
+                        <option value="Inyectora 4">Inyectora 4</option>
+                        <option value="Inyectora 5">Inyectora 5</option>
+                        <option value="Inyectora 6">Inyectora 6</option>
+                        <option value="Sopladora 1">Sopladora 1</option>
+                        <option value="Sopladora 2">Sopladora 2</option>
+                        <option value="Sopladora 3">Sopladora 3</option>
+                        <option value="Maquila">Maquila</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label>Requiere autorización? *</label>
+                    {{ form.autorizacion }}
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col">
+                    <label>Objetivo de las muestras *</label>
+                    {{ form.objetivo_muestra }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-stopwatch"></i> PRODUCCIÓN
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered" id="tblProduccion">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>MP</th>
+                                        <th>PIGMENTOS</th>
+                                        <th>EMPAQUE</th>
+                                        <th>MAQUILA</th>
+                                        <th>OPERARIO</th>
+                                        <th>TÉCNICO</th>
+                                        <th>MONTAJE</th>
+                                        <th>TOTAL</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Observaciones</label>
+                {{ form.observaciones }}
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Cargar
+            </button>
+            &nbsp;
+            <a href="{{ list_url }}" class="btn btn-danger">
+                <i class="fas fa-times"></i> Cancelar
+            </a>
+            &nbsp;
+        </div>
+    </div>
+</form>
+<div class="modal fade" id="myModalElemento" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form id="formElement" enctype="multipart/form-data" method="post">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        <i class="fas fa-business-time"></i>
+                        NUEVO MOTIVO DE PARADA
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ formElemento|crispy }}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-save"></i>
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    desarrollo.items.produccion = {{ produccion | safe }};
+</script>
+{% endblock %}

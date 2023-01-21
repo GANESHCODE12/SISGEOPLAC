@@ -1,0 +1,25 @@
+{% extends "lista.html" %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'js/Listas/notificaciones.js' %}"></script>
+{% endblock %}
+
+{% block columnas %}
+
+<tr>
+    <th>Información</th>
+    <th>Id</th>
+    <th>Remitente</th>
+    <th>Destinatario</th>
+    <th>Fecha</th>
+    <th>Motivo</th>
+    <th>Orden de producción</th>
+    <th>Leida</th>
+    <th>Información</th>
+</tr>
+
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

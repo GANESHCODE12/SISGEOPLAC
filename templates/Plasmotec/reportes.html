@@ -1,0 +1,70 @@
+{% extends "body.html" %}
+{% load static %}
+
+{% block content %}
+<div class="card card-dark">
+  <div class="card-header">
+    <h3>Reportes en excel</h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-info">
+          <div class="inner">
+            <h3>No. 1</h3>
+            <p>Inv. materia prima e insumos</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+          <a href="{% url 'Inventario:Reporte_MPI' %}" class="small-box-footer">
+            Generar reporte <i class="fas fa-arrow-circle-right"></i>
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-success">
+          <div class="inner">
+            <h3>No. 2</h3>
+            <p>Inv. producto terminado</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <a href="{% url 'Inventario:Reporte_PT' %}" class="small-box-footer">
+            Generar reporte <i class="fas fa-arrow-circle-right"></i>
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-warning">
+          <div class="inner">
+            <h3>No. 3</h3>
+            <p>Recursos humanos</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <a href="{% url 'Gestion_humana:reporte-colaboradores' %}" class="small-box-footer">
+            Generar reporte <i class="fas fa-arrow-circle-right"></i>
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-danger">
+          <div class="inner">
+            <h3>No. 4</h3>
+            <p>Producto no conforme</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-times-circle"></i>
+          </div>
+          <a href="{% url 'PNC:reporte-producto-no-conforme' %}" class="small-box-footer">
+            Generar reporte <i class="fas fa-arrow-circle-right"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

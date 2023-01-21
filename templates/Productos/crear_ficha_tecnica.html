@@ -40,8 +40,6 @@
                                     <div class="col">
                                         <label>Nombre del producto:</label>
                                         {{ form.Nombre_producto }}
-                                        <label class="my-2">Código del producto:</label>
-                                        {{ form.codigo_producto }}
                                         <label class="my-2">Versión:</label>
                                         {{ form.version }}
                                         <label class="my-2">Tipo de producto:</label>
@@ -74,8 +72,12 @@
                                         {{ form.cliente_especifico }}
                                         <label class="my-2">Estado de la ficha:</label>
                                         {{ form.estado_ficha }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
                                         <label class="my-2">Pigmento:</label>
-                                        {{ form.pigmento }}
+                                            {{ form.pigmento }}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -86,16 +88,8 @@
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <label class="my-2">Color:</label>
-                                        {{ form.color }}
-                                    </div>
-                                    <div class="col">
                                         <label class="my-2">Olor:</label>
                                         {{ form.olor }}
-                                    </div>
-                                    <div class="col">
-                                        <label class="my-2">Sabor:</label>
-                                        {{ form.sabor }}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -158,6 +152,39 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-palette"></i> Colores</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Buscador:</label>
+                                <div class="input-group">
+                                    <select class="form-control select2" style="width: 100%;" name="id_colores">
+
+                                    </select>
+                                    </span>
+                                </div>
+                            </div>
+                            <hr>
+                            <table class="table table-bordered" id="tblColores">
+                                <thead>
+                                    <tr>
+                                        <th>Eliminar</th>
+                                        <th>Color</th>
+                                        <th>Código Producto</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -337,5 +364,6 @@
     ficha.items.dimensiones = {{ dimensiones|safe }};
     ficha.items.pruebas = {{ pruebas|safe }};
     ficha.items.atributos = {{ atributos|safe }};
+    ficha.items.colores = {{ colores|safe }}
 </script>
 {% endblock %}

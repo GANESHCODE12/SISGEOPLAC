@@ -1,0 +1,95 @@
+var date_range = null;
+var date_now = new moment().format('YYYY-MM-DD');
+var tblReportMpi;
+
+function generate_report() {
+    var parameters = {
+        'action': 'search_report',
+        'start_date': date_now,
+        'end_date': date_now,
+    };
+
+    if (date_range !== null) {
+        parameters['start_date'] = date_range.startDate.format('YYYY-MM-DD');
+        parameters['end_date'] = date_range.endDate.format('YYYY-MM-DD');
+    }
+
+    tblReportMpi = $('#data').DataTable({
+        responsive: true,
+        destroy: true,
+        autoWidth: false,
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: 'Descargar Excel <i class="fas fa-file-excel"></i>',
+                titleAttr: 'Excel',
+                className: 'btn btn-success btn-flat btn-xs'
+            },
+            {
+                extend: 'pdfHtml5',
+                text: 'Descargar Pdf <i class="fas fa-file-pdf"></i>',
+                titleAttr: 'PDF',
+                className: 'btn btn-danger btn-flat btn-xs',
+                download: 'open',
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+            }
+        ],
+        deferRender: true,
+        ajax: {
+            url: window.location.pathname,
+            type: 'POST',
+            data: parameters,
+            dataSrc: ""
+        },
+        columns: [
+            { "data": "id" },
+            { "data": "nombre" },
+            { "data": "referencia" },
+            { "data": "categoria" },
+            { "data": "proveedor" },
+            { "data": "cantidad" },
+            { "data": "pnc" },
+            { "data": "cantidad_real" },
+            { "data": "Unidad_Meidida" },
+        ],
+        columnDefs: [
+            {
+                targets: [0],
+                class: 'text-center',
+                orderable: false,
+            },
+            {
+                targets: [-4, -2, -3],
+                class: 'text-center',
+                render: function (data, type, row) {
+                    return parseFloat(data).toFixed(2);
+                }
+            }
+        ],
+        initComplete: function (settings, json) {
+
+        }
+    });
+}
+
+$(function () {
+    $('input[name="date_range"]').daterangepicker({
+        locale: {
+            format: 'YYYY-MM-DD',
+            applyLabel: '<i class="fas fa-chart-pie"></i> Aplicar',
+            cancelLabel: '<i class="fas fa-times"></i> Cancelar',
+        }
+    }).on('apply.daterangepicker', function (ev, picker) {
+        date_range = picker;
+        generate_report();
+    }).on('cancel.daterangepicker', function (ev, picker) {
+        $(this).data('daterangepicker').setStartDate(date_now);
+        $(this).data('daterangepicker').setEndDate(date_now);
+        date_range = picker;
+        generate_report();
+    });
+
+    generate_report();
+});

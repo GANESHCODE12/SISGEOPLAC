@@ -21,6 +21,16 @@ class PruebasEnsayoAdmin(admin.ModelAdmin):
 class ControlAtributoAdmin(admin.ModelAdmin):
     list_display = ('id_atributo', 'id_producto_a')
     search_fields = ('id_producto_a__Nombre_producto',)
+    
+@admin.register(Productos_colores)
+class Productos_coloresAdmin(admin.ModelAdmin):
+  list_display = (
+    'id',
+    'productos',
+    'color',
+  )
+  list_filter = ('id', )
+  search_fields = ['productos__Nombre_producto']
 
 
 admin.site.register(Producto)
