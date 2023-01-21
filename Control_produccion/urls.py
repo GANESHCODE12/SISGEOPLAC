@@ -33,5 +33,10 @@ urlpatterns = [
         view=views.DetalleControlView.as_view(), 
         name='Detalle_control'
     ),
+    path(
+        route='historico-controles', 
+        view=views.HistoricoControlView.as_view(), 
+        name='historico-controles'
+    ),
 
 ]

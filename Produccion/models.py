@@ -86,6 +86,7 @@ class Produccion(models.Model):
     )
     lista_maquina = [
         ('', ''),
+        ('Sin asignar', 'Sin asignar'),
         ('Inyectora 1','Inyectora 1'),
         ('Inyectora 2','Inyectora 2'),
         ('Inyectora 3','Inyectora 3'),
@@ -96,6 +97,7 @@ class Produccion(models.Model):
         ('Sopladora 2','Sopladora 2'),
         ('Sopladora 3','Sopladora 3'),
         ('Maquila','Maquila'),
+        ('Ensable','Ensable'),
     ]
     maquina = models.CharField(
         max_length=40,

@@ -11,35 +11,35 @@ from Plasmotec import views
 
 urlpatterns = [
 
-    #Inicio
     path(
         route = '',
         view= views.InicioView.as_view(),
         name='inicio'
     ),
-    #test
     path(
         route = 'test/',
         view= views.TestView.as_view(),
         name='test'
     ),
-    #Notificación leida
     path(
         route = 'notificacion-leida',
         view= views.NotificacionLeida.as_view(),
         name='notificacion-leida'
     ),
-    #Notificaciones
     path(
         route = 'Notificaciones',
         view= views.Notificaciones.as_view(),
         name='Notificaciones'
     ),
-    #Notificaciones
     path(
         route = 'Reportes',
         view= views.ReporteView.as_view(),
         name='Reportes'
+    ),
+    path(
+        route = 'Historico',
+        view= views.HistoricoView.as_view(),
+        name='Historico'
     ),
     #Admin urls
     path('admin/', admin.site.urls),

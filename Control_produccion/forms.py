@@ -2,6 +2,7 @@
 
 #Django
 from django.forms import *
+from django import forms
 
 #Models
 from Control_produccion.models import *
@@ -88,3 +89,10 @@ class CrearMotivoForm(ModelForm):
         except Exception  as e:
             data['error'] = str(e)
         return data
+
+
+class HistoricalForm(forms.Form):
+    date_range = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'autocomplete': 'off'
+    }))

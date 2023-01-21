@@ -140,3 +140,16 @@ class ReporteView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Reporte'
         return context
+
+
+class HistoricoView(TemplateView):
+
+    template_name = 'Plasmotec/historico.html'
+
+    def get_context_data(self, **kwargs):
+        """Agrega los demás modelos relacionados con la ficha
+        técnica"""
+
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Reporte'
+        return context

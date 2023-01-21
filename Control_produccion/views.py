@@ -1,23 +1,23 @@
 """Vistas de la aplicación control de producción"""
 
-#Django
+# Django
 from django.urls import reverse_lazy
 from django.db.models import Q
 from django.http.response import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 from datetime import datetime
 
-#Form
+# Form
 from Control_produccion.forms import *
 
-#Mixins
+# Mixins
 from Plasmotec.mixins import ValidatePermissionRequiredMixin
 
-#Models
+# Models
 from Control_produccion.models import *
 from Produccion.models import Produccion
 from Gestion_Humana.models import TecnicosOperarios
@@ -38,19 +38,23 @@ class ListaControl(LoginRequiredMixin, ValidatePermissionRequiredMixin, ListView
 
     def post(self, request, *args, **kwargs):
         data = {}
-        controles = ControlProduccion.objects.all().iterator()
+        fecha_ultimo_control = ControlProduccion.objects.first().fecha_creacion
+        recientes = fecha_ultimo_control - timedelta(hours=1460)
+        controles = ControlProduccion.objects.filter(
+            fecha_creacion__gte=recientes)
         try:
             action = request.POST['action']
             if action == 'searchdata':
                 data = []
                 for i in controles:
-                    colaboradores = ColaboradorControlProduccion.objects.filter(control_id=i.id).iterator()
+                    colaboradores = ColaboradorControlProduccion.objects.filter(control_id=i.id).only('colaborador__nombre')
                     item = i.toJSON()
                     item['producto'] = i.numero_op.producto.productos.Nombre_producto
                     item['saldo_orden'] = i.saldo_orden
                     item['fecha_creacion'] = i.fecha_creacion
                     item['maquina'] = i.numero_op.maquina
-                    item['colaboradores'] = [{'nombre': colaborador.colaborador.nombre} for colaborador in colaboradores]
+                    item['colaboradores'] = [
+                        {'nombre': colaborador.colaborador.nombre} for colaborador in colaboradores]
                     data.append(item)
             else:
                 data['error'] = 'Ha ocurrido un error'
@@ -79,7 +83,8 @@ class ListaMotivosView(LoginRequiredMixin, ValidatePermissionRequiredMixin, List
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Motivos De Paradas'
-        context['list_url'] = reverse_lazy('Control_produccion:motivos-de-paradas')
+        context['list_url'] = reverse_lazy(
+            'Control_produccion:motivos-de-paradas')
         context['entity'] = 'Motivos'
         return context
 
@@ -106,8 +111,10 @@ class CrearNuevoControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin,
                     control_produccion = ControlProduccion()
                     control_produccion.numero_op_id = kwargs.get('pk')
                     control_produccion.turno = control['turno']
-                    control_produccion.hora_inicio = datetime.strptime(control['hora_inicio'], '%d-%m-%Y %H:%M %Z:%S')
-                    control_produccion.hora_final = datetime.strptime(control['hora_final'], '%d-%m-%Y %H:%M %Z:%S')
+                    control_produccion.hora_inicio = datetime.strptime(
+                        control['hora_inicio'], '%d-%m-%Y %H:%M %Z:%S')
+                    control_produccion.hora_final = datetime.strptime(
+                        control['hora_final'], '%d-%m-%Y %H:%M %Z:%S')
                     control_produccion.cantidad_producida = control['cantidad_producida']
                     control_produccion.ciclo_turno = control['ciclo_turno']
                     control_produccion.cavidades_operacion = control['cavidades_operacion']
@@ -129,7 +136,7 @@ class CrearNuevoControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin,
                 data = []
                 ids_exclude = json.loads(request.POST['ids'])
                 busqueda = TecnicosOperarios.objects.filter(
-                    Q(nombre__icontains=request.POST['term'])|
+                    Q(nombre__icontains=request.POST['term']) |
                     Q(codigo__icontains=request.POST['term'])).exclude(id__in=ids_exclude)[0:10]
                 for i in busqueda:
                     item = i.toJSON()
@@ -162,7 +169,8 @@ class CrearNuevoControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin,
 
         pk = self.kwargs.get('pk')
 
-        control = ControlProduccion.objects.all().filter(numero_op_id= pk).aggregate(numero_op_id=Sum('cantidad_producida'))
+        control = ControlProduccion.objects.all().filter(
+            numero_op_id=pk).aggregate(numero_op_id=Sum('cantidad_producida'))
         produccion = Produccion.objects.get(pk=pk)
 
         context = super().get_context_data(**kwargs)
@@ -172,42 +180,44 @@ class CrearNuevoControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin,
         context['entity'] = 'Controles'
         context['action'] = 'add'
         context['formElemento'] = CrearMotivoForm()
-        context['saldo'] = (produccion.cantidad_requerida - control['numero_op_id']) if control['numero_op_id'] is not None else produccion.cantidad_requerida
+        context['saldo'] = (produccion.cantidad_requerida - control['numero_op_id']
+                            ) if control['numero_op_id'] is not None else produccion.cantidad_requerida
         return context
 
 
 class NuevoMotivoView(LoginRequiredMixin, ValidatePermissionRequiredMixin, CreateView):
-        """Vista para crear los motivos de paradas"""
+    """Vista para crear los motivos de paradas"""
 
-        model = MotivosParadasControlProduccion
-        form_class = CrearMotivoForm
-        permission_required = 'add_motivosparadascontrolproduccion'
-        template_name = 'Control_produccion/motivos.html'
-        success_url = reverse_lazy('Control_produccion:motivos-de-paradas')
+    model = MotivosParadasControlProduccion
+    form_class = CrearMotivoForm
+    permission_required = 'add_motivosparadascontrolproduccion'
+    template_name = 'Control_produccion/motivos.html'
+    success_url = reverse_lazy('Control_produccion:motivos-de-paradas')
 
-        def dispatch(self, request, *args, **kwargs):
-            return super().dispatch(request, *args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
-        def post(self, request, *args, **kwargs):
-            data = {}
-            try:
-                action = request.POST['action']
-                if action == 'add':
-                    form = self.get_form()
-                    data = form.save(commit=True)
-                else:
-                    data['error'] = 'No ha ingresado a ninguna opción!'
-            except Exception as e:
-                data['error'] = str(e)
-            return JsonResponse(data)
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'add':
+                form = self.get_form()
+                data = form.save(commit=True)
+            else:
+                data['error'] = 'No ha ingresado a ninguna opción!'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
 
-        def get_context_data(self, **kwargs):
-            context = super().get_context_data(**kwargs)
-            context['title'] = 'Crear Motivo De Parada'
-            context['list_url'] = reverse_lazy('Control_produccion:motivos-de-paradas')
-            context['entity'] = 'Nuevo Motivo'
-            context['action'] = 'add'
-            return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Crear Motivo De Parada'
+        context['list_url'] = reverse_lazy(
+            'Control_produccion:motivos-de-paradas')
+        context['entity'] = 'Nuevo Motivo'
+        context['action'] = 'add'
+        return context
 
 
 class DetalleControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin, DetailView):
@@ -217,7 +227,6 @@ class DetalleControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin, De
     queryset = ControlProduccion.objects.all()
     context_object_name = 'Control_produccion'
     permission_required = 'view_controlproduccion'
-    
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -234,4 +243,49 @@ class DetalleControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin, De
         context['entity'] = 'Controles'
         context['tecnicos'] = ColaboradorControlProduccion.objects.filter(control_id=pk)
         context['paradas'] = paradas
+        return context
+
+
+class HistoricoControlView(TemplateView):
+    template_name = 'Control_produccion/historico_control.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'search_report':
+                data = []
+                start_date = request.POST.get('start_date', '')
+                end_date = request.POST.get('end_date', '')
+                search = ControlProduccion.objects.all()
+                if len(start_date) and len(end_date):
+                    search = search.filter(fecha_actualizacion__range=[start_date, end_date])
+                for i in search:
+                    colaboradores = ColaboradorControlProduccion.objects.filter(control_id=i.id).only('colaborador__nombre')
+                    item = i.toJSON()
+                    item['producto'] = i.numero_op.producto.productos.Nombre_producto
+                    item['saldo_orden'] = i.saldo_orden
+                    item['fecha_creacion'] = i.fecha_creacion
+                    item['maquina'] = i.numero_op.maquina
+                    item['colaboradores'] = [
+                        {'nombre': colaborador.colaborador.nombre} for colaborador in colaboradores
+                    ]
+                    data.append(item)
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Historico Controles'
+        context['list_url'] = reverse_lazy('Historico')
+        context['entity'] = 'Historico'
+        context['form'] = HistoricalForm()
+        return context
         return context

@@ -85,8 +85,9 @@ class ListaOrdenesView(LoginRequiredMixin, ListView):
                     data.append(item)
             elif action == 'search_details_MPI':
                 data = []
-                requisicion_query = Requisicion.objects.filter(numero_orden_id = request.POST['numero_op']).iterator()
-                for i in requisicion_query:
+                requisicion_query = Requisicion.objects.filter(numero_orden_id = request.POST['numero_op'])
+                requisicion = requisicion_query.iterator()
+                for i in requisicion:
                     item = i.toJSON()
                     item['producto'] = i.material_solicitado.ingreso_materia_prima.nombre
                     item['categoria'] = i.material_solicitado.ingreso_materia_prima.categoria
@@ -105,7 +106,6 @@ class ListaOrdenesView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pk = self.kwargs.get('numero_op')
         context['title'] = 'Listado de Ordenes de Producción'
         context['list_url'] = reverse_lazy('Produccion:Ordenes_produccion')
         context['entity'] = 'Ordenes'
