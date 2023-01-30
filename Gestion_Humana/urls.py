@@ -63,5 +63,35 @@ urlpatterns = [
         view=views.ColaboradorView.as_view(), 
         name='Colaborador'
     ),
+    path(
+        route='examenes-medicos/<int:pk>', 
+        view=views.ExamenesMedicosView.as_view(), 
+        name='examenes-medicos'
+    ),
+    path(
+        route='entrega-dotacion/<int:pk>', 
+        view=views.EntregaDotacionView.as_view(), 
+        name='entrega-dotacion'
+    ),
+    path(
+        route='capacitacion/<int:pk>', 
+        view=views.CapacitacionView.as_view(), 
+        name='capacitacion'
+    ),
+    path(
+        route='actualizar-examen-medico/<int:pk>', 
+        view=views.ActualizarExamenesView.as_view(), 
+        name='actualizar-examen-medico'
+    ),
+    path(
+        route='actualizar-capacitacion/<int:pk>', 
+        view=views.ActualizarCapacitacionView.as_view(), 
+        name='actualizar-capacitacion'
+    ),
+    path(
+        route='actualizar-entrega-dotacion/<int:pk>', 
+        view=views.ActualizarDotacionView.as_view(), 
+        name='actualizar-entrega-dotacion'
+    ),
 
 ]

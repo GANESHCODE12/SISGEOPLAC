@@ -97,7 +97,7 @@ class Produccion(models.Model):
         ('Sopladora 2','Sopladora 2'),
         ('Sopladora 3','Sopladora 3'),
         ('Maquila','Maquila'),
-        ('Ensable','Ensable'),
+        ('Ensamble','Ensamble'),
     ]
     maquina = models.CharField(
         max_length=40,

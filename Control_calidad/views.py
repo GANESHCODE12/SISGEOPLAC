@@ -6,7 +6,7 @@ from django.db.models import Q, Sum
 from django.urls import reverse_lazy
 from django.db import transaction
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
@@ -840,4 +840,38 @@ class DetalleInspeccionMpView(LoginRequiredMixin, ValidatePermissionRequiredMixi
             )
         context['list_url'] = reverse_lazy('Inventario:Ingresos')
         context['entity'] = 'Inspección Mp'
+        return context
+
+
+class ActualizarInspeccionMPView(LoginRequiredMixin, UpdateView):
+
+    template_name = 'Control_calidad/actualizar_inspecion_mp.html'
+    model = MateriaPrimaInsumos
+    success_url = reverse_lazy('Inventario:Ingresos')
+    form_class = ActualizarInspeccionMpForm
+    context_object_name = 'MateriaPrimaInsumos'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'edit':
+                form = self.get_form()
+                data = form.save(commit=True)
+            else:
+                data['error'] = 'No ha ingresado a ninguna opción!'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Actualizar Inspeccion: '
+        context['list_url'] = reverse_lazy('Gestion_Humana:Colaboradores')
+        context['entity'] = 'Colaboradores'
+        context['action'] = 'edit'
         return context

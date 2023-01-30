@@ -162,7 +162,7 @@ class Materia_Prima_Insumo(models.Model):
 
   lista_categoria = [
     ('Materia Prima', 'Materia Prima'),
-    ('Inusmo', 'Insumo'),
+    ('Insumo', 'Insumo'),
     ('Pigmento', 'Pigmento')
   ]
 

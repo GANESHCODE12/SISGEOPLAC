@@ -18,6 +18,8 @@ $(function () {
         },
         columns: [
             {"data": "material"},
+            {"data": "referencia"},
+            {"data": "lote"},
             {"data": "categoria"},
             {"data": "fecha_ingreso"},
             {"data": "cantidad_ingresada"},
@@ -34,6 +36,7 @@ $(function () {
                     var buttons = '<a href="/Control_calidad/crear-inspeccion-mp/' + row.id + '"><button title="Realizar inspección" class="btn btn-success btn-xs btn-flat"><i class="fas fa-plus"></i></button></a> ';
                     if (row.existe === 1) {
                         buttons += '<a href="/Control_calidad/detalle-inspeccion-mp/' + row.inspeccion + '"><button title="Detalle inspección mp" class="btn btn-primary btn-xs btn-flat"><i class="fas fa-eye"></i></button></a> ';
+                        buttons += '<a href="/Control_calidad/actualizar-inspeccion-mp/' + row.inspeccion + '"><button title="Adjuntar certificado" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-image"></i></button></a> ';
                     }
                     return buttons;
                 }
@@ -43,7 +46,7 @@ $(function () {
                 visible: false
             },
             {
-                targets: [2],
+                targets: [4],
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {

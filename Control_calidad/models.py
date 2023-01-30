@@ -11,6 +11,9 @@ from Inventario.models import Entrada
 #Utilidades
 from crum import get_current_user
 
+# Plasmotec
+from Plasmotec.settings import MEDIA_URL, STATIC_URL
+
 
 class ControlCalidad(models.Model):
     """Modelo con información general de las
@@ -874,6 +877,12 @@ class MateriaPrimaInsumos(models.Model):
         default='En espera',
         verbose_name='Estado del material'
     )
+    certificado_proveedor = models.FileField(
+        upload_to='Control_calidad/Certificado_proveedores',
+        verbose_name='Certificado proveedor',
+        null=True,
+        blank=True,
+    )
 
     def save(self, force_insert=False, force_update= False, using=None, update_fields=None):
         user = get_current_user()
@@ -891,9 +900,23 @@ class MateriaPrimaInsumos(models.Model):
             self.materia_prima_insumo.lote,
             self.id
         )
+    
+    def get_certificado_proveedor(self):
+        return '{}{}'.format(MEDIA_URL, self.certificado_proveedor)
 
-    def toJSON(self):
+    def get_certificado(self):
+        if self.certificado_proveedor:
+            return '{}{}'.format(MEDIA_URL, self.certificado_proveedor)
+        return '{}{}'.format(STATIC_URL, 'img/empty.png')
+
+    def toJSON(
+        self,
+        exclude=[
+            'certificado_proveedor'
+        ]
+        ):
         item = model_to_dict(self)
+        item['certificado_proveedor'] = self.get_certificado_proveedor()
         return item
 
     class Meta:

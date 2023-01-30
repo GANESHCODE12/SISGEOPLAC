@@ -85,6 +85,24 @@ class ColaboradoresView(LoginRequiredMixin, ValidatePermissionRequiredMixin, Lis
                     item['carta_citacion'] = i.get_carta_citacion()
                     item['acta'] = i.get_acta()
                     data.append(item)
+            elif action == 'search_details_examen':
+                data = []
+                for i in ExamenesMedicos.objects.filter(colaborador_id=request.POST['id']):
+                    item = i.toJSON()
+                    item['resultados'] = i.get_resultados()
+                    data.append(item)
+            elif action == 'search_details_capacitacion':
+                data = []
+                for i in Capacitacion.objects.filter(colaborador_id=request.POST['id']):
+                    item = i.toJSON()
+                    item['certificado'] = i.get_certificado()
+                    data.append(item)
+            elif action == 'search_details_dotacion':
+                data = []
+                for i in EntregaDotacion.objects.filter(colaborador_id=request.POST['id']):
+                    item = i.toJSON()
+                    item['documento'] = i.get_documento_entrega()
+                    data.append(item)
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:
@@ -437,4 +455,251 @@ class ReportColaboradoresView(TemplateView):
         context['entity'] = 'Reportes'
         context['list_url'] = reverse_lazy('Reportes')
         context['form'] = ReportGestionHumanaForm()
+        return context
+
+
+class EntregaDotacionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, CreateView):
+    """Vista para crear las fichas técnicas"""
+
+    model = EntregaDotacion
+    form_class = EntregaDotacionForm
+    template_name = 'Gestion_Humana/entrega_dotacion.html'
+    success_url = reverse_lazy('Gestion_Humana:Colaboradores')
+    permission_required = 'add_entregadotacion'
+
+    def form_valid(self, form):
+        """Acciones cuando el formulario es valido"""
+
+        instance_EntregaDotacion = form.save(commit=False)
+        instance_EntregaDotacion.colaborador = self.instance_Colaborador
+        instance_EntregaDotacion.save()
+
+        return super(EntregaDotacionView, self).form_valid(form)
+
+    def get(self, request, *args, **kwargs):
+
+        self.instance_Colaborador = get_object_or_404(
+            InformacionColaborador, pk=kwargs.get('pk'))
+        return super(EntregaDotacionView, self).get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'add':
+                self.instance_Colaborador = get_object_or_404(InformacionColaborador, pk=kwargs.get('pk'))
+                super(EntregaDotacionView, self).post(request, *args, **kwargs)
+            else:
+                data['error'] = 'No ha ingresado a ninguna opción!'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+
+    def get_context_data(self, **kwargs):
+        pk = self.kwargs.get('pk')
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Agregar Entrega Dotación'
+        context['list_url'] = reverse_lazy('Gestion_Humana:Colaboradores')
+        context['entity'] = 'Colaboradores'
+        context['action'] = 'add'
+        context['colaborador'] = InformacionColaborador.objects.get(pk=pk)
+        return context
+
+
+class CapacitacionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, CreateView):
+    """Vista para crear las fichas técnicas"""
+
+    model = Capacitacion
+    form_class = CapacitacionForm
+    template_name = 'Gestion_Humana/capacitacion.html'
+    success_url = reverse_lazy('Gestion_Humana:Colaboradores')
+    permission_required = 'add_capacitacion'
+
+    def form_valid(self, form):
+        """Acciones cuando el formulario es valido"""
+
+        instance_Capacitacion = form.save(commit=False)
+        instance_Capacitacion.colaborador = self.instance_Colaborador
+        instance_Capacitacion.save()
+
+        return super(CapacitacionView, self).form_valid(form)
+
+    def get(self, request, *args, **kwargs):
+
+        self.instance_Colaborador = get_object_or_404(InformacionColaborador, pk=kwargs.get('pk'))
+        return super(CapacitacionView, self).get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'add':
+                self.instance_Colaborador = get_object_or_404(InformacionColaborador, pk=kwargs.get('pk'))
+                super(CapacitacionView, self).post(request, *args, **kwargs)
+            else:
+                data['error'] = 'No ha ingresado a ninguna opción!'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+
+    def get_context_data(self, **kwargs):
+        pk = self.kwargs.get('pk')
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Agregar Capacitación'
+        context['list_url'] = reverse_lazy('Gestion_Humana:Colaboradores')
+        context['entity'] = 'Colaboradores'
+        context['action'] = 'add'
+        context['colaborador'] = InformacionColaborador.objects.get(pk=pk)
+        return context
+
+
+class ExamenesMedicosView(LoginRequiredMixin, ValidatePermissionRequiredMixin, CreateView):
+    """Vista para crear las fichas técnicas"""
+
+    model = ExamenesMedicos
+    form_class = ExamenesMedicosForm
+    template_name = 'Gestion_Humana/examenes_medicos.html'
+    success_url = reverse_lazy('Gestion_Humana:Colaboradores')
+    permission_required = 'add_examenesmedicos'
+
+    def form_valid(self, form):
+        """Acciones cuando el formulario es valido"""
+
+        instance_ExamenesMedicos = form.save(commit=False)
+        instance_ExamenesMedicos.colaborador = self.instance_Colaborador
+        instance_ExamenesMedicos.save()
+
+        return super(ExamenesMedicosView, self).form_valid(form)
+
+    def get(self, request, *args, **kwargs):
+
+        self.instance_Colaborador = get_object_or_404(InformacionColaborador, pk=kwargs.get('pk'))
+        return super(ExamenesMedicosView, self).get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'add':
+                self.instance_Colaborador = get_object_or_404(InformacionColaborador, pk=kwargs.get('pk'))
+                super(ExamenesMedicosView, self).post(request, *args, **kwargs)
+            else:
+                data['error'] = 'No ha ingresado a ninguna opción!'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+
+    def get_context_data(self, **kwargs):
+        pk = self.kwargs.get('pk')
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Agregar Examen Médico'
+        context['list_url'] = reverse_lazy('Gestion_Humana:Colaboradores')
+        context['entity'] = 'Colaboradores'
+        context['action'] = 'add'
+        context['colaborador'] = InformacionColaborador.objects.get(pk=pk)
+        return context
+
+
+class ActualizarExamenesView(LoginRequiredMixin, ValidatePermissionRequiredMixin, UpdateView):
+
+    template_name = 'Gestion_Humana/actualizar_examenes.html'
+    model = ExamenesMedicos
+    success_url = reverse_lazy('Gestion_Humana:Colaboradores')
+    form_class = ActualizarExamenForm
+    context_object_name = 'ExamenesMedicos'
+    permission_required = 'change_examenesmedicos'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'edit':
+                form = self.get_form()
+                data = form.save(commit=True)
+            else:
+                data['error'] = 'No ha ingresado a ninguna opción!'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Actualizar Exámen Médico: '
+        context['list_url'] = reverse_lazy('Gestion_Humana:Colaboradores')
+        context['entity'] = 'Colaboradores'
+        context['action'] = 'edit'
+        return context
+
+
+class ActualizarCapacitacionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, UpdateView):
+
+    template_name = 'Gestion_Humana/actualizar_capacitacion.html'
+    model = Capacitacion
+    success_url = reverse_lazy('Gestion_Humana:Colaboradores')
+    form_class = ActualizarCapacitacionForm
+    context_object_name = 'Capacitacion'
+    permission_required = 'change_capacitacion'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'edit':
+                form = self.get_form()
+                data = form.save(commit=True)
+            else:
+                data['error'] = 'No ha ingresado a ninguna opción!'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Actualizar Capacitación: '
+        context['list_url'] = reverse_lazy('Gestion_Humana:Colaboradores')
+        context['entity'] = 'Colaboradores'
+        context['action'] = 'edit'
+        return context
+
+
+class ActualizarDotacionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, UpdateView):
+
+    template_name = 'Gestion_Humana/actualizar_dotacion.html'
+    model = EntregaDotacion
+    success_url = reverse_lazy('Gestion_Humana:Colaboradores')
+    form_class = ActualizarDotacionForm
+    context_object_name = 'EntregaDotacion'
+    permission_required = 'change_entregadotacion'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'edit':
+                form = self.get_form()
+                data = form.save(commit=True)
+            else:
+                data['error'] = 'No ha ingresado a ninguna opción!'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Actualizar Entrega Dotación: '
+        context['list_url'] = reverse_lazy('Gestion_Humana:Colaboradores')
+        context['entity'] = 'Colaboradores'
+        context['action'] = 'edit'
         return context

@@ -4,7 +4,7 @@
 from django.db import models
 from django.forms import model_to_dict
 
-# Pasmotec
+# Plasmotec
 from Plasmotec.settings import MEDIA_URL, STATIC_URL
 
 # Utilidades
@@ -159,6 +159,15 @@ class InformacionColaborador(models.Model):
         null=True,
         blank=True,
     )
+    lista_activo = [
+        ('Activo','Activo'),
+        ('Inactivo', 'Inactivo')
+    ]
+    activo = models.CharField(
+        max_length=20,
+        choices=lista_activo,
+        default='Activo'
+    )
 
     class Meta:
         """Configuración del modelo"""
@@ -250,7 +259,7 @@ class InformacionColaborador(models.Model):
 class OtroSi(models.Model):
 
     colaborador = models.ForeignKey(
-        'Gestion_Humana.InformacionColaborador',
+        InformacionColaborador,
         on_delete=models.CASCADE,
         verbose_name="Colaborador"
     )
@@ -282,8 +291,13 @@ class OtroSi(models.Model):
         return '{}{}'.format(MEDIA_URL, self.otro_si)
 
     def toJSON(self):
-        item = model_to_dict(self,)
-        item['otro_si'] = self.get_otro_si
+        item = model_to_dict(
+            self,
+            exclude=[
+                'otro_si'
+            ]
+        )
+        item['otro_si'] = self.get_otro_si()
         return item
 
 
@@ -291,7 +305,7 @@ class OtroSi(models.Model):
 class ProcesosDisciplinarios(models.Model):
 
     colaborador = models.ForeignKey(
-        'Gestion_Humana.InformacionColaborador',
+        InformacionColaborador,
         on_delete=models.CASCADE,
         verbose_name="Colaborador"
     )
@@ -303,14 +317,19 @@ class ProcesosDisciplinarios(models.Model):
     carta_citacion = models.FileField(
         upload_to='Gestion_Humana/Cartas_citacion',
         verbose_name='Carta de citación a descargos',
+        null=True,
+        blank=True
     )
 
     acta = models.FileField(
         upload_to='Gestion_Humana/Actas_descargos',
         verbose_name='Acta de descargos',
+        null=True,
+        blank=True
     )
 
     decision_list = [
+        ('Por definir', 'Por definir'),
         ('Llamada de atención', 'Llamada de atención'),
         ('Sanción', 'Sanción'),
         ('Despido', 'Despido')
@@ -341,10 +360,15 @@ class ProcesosDisciplinarios(models.Model):
     def get_acta(self):
         return '{}{}'.format(MEDIA_URL, self.acta)
 
-    def toJSON(self):
+    def toJSON(
+        self,
+        exclude=[
+            'carta_citacion'
+        ]
+    ):
         item = model_to_dict(self)
-        item['carta_citacion'] = self.get_carta_citacion
-        item['acta'] = self.get_acta
+        item['carta_citacion'] = self.get_carta_citacion()
+        item['acta'] = self.get_acta()
         return item
 
 
@@ -387,4 +411,169 @@ class TecnicosOperarios(models.Model):
 
     def toJSON(self):
         item = model_to_dict(self)
+        return item
+
+
+# Modelo de entrega dotación
+class EntregaDotacion(models.Model):
+
+    colaborador = models.ForeignKey(
+        InformacionColaborador,
+        on_delete=models.CASCADE,
+        verbose_name="Colaborador"
+    )
+
+    fecha_entrega = models.DateField(
+        verbose_name='Fecha de entrega',
+        null=True,
+        blank=True
+    )
+
+    documento_entrega = models.FileField(
+        upload_to='Gestion_Humana/entrega_dotacion',
+        verbose_name='Documento de entrega',
+        null=True,
+        blank=True
+    )
+
+    class Meta:
+        """Configuración del modelo"""
+
+        verbose_name = 'Entrega Dotacion'
+        verbose_name_plural = 'Entrega dotaciones'
+        db_table = 'entrega dotacion'
+        ordering = ['-id']
+
+    def __str__(self):
+        return 'Entrega No.{}, del colaborador {} {}'.format(
+            self.id, self.colaborador.nombres, self.colaborador.apellidos
+        )
+
+    def get_documento_entrega(self):
+        return '{}{}'.format(MEDIA_URL, self.documento_entrega)
+
+    def toJSON(
+        self,
+        exclude=[
+            'documento_entrega'
+        ]
+    ):
+        item = model_to_dict(self)
+        item['documento_entrega'] = self.get_documento_entrega()
+        return item
+
+
+# Modelo de capacitación
+class Capacitacion(models.Model):
+
+    colaborador = models.ForeignKey(
+        InformacionColaborador,
+        on_delete=models.CASCADE,
+        verbose_name="Colaborador"
+    )
+
+    tema = models.CharField(
+        max_length=50,
+        verbose_name="Tema de la capacitación",
+        null=True,
+        blank=True
+    )
+
+    fecha_capacitacion = models.DateField(
+        verbose_name='Fecha de la capacitación',
+        null=True,
+        blank=True
+    )
+
+    certificado_capacitacion = models.FileField(
+        upload_to='Gestion_Humana/Certificado_capacitacion',
+        verbose_name='Certificado de capacitación',
+        null=True,
+        blank=True
+    )
+
+
+    class Meta:
+        """Configuración del modelo"""
+
+        verbose_name = 'Capacitacion'
+        verbose_name_plural = 'Capacitaciones'
+        db_table = 'Capacitaciones'
+        ordering = ['-id']
+
+    def __str__(self):
+        return 'Capacitación {}, del colaborador {} {}'.format(
+            self.tema, self.colaborador.nombres, self.colaborador.apellidos
+        )
+
+    def get_certificado(self):
+        return '{}{}'.format(MEDIA_URL, self.certificado_capacitacion)
+
+    def toJSON(
+        self,
+        exclude=[
+            'certificado_capacitacion'
+        ]
+    ):
+        item = model_to_dict(self)
+        item['certificado_capacitacion'] = self.get_certificado()
+        return item
+
+
+# Modelo de examenes médicos
+class ExamenesMedicos(models.Model):
+
+    colaborador = models.ForeignKey(
+        InformacionColaborador,
+        on_delete=models.CASCADE,
+        verbose_name="Colaborador"
+    )
+
+    fecha_examen = models.DateField(
+        verbose_name='Fecha de examen',
+    )
+
+    lista_motivo = [
+        ('Periodico', 'Periodico'),
+        ('Egreso', 'Egreso'),
+        ('Ingreso', 'Ingreso')
+    ]
+
+    motivo = models.CharField(
+        max_length=50,
+        choices=lista_motivo,
+        verbose_name="Motivo"
+    )
+
+    resultados = models.FileField(
+        upload_to='Gestion_Humana/Resultados',
+        verbose_name='Resultados',
+        null=True,
+        blank=True
+    )
+
+    class Meta:
+        """Configuración del modelo"""
+
+        verbose_name = 'Examen Medico'
+        verbose_name_plural = 'Examenes medicos'
+        db_table = 'Examenes medicos'
+        ordering = ['-id']
+
+    def __str__(self):
+        return 'Examen {}, del colaborador {} {}'.format(
+            self.motivo, self.colaborador.nombres, self.colaborador.apellidos
+        )
+
+    def get_resultados(self):
+        return '{}{}'.format(MEDIA_URL, self.resultados)
+
+    def toJSON(
+        self,
+        exclude=[
+            'resultados'
+        ]
+    ):
+        item = model_to_dict(self)
+        item['resultados'] = self.get_resultados()
         return item

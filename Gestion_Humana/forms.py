@@ -127,7 +127,6 @@ class ActualizarOtroSiForm(ModelForm):
     
 
 class ActualizarColaboradorForm(ModelForm):
-
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
 
@@ -198,7 +197,6 @@ class ActualizarColaboradorForm(ModelForm):
 
 
 class ProcesosDisciplinariosForm(ModelForm):
-
   class Meta:
     model = ProcesosDisciplinarios
     fields = '__all__'
@@ -208,7 +206,6 @@ class ProcesosDisciplinariosForm(ModelForm):
 
 
 class ActualizarProcesosDisciplinariosForm(ModelForm):
-
   class Meta:
     model = ProcesosDisciplinarios
     fields = '__all__'
@@ -230,7 +227,6 @@ class ActualizarProcesosDisciplinariosForm(ModelForm):
 
 
 class TecnicoForm(ModelForm):
-
   class Meta:
     model = TecnicosOperarios
     fields = '__all__'
@@ -253,3 +249,114 @@ class ReportGestionHumanaForm(forms.Form):
         'class': 'form-control',
         'autocomplete': 'off'
     }))
+
+
+class EntregaDotacionForm(ModelForm):
+
+  class Meta:
+    model = EntregaDotacion
+    fields = '__all__'
+    exclude = [
+      'colaborador'
+    ]
+    widgets = {
+      'fecha_entrega': DateInput(attrs = {
+      'class': 'form-control',
+      'autocomplete': 'off',
+    }),
+    }
+
+
+class CapacitacionForm(ModelForm):
+
+  class Meta:
+    model = Capacitacion
+    fields = '__all__'
+    exclude = [
+      'colaborador'
+    ]
+    widgets = {
+      'fecha_capacitacion': DateInput(attrs = {
+      'class': 'form-control',
+      'autocomplete': 'off',
+    }),
+    }
+
+
+class ExamenesMedicosForm(ModelForm):
+
+  class Meta:
+    model = ExamenesMedicos
+    fields = '__all__'
+    exclude = [
+      'colaborador'
+    ]
+    widgets = {
+      'fecha_examen': DateInput(attrs = {
+      'class': 'form-control',
+      'autocomplete': 'off',
+    }),
+    }
+
+
+class ActualizarExamenForm(ModelForm):
+  class Meta:
+    model = ExamenesMedicos
+    fields = '__all__'
+    exclude = [
+      'colaborador'
+    ]
+
+  def save(self, commit:True):
+    data = {}
+    form = super()
+    try:
+      if form.is_valid():
+        form.save()
+      else:
+        data['error'] = form.errors
+    except Exception  as e:
+      data['error'] = str(e)
+    return data
+
+
+class ActualizarDotacionForm(ModelForm):
+  class Meta:
+    model = EntregaDotacion
+    fields = '__all__'
+    exclude = [
+      'colaborador'
+    ]
+
+  def save(self, commit:True):
+    data = {}
+    form = super()
+    try:
+      if form.is_valid():
+        form.save()
+      else:
+        data['error'] = form.errors
+    except Exception  as e:
+      data['error'] = str(e)
+    return data
+
+
+class ActualizarCapacitacionForm(ModelForm):
+  class Meta:
+    model = Capacitacion
+    fields = '__all__'
+    exclude = [
+      'colaborador'
+    ]
+
+  def save(self, commit:True):
+    data = {}
+    form = super()
+    try:
+      if form.is_valid():
+        form.save()
+      else:
+        data['error'] = form.errors
+    except Exception  as e:
+      data['error'] = str(e)
+    return data

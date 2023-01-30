@@ -48,5 +48,10 @@ urlpatterns = [
         view=views.DetalleInspeccionMpView.as_view(), 
         name='detalle-inspeccion-mp'
     ),
+    path(
+        route='actualizar-inspeccion-mp/<int:pk>', 
+        view=views.ActualizarInspeccionMPView.as_view(), 
+        name='actualizar-inspeccion-mp'
+    ),
 
 ]

@@ -391,11 +391,11 @@ class Ingresos(LoginRequiredMixin, ValidatePermissionRequiredMixin, ListView):
           item = i.toJSON()
           for inspeccion in MateriaPrimaInsumos.objects.filter(materia_prima_insumo = i.id):
             ids.append(inspeccion.materia_prima_insumo_id)
+          item['referencia'] = i.ingreso_materia_prima.referencia
           item['inspeccion'] = inspeccion.id if i.id in ids else 0
           item['material'] = i.ingreso_materia_prima.nombre
           item['categoria'] = i.ingreso_materia_prima.categoria
           item['existe'] = 1 if i.id in ids else 0
-          print(item)
           data.append(item)
       else:
         data['error'] = 'Ha ocurrido un error'

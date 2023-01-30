@@ -11,7 +11,6 @@
 {% block columnas %}
 
 <tr>
-    <th>Id</th>
     <th>Nombre</th>
     <th>No. Documento</th>
     <th>Teléfono Contacto</th>
@@ -19,7 +18,8 @@
     <th>Contacto Emergencia</th>
     <th>Parentezco</th>
     <th>Teléfono Emergencia</th>
-    <th>Opciones</th>
+    <th>Crear</th>
+    <th>Actualizar</th>
 </tr>
 
 {% endblock %}
@@ -80,6 +80,95 @@
                             <th>Carta Citación</th>
                             <th>Acta</th>
                             <th>Decisión</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModalDetExamenes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><b>
+                    <i class="fas fa-gavel"></i>
+                    Exámenes Médicos</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" id="tblDetExamenes">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Fecha exámen</th>
+                            <th>Motivo</th>
+                            <th>Resultados</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModalDetCapacitacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><b>
+                    <i class="fas fa-gavel"></i>
+                    Capacitaciones</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" id="tblDetCapacitacion">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Tema</th>
+                            <th>Fecha de capacitación</th>
+                            <th>Certificado</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModalDetDotacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><b>
+                    <i class="fas fa-gavel"></i>
+                    Entrega de dotación</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" id="tblDetDotacion">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Fecha de entrega</th>
+                            <th>Certificado</th>
                             <th>Opciones</th>
                         </tr>
                     </thead>
