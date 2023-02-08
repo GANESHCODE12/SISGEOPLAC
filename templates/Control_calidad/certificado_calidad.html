@@ -69,7 +69,7 @@
                     </tr>
                     <tr scope="row">
                         <td class="bg-secondary" id="titulos">Fecha de vencimiento</td>
-                        <td style="text-align: center;" colspan="3">{{ fecha_vencimiento|date:"F Y" }}</td>
+                        <td style="text-align: center;">{{ fecha_vencimiento|date:"F Y" }}</td>
                         <td class="bg-secondary" id="titulos">Cant. solicitada</td>
                         <td style="text-align: center;">{{ CertificadosCalidad.cantidad_solicitada }}</td>
                     </tr>
@@ -154,6 +154,7 @@
         </div>
     </div>
 </div>
+<br>
 <div class="card card-dark" id="line-card">
     <div class="card-header">
         <div class="container-fluid" style="text-align: center;">
@@ -213,33 +214,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-<div class="card card-dark" id="salto-pagina">
-    <div class="card-header">
-        <div class="container-fluid" style="text-align: center;">
-            MATERIA PRIMA E INSUMOS
-        </div>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <tbody>
-                    <tr scope="row">
-                        <th class="bg-secondary" id="titulos" style="text-align: center;">NOMBRE</th>
-                        <th class="bg-secondary" id="titulos" style="text-align: center;">CATEGORIA</th>
-                        <th class="bg-secondary" id="titulos" style="text-align: center;">LOTE</th>
-                    </tr>
-                    {% for instance in material.all %}
-                    <tr>
-                        <td>{{ instance.material_solicitado.ingreso_materia_prima.nombre }}</td>
-                        <td style="text-align: center;">{{ instance.categoria }}</td>
-                        <td style="text-align: center;">{{ instance.material_solicitado.lote }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
         </div>
     </div>
 </div>

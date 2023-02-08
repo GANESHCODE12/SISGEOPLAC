@@ -15,6 +15,7 @@ from notify.signals import notificar
 
 #Modelos
 from users.models import User
+from Control_produccion.models import ControlProduccion
 
 
 class Produccion(models.Model):
@@ -183,12 +184,35 @@ class Produccion(models.Model):
         maximo_material = self.cantidad_maxima * 0.98
         return maximo_material
     
-    #incluir en master
     @property
     def tiempo_esperado(self):
         merma_tiempo = (3600 * self.producto.productos.cavidades)/self.producto.productos.ciclo
         tiempo_esperado = (self.cantidad_requerida/merma_tiempo) * 1.1
         return tiempo_esperado
+
+    @property
+    def tiempo_paradas(self):
+
+        controles = ControlProduccion.objects.filter(numero_op_id=self.numero_op)
+
+        for control in controles:
+            return control.tiempo_total_paradas.total_seconds()
+
+    @property
+    def resta_tiempos(self):
+
+        controles = ControlProduccion.objects.filter(numero_op_id=self.numero_op)
+
+        for control in controles:
+            return control.resta_tiempos.total_seconds()
+
+    @property
+    def tiempo_produccion(self):
+
+        controles = ControlProduccion.objects.filter(numero_op_id=self.numero_op)
+
+        for control in controles:
+            return control.tiempo_produccion.total_seconds()
 
     class Meta:
         """Configuración del modelo"""

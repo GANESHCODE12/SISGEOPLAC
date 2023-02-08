@@ -195,10 +195,55 @@ class ColaboradorControlProduccion(models.Model):
 
     def toJSON(self):
         item = model_to_dict(self)
-        item['control'] = self.controlproduccion_set.all()
-        item['colaboradores'] = self.tecnicosoperarios_set.all()
         return item
+
+    @property
+    def resta_tiempos(self):
+        """Retorna la diferencia de tiempo inicio y final de producción"""
+
+        return self.control.hora_final - self.control.hora_inicio
+
+    @property
+    def tiempo_total_paradas(self):
+        """Retorna el tiempo total de paradas"""
+
+        horas = 0
+        minutos = 0
+        paradas = TiemposParadasControlProduccion.objects.filter(control_id=self.control_id)
+
+        for parada in paradas:
+            horas += parada.horas
+            minutos += parada.minutos
+    
+        tiempo_total_paradas = timedelta(hours=horas, minutes=minutos)
+        return tiempo_total_paradas
+
+    @property
+    def tiempo_produccion(self):
+        """Retorna el tiempo total de producción"""
+    
+        resultado = self.resta_tiempos - self.tiempo_total_paradas
+
+        return resultado
         
+    @property
+    def cantidad_esperada_turno(self):
+        """Retorna la cantida esperada por turno"""
+
+        cantidad = (self.control.numero_op.producto.productos.cavidades / self.control.numero_op.producto.productos.ciclo)
+
+        return cantidad * self.tiempo_produccion.total_seconds()
+
+    @property
+    def rendimiento_produccion(self):
+        """Retorna en porcentaje el rendimiento de producción"""
+
+        cantidad_esperada = self.cantidad_esperada_turno if self.cantidad_esperada_turno != 0 else 1
+        
+        return (
+            self.control.cantidad_producida / cantidad_esperada
+        ) * 100
+    
     class Meta:
         """Configuración del modelo"""
 

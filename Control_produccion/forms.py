@@ -65,7 +65,6 @@ class CrearControlForm(ModelForm):
                 'style': 'width: 100%'
             }),
         }
-        
 
 
 class CrearMotivoForm(ModelForm):

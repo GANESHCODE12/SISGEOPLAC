@@ -38,5 +38,20 @@ urlpatterns = [
         view=views.HistoricoControlView.as_view(), 
         name='historico-controles'
     ),
+    path(
+        route='reporte-controles', 
+        view=views.ReporteControlView.as_view(), 
+        name='reporte-controles'
+    ),
+    path(
+        route='reporte-rendimiento', 
+        view=views.ReporteRendimientoView.as_view(), 
+        name='reporte-rendimiento'
+    ),
+    path(
+        route='reporte-paradas', 
+        view=views.ReporteParadasView.as_view(), 
+        name='reporte-paradas'
+    ),
 
 ]

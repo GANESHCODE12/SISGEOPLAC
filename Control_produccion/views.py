@@ -288,4 +288,128 @@ class HistoricoControlView(TemplateView):
         context['entity'] = 'Historico'
         context['form'] = HistoricalForm()
         return context
+
+
+class ReporteControlView(TemplateView):
+    template_name = 'Control_produccion/reporte_control.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'search_report':
+                data = []
+                start_date = request.POST.get('start_date', '')
+                end_date = request.POST.get('end_date', '')
+                search = Produccion.objects.all()
+                if len(start_date) and len(end_date):
+                    search = search.filter(fecha_creacion__range=[start_date, end_date])
+                for i in search:
+                    item = i.toJSON()
+                    item['orden'] = i.numero_op
+                    item['tiempo_paradas'] = i.tiempo_paradas
+                    item['tiempo_produccion'] = i.resta_tiempos
+                    item['tiempo_real'] = i.tiempo_produccion
+                    item['tiempo_esperado'] = round(timedelta(hours=i.tiempo_esperado).total_seconds(), 2)
+                    item['cumplimiento'] = round((i.tiempo_esperado / i.resta_tiempos if i.resta_tiempos is not None else 1) * 100, 2)
+                    data.append(item)
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Reporte controles'
+        context['list_url'] = reverse_lazy('Reportes')
+        context['entity'] = 'Reportes'
+        context['form'] = HistoricalForm()
+        return context
+
+
+class ReporteRendimientoView(TemplateView):
+    template_name = 'Control_produccion/reporte_rendimiento.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'search_report':
+                data = []
+                start_date = request.POST.get('start_date', '')
+                end_date = request.POST.get('end_date', '')
+                search = ColaboradorControlProduccion.objects.all()
+                if len(start_date) and len(end_date):
+                    search = search.filter(control__fecha_creacion__range=[start_date, end_date])
+                for i in search:
+                    item = i.toJSON()
+                    item['control'] = i.control_id
+                    item['numero_op'] = i.control.numero_op_id
+                    item['colaborador'] = i.colaborador.nombre
+                    item['cargo'] = i.colaborador.cargo
+                    item['cantidad_producida'] = i.control.cantidad_producida
+                    item['cantidad_esperada'] = round(i.cantidad_esperada_turno, 2)
+                    item['rendimiento'] = round(i.rendimiento_produccion, 2)
+                    data.append(item)
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Reporte rendimiento'
+        context['list_url'] = reverse_lazy('Reportes')
+        context['entity'] = 'Reportes'
+        context['form'] = HistoricalForm()
+        return context
+
+
+class ReporteParadasView(TemplateView):
+    template_name = 'Control_produccion/reporte_paradas.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'search_report':
+                data = []
+                start_date = request.POST.get('start_date', '')
+                end_date = request.POST.get('end_date', '')
+                search = TiemposParadasControlProduccion.objects.all()
+                if len(start_date) and len(end_date):
+                    search = search.filter(control__fecha_creacion__range=[start_date, end_date])
+                for i in search:
+                    item = i.toJSON()
+                    item['control'] = i.control_id
+                    item['numero_op'] = i.control.numero_op_id
+                    item['motivo'] = i.motivo.motivo
+                    item['tiempo_paradas'] = i.tiempo_paradas.total_seconds()
+                    data.append(item)
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Reporte paradas'
+        context['list_url'] = reverse_lazy('Reportes')
+        context['entity'] = 'Reportes'
+        context['form'] = HistoricalForm()
         return context
