@@ -301,6 +301,12 @@ class TiemposParadasControlProduccion(models.Model):
         verbose_name="Minutos",
         null=True
     )
+    observacion = models.CharField(
+        max_length=200,
+        null=True,
+        blank=True,
+        verbose_name='Observación'
+    )
 
     def __str__(self):
         return 'Control Producción: {}, Motivo: {}'.format(self.control, self.motivo)

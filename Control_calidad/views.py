@@ -595,6 +595,8 @@ class CrearCertificadoView(LoginRequiredMixin, ValidatePermissionRequiredMixin, 
                 certificado.cantidad_solicitada = request.POST['cantidad_solicitada']
                 certificado.empaque_y_embalaje = request.POST['empaque_y_embalaje']
                 certificado.cliente_despacho = request.POST['cliente_despacho']
+                certificado.codigo_cliente = request.POST['codigo_cliente']
+                certificado.observaciones = request.POST['observaciones']
                 certificado.save(self)
             else:
                 data['error'] = 'No ha ingresado a ninguna opción'

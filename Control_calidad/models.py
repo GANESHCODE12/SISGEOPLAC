@@ -684,6 +684,17 @@ class CertificadosCalidad(models.Model):
         null=True,
         max_length=30
     )
+    codigo_cliente = models.CharField(
+        blank=True,
+        verbose_name='Código cliente',
+        null=True,
+        max_length=30
+    )
+    observaciones = models.TextField(
+        blank=True,
+        verbose_name='Observaciones',
+        null=True,
+    )
 
     def save(self, force_insert=False, force_update= False, using=None, update_fields=None):
         user = get_current_user()

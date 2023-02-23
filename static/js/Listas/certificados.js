@@ -2,8 +2,11 @@ var tblCertificados;
 
 $(function () {
     tblCertificados = $('#data').DataTable({
+        responsive: true,
         order: [0, 'desc'],
         pageLength: 25,
+        autoWidth: false,
+        destroy: true,
         deferRender: true,
         ajax: {
             url: window.location.pathname,

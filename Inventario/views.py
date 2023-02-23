@@ -392,6 +392,7 @@ class Ingresos(LoginRequiredMixin, ValidatePermissionRequiredMixin, ListView):
           for inspeccion in MateriaPrimaInsumos.objects.filter(materia_prima_insumo = i.id):
             ids.append(inspeccion.materia_prima_insumo_id)
           item['referencia'] = i.ingreso_materia_prima.referencia
+          item['unidad_medida'] = i.ingreso_materia_prima.Unidad_Meidida
           item['inspeccion'] = inspeccion.id if i.id in ids else 0
           item['material'] = i.ingreso_materia_prima.nombre
           item['categoria'] = i.ingreso_materia_prima.categoria

@@ -45,8 +45,10 @@ class CrearCertificadoForm(ModelForm):
         fields = [
             'fecha_despacho',
             'cliente_despacho',
+            'codigo_cliente',
             'cantidad_solicitada',
             'empaque_y_embalaje',
+            'observaciones'
         ]
         widgets = {
             'fecha_despacho': DateInput()

@@ -95,11 +95,13 @@
                         <tr>
                             <th class="list-group-item-dark" style="text-align: center;">MOTIVO</th>
                             <th class="list-group-item-dark" style="text-align: center;">TIEMPO</th>
+                            <th class="list-group-item-dark" style="text-align: center;">OBSERVACIÓN</th>
                         </tr>
                         {% for parada in paradas.all %}
                         <tr>
                             <td style="text-align: center;">{{ parada.motivo.motivo }}</td>
                             <td style="text-align: center;">{{ parada.tiempo_paradas }}</td>
+                            <td style="text-align: center;">{{ parada.observacion }}</td>
                         </tr>
                         {% endfor %}
                         <tr>

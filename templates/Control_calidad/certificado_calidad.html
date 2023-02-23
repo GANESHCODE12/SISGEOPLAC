@@ -52,7 +52,7 @@
                     <tr scope="row">
                         <td class="bg-secondary" id="titulos">Producto</td>
                         <td style="text-align: center;">{{ controlcalidad.numero_op.producto.productos.Nombre_producto }}</td>
-                        <td class="bg-secondary"id="titulos">No. de lote</td>
+                        <td class="bg-secondary"id="titulos">Orden No.</td>
                         <td style="text-align: center;">{{ controlcalidad.numero_op }}-{{ controlcalidad.numero_op.fecha_creacion.year }}</td>
                     </tr>
                     <tr scope="row">
@@ -73,7 +73,14 @@
                         <td class="bg-secondary" id="titulos">Cant. solicitada</td>
                         <td style="text-align: center;">{{ CertificadosCalidad.cantidad_solicitada }}</td>
                     </tr>
-                    
+                    <tr scope="row">
+                        <td class="bg-secondary" id="titulos">Código Cliente</td>
+                        {% if CertificadosCalidad.codigo_cliente %}
+                        <td style="text-align: center;">{{ CertificadosCalidad.codigo_cliente }}</td>
+                        {% else %}
+                        <td style="text-align: center;">N/A</td>
+                        {% endif %}
+                    </tr>                    
                 </tbody>
             </table>
         </div>
@@ -226,6 +233,22 @@
         </div>
         <div class="card-body">
                 <div>{{ CertificadosCalidad.empaque_y_embalaje }}</div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid py-4">
+    <div class="card card-dark" id="line-card">
+        <div class="card-header">
+            <div class="container-fluid" style="text-align: center;">
+                OBSERVACIONES
+            </div>
+        </div>
+        <div class="card-body">
+            {% if CertificadosCalidad.observaciones %}
+            <div>{{ CertificadosCalidad.observaciones }}</div>
+            {% else %}
+            <div></div>
+            {% endif %}
         </div>
     </div>
 </div>

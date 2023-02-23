@@ -131,6 +131,7 @@ class CrearNuevoControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin,
                         modelo_motivo.motivo_id = motivo['id']
                         modelo_motivo.horas = int(motivo['horas'])
                         modelo_motivo.minutos = int(motivo['minutos'])
+                        modelo_motivo.observacion = motivo['observacion']
                         modelo_motivo.save(self)
             elif action == 'search_colaborador':
                 data = []
@@ -152,6 +153,7 @@ class CrearNuevoControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin,
                     item['text'] = i.motivo
                     item['minutos'] = 0
                     item['horas'] = 0
+                    item['observacion'] = ''
                     data.append(item)
             elif action == 'create_element':
                 with transaction.atomic():

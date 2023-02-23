@@ -107,6 +107,7 @@ var control = {
                 { "data": "motivo" },
                 { "data": "horas" },
                 { "data": "minutos" },
+                { "data": "observacion" },
             ],
             columnDefs: [
                 {
@@ -118,7 +119,7 @@ var control = {
                     }
                 },
                 {
-                    targets: [-2],
+                    targets: [-3],
                     class: 'text-center',
                     orderable: false,
                     render: function (data, type, row) {
@@ -126,11 +127,19 @@ var control = {
                     }
                 },
                 {
-                    targets: [-1],
+                    targets: [-2],
                     class: 'text-center',
                     orderable: false,
                     render: function (data, type, row) {
                         return '<input type="number" name="minutos" class="form-control form-control-sm input-sm" autocomplete="off" value="' + row.minutos + '">';
+                    }
+                },
+                {
+                    targets: [-1],
+                    class: 'text-center',
+                    orderable: false,
+                    render: function (data, type, row) {
+                        return '<input type="text" name="observacion" class="form-control form-control-sm input-sm" autocomplete="off" value="' + row.observacion + '">';
                     }
                 },
             ],
@@ -234,6 +243,10 @@ $(function () {
         var horas = $(this).val();
         var tr = tblParadas.cell($(this).closest('td, li')).index();
         control.items.motivo[tr.row].horas = horas; 
+    }).on('change', 'input[name="observacion"]', function () {
+        var observacion = $(this).val();
+        var tr = tblParadas.cell($(this).closest('td, li')).index();
+        control.items.motivo[tr.row].observacion = observacion; 
     });
     
 

@@ -19,6 +19,7 @@ $(function () {
         columns: [
             {"data": "material"},
             {"data": "referencia"},
+            {"data": "unidad_medida"},
             {"data": "lote"},
             {"data": "categoria"},
             {"data": "fecha_ingreso"},
@@ -46,7 +47,7 @@ $(function () {
                 visible: false
             },
             {
-                targets: [4],
+                targets: [5],
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
@@ -56,7 +57,7 @@ $(function () {
                 "type": 'date'
             },
             {
-                targets: [3],
+                targets: [6],
                 class: 'text-center',
                 render: function (data, type, row) {
                     return data.toString().replace(

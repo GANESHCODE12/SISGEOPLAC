@@ -383,6 +383,12 @@ class TecnicosOperarios(models.Model):
     cargo_list = [
         ('Técnico', 'Técnico'),
         ('Operario', 'Operario'),
+        ('Analista', 'Analista'),
+        ('Operario lider', 'Operario lider'),
+        ('MYM', 'MYM'),
+        ('Jefe producción', 'Jefe producción'),
+        ('Jefe calidad', 'Jefe calidad'),
+        ('Jefe operativo', 'Jefe operativo'),
     ]
 
     cargo = models.CharField(
