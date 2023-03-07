@@ -16,8 +16,13 @@ from PNC.forms import ActualizarPNC, CrearPncForm, MotivoForm, ReportPncForm
 # Models
 from PNC.models import MotivoPnc, ProductoNoConforme, TrazabilidadProductoNoConforme
 from Control_calidad.models import ControlCalidad, ColaboradorInspeccionCalidad
+from Gestion_Humana.models import TecnicosOperarios
+from django.contrib.auth.models import Group
 
 # Utils
+from Plasmotec import utils
+import threading
+from datetime import date
 import json
 
 
@@ -45,7 +50,6 @@ class ListaPNC(LoginRequiredMixin, ListView):
                     item['color'] = i.id_inspeccion.numero_op.producto.color.color
                     item['inspector'] = i.inspector_calidad.get_full_name()
                     item['turno'] = i.id_inspeccion.turno
-                    item['colaboradores'] = [{'nombre': colaborador.colaborador.nombre} for colaborador in colaboradores]
                     item['tipo_pnc'] = i.tipo_pnc.motivo
                     data.append(item)
             else:
@@ -88,7 +92,46 @@ class NuevoPncView(LoginRequiredMixin, CreateView):
                         pnc_model.estado_pnc = pnc['estado_pnc']
                         pnc_model.cantidad_pnc = pnc['cantidad_pnc']
                         pnc_model.observaciones = pnc['observaciones']
+                        pnc_model.tecnico = pnc['tecnico']
+                        pnc_model.operario_1 = pnc['operario_1']
+                        pnc_model.operario_2 = pnc['operario_2']
+                        pnc_model.operario_3 = pnc['operario_3']
                         pnc_model.save(self)
+
+                        inspeccion = ControlCalidad.objects.get(id=kwargs.get('pk'))
+                        tipo_pnc = MotivoPnc.objects.get(id=pnc['id'])
+
+                        groups = Group.objects.get(name="Ordenes producción")
+                        users_groups = groups.user_set.all()
+
+                        usuarios = [usuario.email for usuario in users_groups]
+
+                        threading_emails = threading.Thread(target=utils.send_email,
+                            args=(
+                            'confidencial@plasmotecsas.com',
+                            usuarios,
+                            'Plasmotec - Se ha creado el PNC {}, de la orden {} con el producto {} {}'.format(
+                                pnc_model.id,
+                                inspeccion.numero_op_id,
+                                inspeccion.numero_op.producto.productos.Nombre_producto,
+                                inspeccion.numero_op.producto.color.color
+                            ),
+                            'pnc',
+                            {
+                                "producto": '{} {}'.format(
+                                    inspeccion.numero_op.producto.productos.Nombre_producto, 
+                                    inspeccion.numero_op.producto.color.color
+                                ),
+                                "pnc": pnc_model.id,
+                                "orden": inspeccion.numero_op_id,
+                                "motivo": tipo_pnc.motivo,
+                                "estado": pnc['estado_pnc'],
+                                "cantidad": pnc['cantidad_pnc'],
+                            },
+                        ))
+
+                        threading_emails.start()
+
                     for pnc in pnc_post['pnc_post']:
                         pnc_trazabilidad = TrazabilidadProductoNoConforme()
                         pnc_trazabilidad.id_inspeccion_id = kwargs.get('pk')
@@ -96,6 +139,10 @@ class NuevoPncView(LoginRequiredMixin, CreateView):
                         pnc_trazabilidad.estado_pnc = pnc['estado_pnc']
                         pnc_trazabilidad.cantidad_pnc = pnc['cantidad_pnc']
                         pnc_trazabilidad.observaciones = pnc['observaciones']
+                        pnc_trazabilidad.tecnico = pnc['tecnico']
+                        pnc_trazabilidad.operario_1 = pnc['operario_1']
+                        pnc_trazabilidad.operario_2 = pnc['operario_2']
+                        pnc_trazabilidad.operario_3 = pnc['operario_3']
                         pnc_trazabilidad.save(self)
             elif action == 'search_motivo':
                 data = []
@@ -108,6 +155,10 @@ class NuevoPncView(LoginRequiredMixin, CreateView):
                     item['text'] = i.motivo
                     item['id_pnc'] = ''
                     item['observaciones'] = ''
+                    item['tecnico'] = [tecnico.nombre for tecnico in TecnicosOperarios.objects.all()]
+                    item['operario_1'] = ''
+                    item['operario_2'] = ''
+                    item['operario_3'] = ''
                     data.append(item)
             else:
                 data['error'] = 'No ha ingresado a ninguna opción!'
@@ -122,8 +173,7 @@ class NuevoPncView(LoginRequiredMixin, CreateView):
         pk = self.kwargs.get('pk')
         context = super().get_context_data(**kwargs)
         context['control_calidad'] = ControlCalidad.objects.get(pk=pk)
-        context['pnc'] = ProductoNoConforme.objects.all().filter(
-            id_inspeccion=pk)
+        context['pnc'] = ProductoNoConforme.objects.all().filter(id_inspeccion=pk)
         context['title'] = "Nuevo Producto No Conforme"
         context['list_url'] = reverse_lazy('PNC:Productos_no_conformes')
         context['entity'] = 'Lista PNC'
@@ -145,8 +195,6 @@ class DetallePncView(LoginRequiredMixin, DetailView):
         pk = self.kwargs.get('pk')
         pnc = ProductoNoConforme.objects.get(pk=pk)
         context = super().get_context_data(**kwargs)
-        context['tecnicos'] = ColaboradorInspeccionCalidad.objects.filter(
-            inspeccion=pnc.id_inspeccion)
         context['title'] = 'Detalle PNC'
         context['list_url'] = reverse_lazy('PNC:Productos_no_conformes')
         context['entity'] = 'Lista PNC'
@@ -179,6 +227,10 @@ class ActualizarPNC(LoginRequiredMixin, TemplateView):
                 item['text'] = pnc.tipo_pnc.motivo
                 item['estado_pnc'] = pnc.estado_pnc
                 item['cantidad_pnc'] = pnc.cantidad_pnc
+                item['tecnico'] = pnc.tecnico
+                item['operario_1'] = pnc.operario_1 if pnc.operario_1 else ''
+                item['operario_2'] = pnc.operario_2 if pnc.operario_2 else ''
+                item['operario_3'] = pnc.operario_3 if pnc.operario_3 else ''
                 item['observaciones'] = pnc.observaciones
                 data.append(item)
         except Exception as exc:
@@ -203,7 +255,46 @@ class ActualizarPNC(LoginRequiredMixin, TemplateView):
                         pnc_model.estado_pnc = pnc['estado_pnc']
                         pnc_model.cantidad_pnc = pnc['cantidad_pnc']
                         pnc_model.observaciones = pnc['observaciones']
+                        pnc_model.tecnico = pnc['tecnico']
+                        pnc_model.operario_1 = pnc['operario_1']
+                        pnc_model.operario_2 = pnc['operario_2']
+                        pnc_model.operario_3 = pnc['operario_3']
                         pnc_model.save(self)
+
+                        inspeccion = ControlCalidad.objects.get(id=kwargs.get('pk'))
+                        tipo_pnc = MotivoPnc.objects.get(id=pnc['id'])
+
+                        groups = Group.objects.get(name="Ordenes producción")
+                        users_groups = groups.user_set.all()
+
+                        usuarios = [usuario.email for usuario in users_groups]
+
+                        threading_emails = threading.Thread(target=utils.send_email,
+                            args=(
+                            'confidencial@plasmotecsas.com',
+                            usuarios,
+                            'Plasmotec - Se han actualizado los PNC de la orden {} con el producto {} {}'.format(
+                                pnc_model.id,
+                                inspeccion.numero_op_id,
+                                inspeccion.numero_op.producto.productos.Nombre_producto,
+                                inspeccion.numero_op.producto.color.color
+                            ),
+                            'pnc_update',
+                            {
+                                "producto": '{} {}'.format(
+                                    inspeccion.numero_op.producto.productos.Nombre_producto, 
+                                    inspeccion.numero_op.producto.color.color
+                                ),
+                                "pnc": pnc_model.id,
+                                "orden": inspeccion.numero_op_id,
+                                "motivo": tipo_pnc.motivo,
+                                "estado": pnc['estado_pnc'],
+                                "cantidad": pnc['cantidad_pnc'],
+                            },
+                        ))
+
+                        threading_emails.start()
+
                     for pnc in pnc_post['pnc_post']:
                         pnc_trazabilidad = TrazabilidadProductoNoConforme()
                         pnc_trazabilidad.id_inspeccion_id = kwargs.get('pk')
@@ -211,6 +302,11 @@ class ActualizarPNC(LoginRequiredMixin, TemplateView):
                         pnc_trazabilidad.estado_pnc = pnc['estado_pnc']
                         pnc_trazabilidad.cantidad_pnc = pnc['cantidad_pnc']
                         pnc_trazabilidad.observaciones = pnc['observaciones']
+                        pnc_trazabilidad.observaciones = pnc['observaciones']
+                        pnc_trazabilidad.tecnico = pnc['tecnico']
+                        pnc_trazabilidad.operario_1 = pnc['operario_1']
+                        pnc_trazabilidad.operario_2 = pnc['operario_2']
+                        pnc_trazabilidad.operario_3 = pnc['operario_3']
                         pnc_trazabilidad.save(self)
             elif action == 'search_motivo':
                 data = []

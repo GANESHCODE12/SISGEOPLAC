@@ -22,6 +22,10 @@ var pnc = {
         { "data": "text" },
         { "data": "estado_pnc" },
         { "data": "cantidad_pnc" },
+        { "data": "tecnico" },
+        { "data": "operario_1" },
+        { "data": "operario_2" },
+        { "data": "operario_3" },
         { "data": "observaciones" },
         { "data": "id_pnc" },
       ],
@@ -33,6 +37,38 @@ var pnc = {
           render: function (data, type, row) {
             return '<a rel="remove" type="button" class="btn btn-danger btn-xs" style="color: white"><i class="fas fa-trash-alt"></i></a>';
           }
+        },
+        {
+          targets: [-6],
+          class: 'text-center',
+          orderable: false,
+          render: function (data, type, row) {
+              return '<input type="text" name="tecnico" class="form-control form-control-sm input-sm" value="' + row.operario_1 + '">';
+          } 
+        },
+        {
+          targets: [-5],
+          class: 'text-center',
+          orderable: false,
+          render: function (data, type, row) {
+              return '<input type="text" name="operario_1" class="form-control form-control-sm input-sm" value="' + row.operario_1 + '">'
+            } 
+        },
+        {
+          targets: [-4],
+          class: 'text-center',
+          orderable: false,
+          render: function (data, type, row) {
+              return '<input type="text" name="operario_2" class="form-control form-control-sm input-sm" value="' + row.operario_2 + '">'
+            } 
+        },
+        {
+          targets: [-3],
+          class: 'text-center',
+          orderable: false,
+          render: function (data, type, row) {
+              return '<input type="text" name="operario_3" class="form-control form-control-sm input-sm" value="' + row.operario_3 + '">'
+            } 
         },
         {
           targets: [2],
@@ -182,19 +218,32 @@ $(function () {
     });
   }).on('change', 'select[name="estado_pnc"]', function () {
     var estado_pnc = $(this).val();
-    console.log(estado_pnc)
     var tr = tblPnc.cell($(this).closest('td, li')).index();
     pnc.items.pnc_post[tr.row].estado_pnc = estado_pnc;
   }).on('change', 'input[name="cantidad_pnc"]', function () {
     var cantidad_pnc = $(this).val();
-    console.log(cantidad_pnc)
     var tr = tblPnc.cell($(this).closest('td, li')).index();
     pnc.items.pnc_post[tr.row].cantidad_pnc = cantidad_pnc;
   }).on('change', 'textarea[name="observaciones"]', function () {
     var observaciones = $(this).val();
-    console.log(observaciones)
     var tr = tblPnc.cell($(this).closest('td, li')).index();
     pnc.items.pnc_post[tr.row].observaciones = observaciones;
+  }).on('change', 'input[name="tecnico"]', function () {
+    var tecnico = $(this).val();
+    var tr = tblPnc.cell($(this).closest('td, li')).index();
+    pnc.items.pnc_post[tr.row].tecnico = tecnico;
+  }).on('change', 'input[name="operario_1"]', function () {
+    var operario_1 = $(this).val();
+    var tr = tblPnc.cell($(this).closest('td, li')).index();
+    pnc.items.pnc_post[tr.row].operario_1 = operario_1;
+  }).on('change', 'input[name="operario_2"]', function () {
+    var operario_2 = $(this).val();
+    var tr = tblPnc.cell($(this).closest('td, li')).index();
+    pnc.items.pnc_post[tr.row].operario_2 = operario_2;
+  }).on('change', 'input[name="operario_3"]', function () {
+    var operario_3 = $(this).val();
+    var tr = tblPnc.cell($(this).closest('td, li')).index();
+    pnc.items.pnc_post[tr.row].operario_3 = operario_3;
   });
 
   //Guardado de datos

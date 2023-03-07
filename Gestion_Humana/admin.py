@@ -1,3 +1,15 @@
+#Django
 from django.contrib import admin
 
-# Register your models here.
+#Models
+from Gestion_Humana.models import *
+
+
+@admin.register(TecnicosOperarios)
+class TecnicosOperariosAdmin(admin.ModelAdmin):
+  list_display = (
+    'nombre',
+    'cargo',
+    'codigo',
+  )
+  search_fields = ['nombre__icontains']

@@ -1,0 +1,22 @@
+{% extends 'emails/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 21px; color: #555555;">
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Buenos días!!</p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">
+      Se ha creado el producto no conforme: {{ pnc }} 
+      de la orden:{{ orden }}, relacionada con el producto {{ producto }}
+      con la siguiente información:
+    </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Motivo: {{ motivo }}</p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Estado: {{ estado }}</p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Cantidad: {{ cantidad }}</p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Saludos!!</p>
+</div>
+{% endblock %}

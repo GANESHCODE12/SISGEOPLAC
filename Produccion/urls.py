@@ -38,4 +38,14 @@ urlpatterns = [
         view=views.CrearDesarrolloView.as_view(), 
         name='nuevo-desarrollo'
     ),
+    path(
+        route='historico-ordenes', 
+        view=views.HistoricoOrdenView.as_view(), 
+        name='historico-ordenes'
+    ),
+    path(
+        route='detalle-historico-ordenes/orden-<int:pk>', 
+        view=views.DetalleHistoricoOrdenView.as_view(), 
+        name='detalle-historico-ordenes'
+    ),
 ]

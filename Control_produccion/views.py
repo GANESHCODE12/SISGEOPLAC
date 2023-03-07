@@ -38,10 +38,7 @@ class ListaControl(LoginRequiredMixin, ValidatePermissionRequiredMixin, ListView
 
     def post(self, request, *args, **kwargs):
         data = {}
-        fecha_ultimo_control = ControlProduccion.objects.first().fecha_creacion
-        recientes = fecha_ultimo_control - timedelta(hours=1460)
-        controles = ControlProduccion.objects.filter(
-            fecha_creacion__gte=recientes)
+        controles = ControlProduccion.objects.all()[:100]
         try:
             action = request.POST['action']
             if action == 'searchdata':

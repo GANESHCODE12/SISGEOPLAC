@@ -1,6 +1,7 @@
 """Vistas de la aplicación de producción"""
 
 #Django
+from audioop import reverse
 from tokenize import group
 from django.http.response import JsonResponse
 from django.urls import reverse_lazy
@@ -8,7 +9,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, DetailView, UpdateView, ListView
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
+from django.core.exceptions import ObjectDoesNotExist
 
 #Form
 from Produccion.forms import *
@@ -53,7 +55,7 @@ class ListaOrdenesView(LoginRequiredMixin, ListView):
             action = request.POST['action']
             if action == 'searchdata':
                 data = []
-                produccion_query = Produccion.objects.all().iterator()
+                produccion_query = Produccion.objects.all()[:100]
                 for i in produccion_query:
                     saldo_a =ControlProduccion.objects.all(
                     ).filter(numero_op_id = i.numero_op
@@ -443,3 +445,50 @@ class CrearDesarrolloView(LoginRequiredMixin, ValidatePermissionRequiredMixin, C
         context['entity'] = 'Desarrollo'
         context['action'] = 'add'
         return context 
+
+
+class HistoricoOrdenView(LoginRequiredMixin, ListView):
+    model =Produccion
+    template_name = 'Produccion/historico_ordenes.html'
+    context_object_name = 'ordenes'
+
+    def get_queryset(self):
+        order_number = self.request.GET.get('orden', None)
+        if order_number:
+            try:
+                queryset = Produccion.objects.filter(numero_op=order_number)
+            except ObjectDoesNotExist:
+                return redirect(reverse('historico-ordenes') + '&error=numero_op_no_existe')
+        else:
+            queryset = Produccion.objects.none()
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Historico Ordenes'
+        context['list_url'] = reverse_lazy('Historico')
+        context['entity'] = 'Historico'
+        context['form'] = HistoricalForm()
+        return context
+
+
+class DetalleHistoricoOrdenView(LoginRequiredMixin, ValidatePermissionRequiredMixin, DetailView):
+
+    template_name = 'Produccion/detalle_historico.html'
+    queryset = Produccion.objects.all()
+    context_object_name = 'Produccion'
+    permission_required = 'view_produccion'
+
+    def get_context_data(self, **kwargs):
+
+        pk = self.kwargs.get('pk')
+        produccion = Produccion.objects.get(numero_op=pk)
+        context = super().get_context_data(**kwargs)
+        context['materia_prima'] = Requisicion.objects.all().filter(numero_orden=pk, material_solicitado__ingreso_materia_prima__categoria="Materia Prima").last()
+        context['pigmento'] = Requisicion.objects.all().filter(numero_orden=pk, material_solicitado__ingreso_materia_prima__categoria="Pigmento").last()
+        context['title'] = 'Detalle Orden'
+        context['list_url'] = reverse_lazy('Produccion:historico-ordenes')
+        context['entity'] = 'Historico'
+        context['action'] = 'add'
+        context['anio'] = produccion.fecha_creacion.year
+        return context

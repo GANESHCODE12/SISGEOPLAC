@@ -24,7 +24,6 @@ $(function () {
             {"data": "id_inspeccion"},
             {"data": "estado_pnc"},
             {"data": "cantidad_pnc"},
-            {"data": "colaboradores"},
             {"data": "opciones"},
         ],
         columnDefs: [
@@ -46,18 +45,6 @@ $(function () {
                 },
 
                 "type": 'date'
-            },
-            {
-                targets: [-2],
-                class: 'text-center',
-                orderable: false,
-                render: function (data, type, row) {
-                    var html = '';
-                    $.each(row.colaboradores, function (key, value) {
-                        html += '<span class="badge badge-success">'+value.nombre+'</span> ';
-                    });
-                    return html;
-                },
             },
         ],
         initComplete: function (settings, json) {

@@ -54,17 +54,33 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th class="list-group-item-dark" style="text-align: center;">NOMBRE</th>
-                            <th class="list-group-item-dark" style="text-align: center;">CARGO</th>
-                            <th class="list-group-item-dark" style="text-align: center;">CÓDIGO</th>
+                            {% if ProductoNoConforme.tecnico %}
+                            <th class="list-group-item-dark" style="text-align: center;">TÉCNICO</th>
+                            {% endif %}
+                            {% if ProductoNoConforme.operario_1 %}
+                            <th class="list-group-item-dark" style="text-align: center;">OPERARIO</th>
+                            {% endif %}
+                            {% if ProductoNoConforme.operario_2 %}
+                            <th class="list-group-item-dark" style="text-align: center;">OPERARIO</th>
+                            {% endif %}
+                            {% if ProductoNoConforme.operario_3 %}
+                            <th class="list-group-item-dark" style="text-align: center;">OPERARIO</th>
+                            {% endif %}
                         </tr>
-                        {% for tecnico in tecnicos.all %}
                         <tr>
-                            <td style="text-align: center;">{{ tecnico.colaborador.nombre }}</td>
-                            <td style="text-align: center;">{{ tecnico.colaborador.cargo }}</td>
-                            <td style="text-align: center;">{{ tecnico.colaborador.codigo }}</td>
+                            {% if ProductoNoConforme.tecnico %}
+                            <td style="text-align: center;">{{ ProductoNoConforme.tecnico }}</td>
+                            {% endif %}
+                            {% if ProductoNoConforme.operario_1 %}
+                            <td style="text-align: center;">{{ ProductoNoConforme.operario_1 }}</td>
+                            {% endif %}
+                            {% if ProductoNoConforme.operario_2 %}
+                            <td style="text-align: center;">{{ ProductoNoConforme.operario_2 }}</td>
+                            {% endif %}
+                            {% if ProductoNoConforme.operario_3 %}
+                            <td style="text-align: center;">{{ ProductoNoConforme.operario_3 }}</td>
+                            {% endif %}
                         </tr>
-                        {% endfor %}
                     </tbody>
                 </table>
             </div>

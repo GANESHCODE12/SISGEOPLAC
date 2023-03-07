@@ -76,6 +76,30 @@ class ProductoNoConforme(models.Model):
     cantidad_pnc = models.PositiveIntegerField(
         verbose_name='Cantidad PNC'
     )
+    tecnico = models.CharField(
+        max_length=100,
+        verbose_name='Técnico',
+        blank=True,
+        null=True
+    )
+    operario_1 = models.CharField(
+        max_length=100,
+        verbose_name='Operario 1',
+        blank=True,
+        null=True
+    )
+    operario_2 = models.CharField(
+        max_length=100,
+        verbose_name='Operario 2',
+        blank=True,
+        null=True
+    )
+    operario_3 = models.CharField(
+        max_length=100,
+        verbose_name='Operario 3',
+        blank=True,
+        null=True
+    )
     observaciones = models.TextField(
         blank=True,
         verbose_name='Observaciones'
@@ -149,6 +173,30 @@ class TrazabilidadProductoNoConforme(models.Model):
     )
     cantidad_pnc = models.PositiveIntegerField(
         verbose_name='Cantidad PNC'
+    )
+    tecnico = models.CharField(
+        max_length=100,
+        verbose_name='Técnico',
+        blank=True,
+        null=True
+    )
+    operario_1 = models.CharField(
+        max_length=100,
+        verbose_name='Operario 1',
+        blank=True,
+        null=True
+    )
+    operario_2 = models.CharField(
+        max_length=100,
+        verbose_name='Operario 2',
+        blank=True,
+        null=True
+    )
+    operario_3 = models.CharField(
+        max_length=100,
+        verbose_name='Operario 3',
+        blank=True,
+        null=True
     )
     observaciones = models.TextField(
         blank=True,

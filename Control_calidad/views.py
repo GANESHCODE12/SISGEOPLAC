@@ -873,7 +873,7 @@ class ActualizarInspeccionMPView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Actualizar Inspeccion: '
-        context['list_url'] = reverse_lazy('Gestion_Humana:Colaboradores')
-        context['entity'] = 'Colaboradores'
+        context['list_url'] = reverse_lazy('Inventario:Ingresos')
+        context['entity'] = 'Inspecciones'
         context['action'] = 'edit'
         return context

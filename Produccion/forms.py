@@ -91,3 +91,11 @@ class CrearDesarrolloForm(forms.ModelForm):
             'fecha_actualizacion_desarrollo',
             'maquina',
         ]
+
+
+class HistoricalForm(forms.Form):
+    orden = forms.CharField(widget=forms.NumberInput(attrs={
+        'class': 'form-control',
+        'autocomplete': 'off',
+        'placeholder': 'Ingrese el número de orden',
+    }))
