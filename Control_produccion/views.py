@@ -352,6 +352,8 @@ class ReporteRendimientoView(TemplateView):
                 for i in search:
                     item = i.toJSON()
                     item['control'] = i.control_id
+                    item['turno'] = i.control.turno
+                    item['producto'] = i.control.numero_op.producto.productos.Nombre_producto
                     item['numero_op'] = i.control.numero_op_id
                     item['colaborador'] = i.colaborador.nombre
                     item['cargo'] = i.colaborador.cargo

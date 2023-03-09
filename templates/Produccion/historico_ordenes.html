@@ -1,16 +1,13 @@
-{% extends "lista.html" %}
+{% extends 'lista.html' %}
 {% load static %}
 {% block head_list %}
-{% endblock %}
+    <script src="{% static 'lib/moment-2.25.3/moment-with-locales.js' %}"></script>
+    <script src="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js' %}"></script>
+    <link href="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
 
+    <script src="{% static 'js/Listas/historico_produccion.js' %}"></script>
+{% endblock %}
 {% block content %}
-{% if 'numero_op_no_existe' in request.get_full_path %}
-<div class="alert alert-warning alert-dismissible" id="alerta-error">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-    <h5><i class="icon fas fa-exclamation-triangle"></i> Atención!</h5>
-    El número de orden no existe!!.
-</div>
-{% endif %}
 <div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title">
@@ -20,22 +17,19 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <form method="get" class="col-lg-4" >
-                <div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                        <button type="submit" class="btn btn-success" id="buscar">
-                            <i class="fas fa-search"></i> Buscar
-                        </button>
-                        </div>
-                        
-                        {{ form.orden }}
+            <div class="col-lg-12">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                    <button type="button" class="btn btn-dark" id="buscar-producto">
+                        <i class="fas fa-search"></i> Buscar
+                    </button>
                     </div>
-                    <div class="form-group">
-                        
-                    </div>
+                    {{ form.producto }}
                 </div>
-            </form>
+                <div class="form-group">
+                    
+                </div>
+            </div>
         </div>
         <hr>
         <table class="table table-bordered" id="data">
@@ -51,27 +45,6 @@
                 </tr>
             </thead>
             <tbody>
-                {% for orden in ordenes %}
-                <tr>
-                    <td>{{ orden.producto.productos.Nombre_producto }}</td>
-                    <td>{{ orden.producto.color.color }}</td>
-                    <td>{{ orden.estado_op }}</td>
-                    <td>{{ orden.maquina }}</td>
-                    <td>{{ orden.numero_op }}</td>
-                    <td>{{ orden.cliente }}</td>
-                    <td style="text-align: center;">
-                        <a href="detalle-historico-ordenes/orden-{{ orden.numero_op }}">
-                            <button title="Detalle orden" class="btn btn-primary btn-xs btn-flat">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </a>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="7" style="text-align: center;">Por favor ingrese un número de orden!</td>
-                </tr>
-                {% endfor %}
             </tbody>
         </table>
     </div>
@@ -79,12 +52,71 @@
 {% endblock %}
 
 {% block javascript %}
-<script>
-    let orden = document.getElementById('id_orden');
-    let buscar = document.getElementById('buscar');
-
-    buscar.addEventListener("click", function(e) {
-        console.log(orden.value)
-    })
-</script>
+<div class="modal fade" id="myModalDetControls" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><b>
+                    <i class="fas fa-gamepad"></i>
+                    Controles De La Orden De Producción</b>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" id="tblDetControls">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Producto</th>
+                            <th>No. Orden</th>
+                            <th>Fecha Control</th>
+                            <th>Cantidad Producida</th>
+                            <th>Turno</th>
+                            <th>Máquina</th>
+                            <th>Colaboradores</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModalDetMPI" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderModalLabel"><b>
+                    <i class="fas fa-tools"></i>
+                    Materia Prima E Insumos Utilizados En La Orden</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" id="tblDetMPI">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Producto</th>
+                            <th>Categoria</th>
+                            <th>Referencia</th>
+                            <th>Proveedor</th>
+                            <th>Ingresado por</th>
+                            <th>Fecha de ingreso</th>
+                            <th>lote</th>
+                            <th>Cantidad</th>
+                            <th>Unidad de medida</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

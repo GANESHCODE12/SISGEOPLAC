@@ -94,8 +94,8 @@ class CrearDesarrolloForm(forms.ModelForm):
 
 
 class HistoricalForm(forms.Form):
-    orden = forms.CharField(widget=forms.NumberInput(attrs={
+    producto = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control',
         'autocomplete': 'off',
-        'placeholder': 'Ingrese el número de orden',
+        'placeholder': 'Ingrese el nombre del producto!',
     }))

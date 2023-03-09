@@ -107,7 +107,7 @@ var entradas = {
                     decimals: 2,
                     boostat: 10,
                     maxboostedstep: 30,
-                    step: 1.00
+                    step: 0.01
                 });
             },
             initComplete: function (settings, json) {

@@ -46,7 +46,9 @@ function generate_report() {
     columns: [
       { "data": "control" },
       { "data": "numero_op" },
+      { "data": "producto" },
       { "data": "colaborador" },
+      { "data": "turno" },
       { "data": "cargo" },
       { "data": "cantidad_producida" },
       { "data": "cantidad_esperada" },
@@ -54,7 +56,7 @@ function generate_report() {
     ],
     columnDefs: [
       {
-        targets: [0, 1, -1, -2, -3],
+        targets: [0, 1, -1, -2, -3, 4],
         class: 'text-center'
       },
     ],

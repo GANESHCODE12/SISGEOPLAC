@@ -1,16 +1,13 @@
 """Vistas de la aplicación de producción"""
 
 #Django
-from audioop import reverse
-from tokenize import group
 from django.http.response import JsonResponse
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, DetailView, UpdateView, ListView
+from django.views.generic import CreateView, DetailView, UpdateView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import get_object_or_404, redirect
-from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import get_object_or_404
 
 #Form
 from Produccion.forms import *
@@ -447,21 +444,78 @@ class CrearDesarrolloView(LoginRequiredMixin, ValidatePermissionRequiredMixin, C
         return context 
 
 
-class HistoricoOrdenView(LoginRequiredMixin, ListView):
-    model =Produccion
+class HistoricoOrdenView(LoginRequiredMixin, ValidatePermissionRequiredMixin, TemplateView):
+    model = Produccion
     template_name = 'Produccion/historico_ordenes.html'
     context_object_name = 'ordenes'
+    permission_required = 'view_produccion'
 
-    def get_queryset(self):
-        order_number = self.request.GET.get('orden', None)
-        if order_number:
-            try:
-                queryset = Produccion.objects.filter(numero_op=order_number)
-            except ObjectDoesNotExist:
-                return redirect(reverse('historico-ordenes') + '&error=numero_op_no_existe')
-        else:
-            queryset = Produccion.objects.none()
-        return queryset
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        request.user.get_group_session()
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'searchdata':
+                producto = request.POST['producto']
+                if producto == '':
+                    data = []
+                    produccion_query = Produccion.objects.none()
+                    for i in produccion_query:
+                        item = i.toJSON()
+                        item['Nombre_producto'] = i.producto.productos.Nombre_producto
+                        item['color'] = i.producto.color.color
+                        item['lote'] = '{}-{}'.format(i.numero_op, i.fecha_creacion.year)
+                        data.append(item)
+                elif producto != '':
+                    data = []
+                    produccion_query = Produccion.objects.filter(
+                        producto__productos__Nombre_producto__icontains=producto
+                    )
+                    for i in produccion_query:
+                        item = i.toJSON()
+                        item['Nombre_producto'] = i.producto.productos.Nombre_producto
+                        item['color'] = i.producto.color.color
+                        item['lote'] = '{}-{}'.format(i.numero_op, i.fecha_creacion.year)
+                        data.append(item)
+            elif action == 'search_details_controls':
+                data = []
+                control = ControlProduccion.objects.filter(numero_op_id = request.POST['numero_op']).iterator() 
+                for i in control:
+                    colaboradores = ColaboradorControlProduccion.objects.filter(control_id=i.id).iterator()
+                    item = i.toJSON()
+                    item['producto'] = i.numero_op.producto.productos.Nombre_producto
+                    item['fecha'] = i.fecha_creacion.strftime('%d/%m/%Y')
+                    item['orden'] = i.numero_op_id
+                    item['maquina'] = i.numero_op.maquina
+                    item['colaboradores'] = [{'nombre': colaborador.colaborador.nombre} for colaborador in colaboradores]
+                    data.append(item)
+            elif action == 'search_details_MPI':
+                data = []
+                requisicion_query = Requisicion.objects.filter(numero_orden_id = request.POST['numero_op'])
+                requisicion = requisicion_query.iterator()
+                for i in requisicion:
+                    item = i.toJSON()
+                    item['producto'] = i.material_solicitado.ingreso_materia_prima.nombre
+                    item['categoria'] = i.material_solicitado.ingreso_materia_prima.categoria
+                    item['referencia'] = i.material_solicitado.ingreso_materia_prima.referencia
+                    item['proveedor'] = i.material_solicitado.ingreso_materia_prima.proveedor
+                    item['ingresado'] = i.material_solicitado.ingresado_por.get_full_name()
+                    item['medida'] = i.material_solicitado.ingreso_materia_prima.Unidad_Meidida
+                    item['fecha'] = i.material_solicitado.fecha_ingreso.strftime('%d/%m/%Y')
+                    item['lote'] = i.material_solicitado.lote
+                    data.append(item)
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
