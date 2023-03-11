@@ -93,3 +93,11 @@ class ActualizarInspeccionMpForm(ModelForm):
         except Exception  as e:
             data['error'] = str(e)
         return data
+
+
+class HistoricalForm(forms.Form):
+    producto = CharField(widget=TextInput(attrs={
+        'class': 'form-control',
+        'autocomplete': 'off',
+        'placeholder': 'Ingrese el nombre del producto!',
+    }))

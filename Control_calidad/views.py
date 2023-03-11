@@ -6,7 +6,7 @@ from django.db.models import Q, Sum
 from django.urls import reverse_lazy
 from django.db import transaction
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView, TemplateView
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
@@ -48,7 +48,8 @@ class ListaInspecciones(LoginRequiredMixin, ValidatePermissionRequiredMixin, Lis
             action = request.POST['action']
             if action == 'searchdata':
                 data = []
-                for i in ControlCalidad.objects.all():
+                inspecciones_calidad = ControlCalidad.objects.all()[:100]
+                for i in inspecciones_calidad:
                     colaboradores = ColaboradorControlProduccion.objects.filter(control_id=i.id)
                     item = i.toJSON()
                     item['producto'] = i.numero_op.producto.productos.Nombre_producto
@@ -613,7 +614,7 @@ class CrearCertificadoView(LoginRequiredMixin, ValidatePermissionRequiredMixin, 
         produccion = Produccion.objects.get(numero_op=inspeccion.numero_op_id)
         context['produccion'] = produccion
         context['saldo'] = (produccion.cantidad_requerida - certificado['inspeccion_certificado_id']) if certificado['inspeccion_certificado_id'] is not None or 0 else produccion.cantidad_requerida
-        context['title'] = "Nueva Inspección De Calidad"
+        context['title'] = "Crear certificado de la inspección: {}".format(inspeccion.id)
         context['list_url'] = reverse_lazy('Control_calidad:certificados-calidad')
         context['entity'] = 'Inspecciones'
         context['action'] = 'add'
@@ -876,4 +877,80 @@ class ActualizarInspeccionMPView(LoginRequiredMixin, UpdateView):
         context['list_url'] = reverse_lazy('Inventario:Ingresos')
         context['entity'] = 'Inspecciones'
         context['action'] = 'edit'
+        return context
+
+
+class HistoricoInspeccionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, TemplateView):
+    model = ControlCalidad
+    template_name = 'Control_calidad/historico_inspecciones.html'
+    context_object_name = 'control_calidad'
+    permission_required = 'view_controlcalidad'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        request.user.get_group_session()
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'searchdata':
+                producto = request.POST['producto']
+                if producto == '':
+                    data = []
+                    calidad_query = ControlCalidad.objects.none()
+                    for i in calidad_query:
+                        colaboradores = ColaboradorControlProduccion.objects.filter(control_id=i.id)
+                        item = i.toJSON()
+                        item['producto'] = i.numero_op.producto.productos.Nombre_producto
+                        item['cliente'] = i.numero_op.cliente
+                        item['maquina'] = i.numero_op.maquina
+                        item['lote'] = '{}-{}'.format(i.numero_op_id, i.numero_op.fecha_creacion.year)
+                        item['fecha_creacion'] = i.fecha_creacion
+                        item['inspector'] = i.inspector.get_full_name()
+                        item['colaboradores'] = [{'nombre': colaborador.colaborador.nombre} for colaborador in colaboradores]
+                        item['pnc'] = ProductoNoConforme.objects.filter(id_inspeccion=i.id).count()
+                        data.append(item)
+                elif producto != '':
+                    data = []
+                    calidad_query = ControlCalidad.objects.filter(
+                        numero_op__producto__productos__Nombre_producto__icontains=producto
+                    )
+                    for i in calidad_query:
+                        colaboradores = ColaboradorControlProduccion.objects.filter(control_id=i.id)
+                        item = i.toJSON()
+                        item['producto'] = i.numero_op.producto.productos.Nombre_producto
+                        item['cliente'] = i.numero_op.cliente
+                        item['maquina'] = i.numero_op.maquina
+                        item['lote'] = '{}-{}'.format(i.numero_op_id, i.numero_op.fecha_creacion.year)
+                        item['fecha_creacion'] = i.fecha_creacion
+                        item['inspector'] = i.inspector.get_full_name()
+                        item['colaboradores'] = [{'nombre': colaborador.colaborador.nombre} for colaborador in colaboradores]
+                        item['pnc'] = ProductoNoConforme.objects.filter(id_inspeccion=i.id).count()
+                        data.append(item)
+            elif action == 'search_details_pnc':
+                data = []
+                for pnc in TrazabilidadProductoNoConforme.objects.filter(id_inspeccion = request.POST['id_inspeccion']):
+                    item = pnc.toJSON()
+                    item['numero_op'] = pnc.id_inspeccion.numero_op_id
+                    item['inspector'] = pnc.inspector_calidad.get_full_name()
+                    item['turno'] = pnc.id_inspeccion.turno
+                    item['tipo_pnc'] = pnc.tipo_pnc.motivo
+                    data.append(item)
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Historico Inspecciones'
+        context['list_url'] = reverse_lazy('Historico')
+        context['entity'] = 'Historico'
+        context['form'] = HistoricalForm()
         return context

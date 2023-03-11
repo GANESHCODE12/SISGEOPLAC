@@ -53,5 +53,10 @@ urlpatterns = [
         view=views.ActualizarInspeccionMPView.as_view(), 
         name='actualizar-inspeccion-mp'
     ),
+    path(
+        route='historico-inspecciones', 
+        view=views.HistoricoInspeccionView.as_view(), 
+        name='historico-inspecciones'
+    ),
 
 ]
