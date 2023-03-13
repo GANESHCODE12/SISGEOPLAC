@@ -33,6 +33,10 @@ function generate_report() {
             { "data": "maquina" },
             { "data": "numero_op" },
             { "data": "cliente" },
+            { "data": "cantidad_requerida" },
+            { "data": "saldo_a" },
+            { "data": "saldo" },
+            { "data": "saldo_cliente" },
             { "data": "numero_op" },
             { "data": "aprobacion_orden" }
         ],
@@ -65,7 +69,15 @@ function generate_report() {
             {
                 targets: [-1],
                 visible: false,
-            }
+            },
+            {
+                targets: [6, 7, 8, 9],
+                render: function (data, type, row) {
+                    return data.toString().replace(
+                        /\B(?=(\d{3})+(?!\d))/g, "."
+                    );
+                }
+            },
         ],
         initComplete: function (settings, json) {
 

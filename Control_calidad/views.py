@@ -48,7 +48,7 @@ class ListaInspecciones(LoginRequiredMixin, ValidatePermissionRequiredMixin, Lis
             action = request.POST['action']
             if action == 'searchdata':
                 data = []
-                inspecciones_calidad = ControlCalidad.objects.all()[:100]
+                inspecciones_calidad = ControlCalidad.objects.all()[:200]
                 for i in inspecciones_calidad:
                     colaboradores = ColaboradorControlProduccion.objects.filter(control_id=i.id)
                     item = i.toJSON()

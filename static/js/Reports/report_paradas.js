@@ -48,6 +48,7 @@ function generate_report() {
       { "data": "numero_op" },
       { "data": "motivo" },
       { "data": "tiempo_paradas" },
+      { "data": "colaboradores" },
     ],
     columnDefs: [
       {

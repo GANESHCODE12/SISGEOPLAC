@@ -38,7 +38,7 @@ class ListaControl(LoginRequiredMixin, ValidatePermissionRequiredMixin, ListView
 
     def post(self, request, *args, **kwargs):
         data = {}
-        controles = ControlProduccion.objects.all()[:100]
+        controles = ControlProduccion.objects.all()[:200]
         try:
             action = request.POST['action']
             if action == 'searchdata':
@@ -395,11 +395,13 @@ class ReporteParadasView(TemplateView):
                 if len(start_date) and len(end_date):
                     search = search.filter(control__fecha_creacion__range=[start_date, end_date])
                 for i in search:
+                    colaboradores = ColaboradorControlProduccion.objects.filter(control_id=i.control_id)
                     item = i.toJSON()
                     item['control'] = i.control_id
                     item['numero_op'] = i.control.numero_op_id
                     item['motivo'] = i.motivo.motivo
                     item['tiempo_paradas'] = i.tiempo_paradas.total_seconds()
+                    item['colaboradores'] = [colaborador.colaborador.nombre for colaborador in colaboradores]
                     data.append(item)
             else:
                 data['error'] = 'Ha ocurrido un error'

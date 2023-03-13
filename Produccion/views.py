@@ -52,7 +52,7 @@ class ListaOrdenesView(LoginRequiredMixin, ListView):
             action = request.POST['action']
             if action == 'searchdata':
                 data = []
-                produccion_query = Produccion.objects.all()[:100]
+                produccion_query = Produccion.objects.all()[:200]
                 for i in produccion_query:
                     saldo_a =ControlProduccion.objects.all(
                     ).filter(numero_op_id = i.numero_op
@@ -472,6 +472,9 @@ class HistoricoOrdenView(LoginRequiredMixin, ValidatePermissionRequiredMixin, Te
                         item['Nombre_producto'] = i.producto.productos.Nombre_producto
                         item['color'] = i.producto.color.color
                         item['lote'] = '{}-{}'.format(i.numero_op, i.fecha_creacion.year)
+                        item['saldo_a'] = ''
+                        item['saldo'] = ''
+                        item['saldo_cliente'] = ''
                         data.append(item)
                 elif producto != '':
                     data = []
@@ -479,10 +482,20 @@ class HistoricoOrdenView(LoginRequiredMixin, ValidatePermissionRequiredMixin, Te
                         producto__productos__Nombre_producto__icontains=producto
                     )
                     for i in produccion_query:
+                        saldo_a =ControlProduccion.objects.all(
+                        ).filter(numero_op_id = i.numero_op
+                        ).aggregate(numero_op_id=Sum('cantidad_producida'))
+
+                        saldo_cliente_a = CertificadosCalidad.objects.all(
+                        ).filter(inspeccion_certificado_id__numero_op = i.numero_op
+                        ).aggregate(inspeccion_certificado_id=Sum('cantidad_solicitada'))
                         item = i.toJSON()
                         item['Nombre_producto'] = i.producto.productos.Nombre_producto
                         item['color'] = i.producto.color.color
                         item['lote'] = '{}-{}'.format(i.numero_op, i.fecha_creacion.year)
+                        item['saldo_a'] = saldo_a['numero_op_id'] if saldo_a['numero_op_id'] is not None else 0
+                        item['saldo'] = (i.cantidad_requerida - saldo_a['numero_op_id']) if saldo_a['numero_op_id'] is not None else i.cantidad_requerida
+                        item['saldo_cliente'] = (i.cantidad_requerida - saldo_cliente_a['inspeccion_certificado_id']) if saldo_cliente_a['inspeccion_certificado_id'] is not None else i.cantidad_requerida
                         data.append(item)
             elif action == 'search_details_controls':
                 data = []
