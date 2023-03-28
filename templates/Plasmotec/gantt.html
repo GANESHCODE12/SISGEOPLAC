@@ -2,9 +2,9 @@
 {% load static %}
 {% load humanize %}
 {% block head %}
-<script src="{% static 'lib/Highcharts-Gantt-10.3.3/code/highcharts-gantt.js' %}"></script>
-<script src="{% static 'lib/Highcharts-Gantt-10.3.3/code/modules/accessibility.js' %}"></script>
-<script src="{% static 'lib/Highcharts-Gantt-10.3.3/code/modules/exporting.js' %}"></script>
+  <script src="{% static 'lib/Highcharts-Gantt-10.3.3/code/highcharts-gantt.js' %}"></script>
+  <script src="{% static 'lib/Highcharts-Gantt-10.3.3/code/modules/accessibility.js' %}"></script>
+  <script src="{% static 'lib/Highcharts-Gantt-10.3.3/code/modules/exporting.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -32,7 +32,7 @@
       <div class="info-box">
         <span class="info-box-icon bg-info"><i class="fas fa-wind"></i></span>
         <div class="info-box-content">
-          <span class="info-box-text">Soplado</span>
+          <span class="info-box-text">Soplado Pdtes</span>
           <span class="info-box-number">{{ soplado }}</span>
         </div>
       </div>
@@ -41,7 +41,7 @@
       <div class="info-box">
         <span class="info-box-icon bg-warning"><i class="fas fa-syringe"></i></span>
         <div class="info-box-content">
-          <span class="info-box-text">Inyección</span>
+          <span class="info-box-text">Inyección Pdtes</span>
           <span class="info-box-number">{{ inyeccion }}</span>
         </div>
       </div>
@@ -124,10 +124,10 @@
     series: [
   {% for orden in inyectora_1 %}
   {
-    name: '{{ orden.producto.productos.Nombre_producto }}',
+    name: '{{ orden.producto.productos.Nombre_producto }} Orden: {{ orden }}',
     data: [{
-      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}, {{ orden.fecha_inicio_produccion.day }}),
-      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}, {{ orden.tiempo_finalizacion_esperado.day }}),
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}-1 , {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}-1, {{ orden.tiempo_finalizacion_esperado.day }}),
       completed: {% if orden.get_porcentaje_avance is not None %} {{ orden.get_porcentaje_avance }} {% else %}0{% endif %},
       name: '{{ orden.maquina }}'
     }]
@@ -135,10 +135,10 @@
   {% endfor %}
   {% for orden in inyectora_2 %}
   {
-    name: '{{ orden.producto.productos.Nombre_producto }}',
+    name: '{{ orden.producto.productos.Nombre_producto }} Orden: {{ orden }}',
     data: [{
-      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}, {{ orden.fecha_inicio_produccion.day }}),
-      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}, {{ orden.tiempo_finalizacion_esperado.day }}),
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}-1, {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}-1, {{ orden.tiempo_finalizacion_esperado.day }}),
       completed: {% if orden.cantidad_acumulada is not None %} {{ orden.cantidad_acumulada }} {% else %}0{% endif %},
       name: '{{ orden.maquina }}'
     }]
@@ -146,10 +146,10 @@
   {% endfor %}
   {% for orden in inyectora_3 %}
   {
-    name: '{{ orden.producto.productos.Nombre_producto }}',
+    name: '{{ orden.producto.productos.Nombre_producto }} Orden: {{ orden }}',
     data: [{
-      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}, {{ orden.fecha_inicio_produccion.day }}),
-      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}, {{ orden.tiempo_finalizacion_esperado.day }}),
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}-1, {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}-1, {{ orden.tiempo_finalizacion_esperado.day }}),
       completed: {% if orden.cantidad_acumulada is not None %} {{ orden.cantidad_acumulada }} {% else %}0{% endif %},
       name: '{{ orden.maquina }}'
     }]
@@ -157,10 +157,10 @@
   {% endfor %}
   {% for orden in inyectora_4 %}
   {
-    name: '{{ orden.producto.productos.Nombre_producto }}',
+    name: '{{ orden.producto.productos.Nombre_producto }} Orden: {{ orden }}',
     data: [{
-      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}, {{ orden.fecha_inicio_produccion.day }}),
-      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}, {{ orden.tiempo_finalizacion_esperado.day }}),
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}-1, {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}-1, {{ orden.tiempo_finalizacion_esperado.day }}),
       completed: {% if orden.cantidad_acumulada is not None %} {{ orden.cantidad_acumulada }} {% else %}0{% endif %},
       name: '{{ orden.maquina }}'
     }]
@@ -168,10 +168,10 @@
   {% endfor %}
   {% for orden in inyectora_5 %}
   {
-    name: '{{ orden.producto.productos.Nombre_producto }}',
+    name: '{{ orden.producto.productos.Nombre_producto }} Orden: {{ orden }}',
     data: [{
-      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}, {{ orden.fecha_inicio_produccion.day }}),
-      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}, {{ orden.tiempo_finalizacion_esperado.day }}),
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}-1, {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}-1, {{ orden.tiempo_finalizacion_esperado.day }}),
       completed: {% if orden.cantidad_acumulada is not None %} {{ orden.cantidad_acumulada }} {% else %}0{% endif %},
       name: '{{ orden.maquina }}'
     }]
@@ -179,10 +179,10 @@
   {% endfor %}
   {% for orden in inyectora_6 %}
   {
-    name: '{{ orden.producto.productos.Nombre_producto }}',
+    name: '{{ orden.producto.productos.Nombre_producto }} Orden: {{ orden }}',
     data: [{
-      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}, {{ orden.fecha_inicio_produccion.day }}),
-      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}, {{ orden.tiempo_finalizacion_esperado.day }}),
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}-1, {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}-1, {{ orden.tiempo_finalizacion_esperado.day }}),
       completed: {% if orden.cantidad_acumulada is not None %} {{ orden.cantidad_acumulada }} {% else %}0{% endif %},
       name: '{{ orden.maquina }}'
     }]
@@ -190,10 +190,10 @@
   {% endfor %}
   {% for orden in sopladora_1 %}
   {
-    name: '{{ orden.producto.productos.Nombre_producto }}',
+    name: '{{ orden.producto.productos.Nombre_producto }} Orden: {{ orden }}',
     data: [{
-      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}, {{ orden.fecha_inicio_produccion.day }}),
-      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}, {{ orden.tiempo_finalizacion_esperado.day }}),
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}-1, {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}-1, {{ orden.tiempo_finalizacion_esperado.day }}),
       completed: {% if orden.cantidad_acumulada is not None %} {{ orden.cantidad_acumulada }} {% else %}0{% endif %},
       name: '{{ orden.maquina }}'
     }]
@@ -201,10 +201,10 @@
   {% endfor %}
   {% for orden in sopladora_2 %}
   {
-    name: '{{ orden.producto.productos.Nombre_producto }}',
+    name: '{{ orden.producto.productos.Nombre_producto }} Orden: {{ orden }}',
     data: [{
-      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}, {{ orden.fecha_inicio_produccion.day }}),
-      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}, {{ orden.tiempo_finalizacion_esperado.day }}),
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}-1, {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}-1, {{ orden.tiempo_finalizacion_esperado.day }}),
       completed: {% if orden.cantidad_acumulada is not None %} {{ orden.cantidad_acumulada }} {% else %}0{% endif %},
       name: '{{ orden.maquina }}'
     }]
@@ -212,10 +212,10 @@
   {% endfor %}
   {% for orden in sopladora_3 %}
   {
-    name: '{{ orden.producto.productos.Nombre_producto }}',
+    name: '{{ orden.producto.productos.Nombre_producto }} Orden: {{ orden }}',
     data: [{
-      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}, {{ orden.fecha_inicio_produccion.day }}),
-      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}, {{ orden.tiempo_finalizacion_esperado.day }}),
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}-1, {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}-1, {{ orden.tiempo_finalizacion_esperado.day }}),
       completed: {% if orden.cantidad_acumulada is not None %} {{ orden.cantidad_acumulada }} {% else %}0{% endif %},
       name: '{{ orden.maquina }}'
     }]

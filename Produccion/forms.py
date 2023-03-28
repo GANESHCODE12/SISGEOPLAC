@@ -33,7 +33,8 @@ class CrearForm(forms.ModelForm):
             'aprobacion_materia_prima',
             'aprobacion_pigmento',
             'materia_prima_adicional',
-            'pigmento_adicional'
+            'pigmento_adicional',
+            'fecha_inicio_produccion'
         ]
 
 

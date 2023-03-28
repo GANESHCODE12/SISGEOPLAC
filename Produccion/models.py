@@ -223,7 +223,7 @@ class Produccion(models.Model):
         
     @property
     def tiempo_finalizacion_esperado(self):
-        tiempo_esperado = timedelta(seconds=self.tiempo_esperado)
+        tiempo_esperado = timedelta(hours=self.tiempo_esperado)
         if self.tiempo_paradas is not None:
             tiempo_paradas = timedelta(seconds=self.tiempo_paradas)
             return self.fecha_inicio_produccion + tiempo_esperado + tiempo_paradas
@@ -231,9 +231,11 @@ class Produccion(models.Model):
     
     @property
     def get_porcentaje_avance(self):
-        produccion_query = Produccion.objects.all().aggregate(cantidad_acumulada=Sum('controlproduccion__cantidad_producida'))
-        porcentaje_avance = round((produccion_query['cantidad_acumulada'] / self.cantidad_requerida), 2)
-        return str(porcentaje_avance)
+        produccion_query = Produccion.objects.filter(numero_op=self.numero_op).aggregate(cantidad_acumulada=Sum('controlproduccion__cantidad_producida'))
+        if produccion_query['cantidad_acumulada'] is not None:
+            porcentaje_avance = round((produccion_query['cantidad_acumulada'] / self.cantidad_requerida), 2)
+            return str(porcentaje_avance)
+        return 0
 
     class Meta:
         """Configuración del modelo"""
