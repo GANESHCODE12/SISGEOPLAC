@@ -147,9 +147,147 @@ class HistoricoView(TemplateView):
     template_name = 'Plasmotec/historico.html'
 
     def get_context_data(self, **kwargs):
-        """Agrega los demás modelos relacionados con la ficha
-        técnica"""
-
         context = super().get_context_data(**kwargs)
         context['title'] = 'Reporte'
+        return context
+
+
+class DiagramaGantt(TemplateView):
+    template_name = 'Plasmotec/gantt.html'
+    
+    def inyectora_1(self):
+        produccion_query = Produccion.objects.filter(
+            estado_op='En producción', 
+            maquina='Inyectora 1',
+            fecha_inicio_produccion__isnull=False
+        )
+        
+        return produccion_query
+    
+    def inyectora_2(self):
+        produccion_query = Produccion.objects.filter(
+            estado_op='En producción', 
+            maquina='Inyectora 2',
+            fecha_inicio_produccion__isnull=False
+        )
+        
+        return produccion_query
+    
+    def inyectora_3(self):
+        produccion_query = Produccion.objects.filter(
+            estado_op='En producción', 
+            maquina='Inyectora 3',
+            fecha_inicio_produccion__isnull=False
+        )
+        
+        return produccion_query
+    
+    def inyectora_4(self):
+        produccion_query = Produccion.objects.filter(
+            estado_op='En producción', 
+            maquina='Inyectora 4',
+            fecha_inicio_produccion__isnull=False
+        )
+        
+        return produccion_query
+    
+    def inyectora_5(self):
+        produccion_query = Produccion.objects.filter(
+            estado_op='En producción', 
+            maquina='Inyectora 5',
+            fecha_inicio_produccion__isnull=False
+        )
+        
+        return produccion_query
+    
+    def inyectora_6(self):
+        produccion_query = Produccion.objects.filter(
+            estado_op='En producción', 
+            maquina='Inyectora 6',
+            fecha_inicio_produccion__isnull=False
+        )
+        
+        return produccion_query
+    
+    def sopladora_1(self):
+        produccion_query = Produccion.objects.filter(
+            estado_op='En producción', 
+            maquina='Sopladora 1',
+            fecha_inicio_produccion__isnull=False
+        )
+        
+        return produccion_query
+    
+    def sopladora_2(self):
+        produccion_query = Produccion.objects.filter(
+            estado_op='En producción', 
+            maquina='Sopladora 2',
+            fecha_inicio_produccion__isnull=False
+        )
+        
+        return produccion_query
+    
+    def sopladora_3(self):
+        produccion_query = Produccion.objects.filter(
+            estado_op='En producción', 
+            maquina='Sopladora 3',
+            fecha_inicio_produccion__isnull=False
+        )
+        
+        return produccion_query
+    
+    def get_maquina(self):
+        data = [
+            'Sin asignar',
+            'Inyectora 1',
+            'Inyectora 2',
+            'Inyectora 3',
+            'Inyectora 4',
+            'Inyectora 5',
+            'Inyectora 6',
+            'Sopladora 1',
+            'Sopladora 2',
+            'Sopladora 3',
+            'Maquila',
+            'Ensamble',
+        ]
+
+        return data
+    
+    def get_total_en_espera(self):
+        produccion_query = Produccion.objects.filter(estado_op='En espera').count()
+        return produccion_query
+    
+    def get_total_detenida(self):
+        produccion_query = Produccion.objects.filter(estado_op='Detenida').count()
+        return produccion_query
+    
+    def get_total_pendientes_soplado(self):
+        en_espera_soplado = Produccion.objects.filter(producto__productos__proceso__icontains='sop', estado_op='En espera').count()
+        detenida_soplado = Produccion.objects.filter(producto__productos__proceso__icontains='sop', estado_op='Detenida').count()
+        return en_espera_soplado + detenida_soplado
+    
+    def get_total_pendientes_inyeccion(self):
+        en_espera_inyeccion = Produccion.objects.filter(producto__productos__proceso__icontains='iny', estado_op='En espera').count()
+        detenida_inyeccion = Produccion.objects.filter(producto__productos__proceso__icontains='iny', estado_op='Detenida').count()
+        return en_espera_inyeccion + detenida_inyeccion
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['inyectora_1'] = self.inyectora_1()
+        context['inyectora_2'] = self.inyectora_2()
+        context['inyectora_3'] = self.inyectora_3()
+        context['inyectora_4'] = self.inyectora_4()
+        context['inyectora_5'] = self.inyectora_5()
+        context['inyectora_6'] = self.inyectora_6()
+        context['sopladora_1'] = self.sopladora_1()
+        context['sopladora_2'] = self.sopladora_2()
+        context['sopladora_3'] = self.sopladora_3()
+        context['maquinas'] = self.get_maquina()
+        context['en_espera'] = self.get_total_en_espera()
+        context['detenidas'] = self.get_total_detenida()
+        context['soplado'] = self.get_total_pendientes_soplado()
+        context['inyeccion'] = self.get_total_pendientes_inyeccion()
+        context['title'] = 'Gantt'
+        context['entity'] = 'Gantt'
         return context

@@ -6,9 +6,11 @@ from django.forms import model_to_dict
 from django.db.models.signals import post_save, pre_save
 from django.contrib.auth.models import Group
 from django.dispatch import receiver
+from django.db.models import Sum
 
 #Utilidades
 from crum import get_current_user
+from datetime import timedelta
 
 # signals
 from notify.signals import notificar
@@ -40,6 +42,11 @@ class Produccion(models.Model):
         auto_now=True,
         null=True,
         blank=True
+    )
+    fecha_inicio_produccion = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='Fecha inicio de producción'
     )
     numero_op = models.BigAutoField(
         primary_key=True,
@@ -213,6 +220,20 @@ class Produccion(models.Model):
 
         for control in controles:
             return control.tiempo_produccion.total_seconds()
+        
+    @property
+    def tiempo_finalizacion_esperado(self):
+        tiempo_esperado = timedelta(seconds=self.tiempo_esperado)
+        if self.tiempo_paradas is not None:
+            tiempo_paradas = timedelta(seconds=self.tiempo_paradas)
+            return self.fecha_inicio_produccion + tiempo_esperado + tiempo_paradas
+        return self.fecha_inicio_produccion + tiempo_esperado
+    
+    @property
+    def get_porcentaje_avance(self):
+        produccion_query = Produccion.objects.all().aggregate(cantidad_acumulada=Sum('controlproduccion__cantidad_producida'))
+        porcentaje_avance = round((produccion_query['cantidad_acumulada'] / self.cantidad_requerida), 2)
+        return str(porcentaje_avance)
 
     class Meta:
         """Configuración del modelo"""

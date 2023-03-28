@@ -41,6 +41,12 @@ urlpatterns = [
         view= views.HistoricoView.as_view(),
         name='Historico'
     ),
+    path(
+        route='diagrama-gantt',
+        view=views.DiagramaGantt.as_view(),
+        name='diagrama-gantt'
+    ),
+
     #Admin urls
     path('admin/', admin.site.urls),
 

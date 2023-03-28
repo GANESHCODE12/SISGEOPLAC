@@ -90,11 +90,14 @@
                         <small><b>Fecha de entrega:</b> {{ n.verbo.fecha_entrega }}</small><br>
                         <small><b>Lote:</b> {{ n.verbo }}-{{ n.verbo.fecha_creacion.year }} </small><br>
                         <small><b>Aprobación orden:</b> {% if n.verbo.aprobacion_orden == True %} Si {% else %} No {% endif %}</small><br>
-                        {% if 'n.verbo.materia_prima_adicional' %}
+                        {% if n.verbo.materia_prima_adicional %}
                         <small><b>Materia prima adicional:</b> {{ n.verbo.materia_prima_adicional }}</small><br>
                         <small><b>Aprobación materia prima:</b> {% if n.verbo.aprobacion_materia_prima == True %} Si {% else %} No {% endif %}</small><br>
                         {% endif %}
-                        {% if 'n.verbo.pigmento_adicional' %}
+                        {% if n.verbo.fecha_inicio_produccion %}
+                        <small><b>Fecha de inicio produccion:</b> {{ n.verbo.fecha_inicio_produccion }}</small><br>
+                        {% endif %}
+                        {% if n.verbo.pigmento_adicional %}
                         <small><b>Pigmento adicional:</b> {{ n.verbo.pigmento_adicional }}</small><br>
                         <small><b>Aprobación pigmento:</b> {% if n.verbo.aprobacion_pigmento == True %} Si {% else %} No {% endif %}</small><br>
                         {% endif %}

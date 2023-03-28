@@ -43,11 +43,16 @@ class ActuaizarOrden(forms.ModelForm):
         """Configuración del formulario"""
 
         model = Produccion
+        widgets = {
+            'fecha_inicio_produccion': DateInput(format=('%Y-%m-%d')),
+            'fecha_entrega': DateInput(format=('%Y-%m-%d')),
+        }
         fields = [
             'cantidad_requerida',
             'maquina',
             'estado_op',
             'fecha_entrega',
+            'fecha_inicio_produccion',
             'observaciones',
             'aprobacion_orden',
             'materia_prima_adicional',

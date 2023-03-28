@@ -5,6 +5,7 @@ Buenos días!!
     
      
     Lote: {{ lote }}
+    Fecha inicio de producción: {{ fecha_inicio_produccion }}
     Orden de compra: {{ orden_compra }}
     Cantidad requerida: {{ cantidad_requerida }}
     Máquina: {{ maquina }}

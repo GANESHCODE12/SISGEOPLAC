@@ -182,7 +182,7 @@ class UserChangeGroup(LoginRequiredMixin, View):
             request.session['group'] = Group.objects.get(pk=self.kwargs['pk'])
         except:
             pass
-        return HttpResponseRedirect(reverse_lazy('Produccion:Ordenes_produccion'))
+        return HttpResponseRedirect(reverse_lazy('diagrama-gantt'))
 
 
 class UserProfileView(LoginRequiredMixin, UpdateView):

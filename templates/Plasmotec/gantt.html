@@ -1,0 +1,227 @@
+{% extends "body.html" %}
+{% load static %}
+{% load humanize %}
+{% block head %}
+<script src="{% static 'lib/Highcharts-Gantt-10.3.3/code/highcharts-gantt.js' %}"></script>
+<script src="{% static 'lib/Highcharts-Gantt-10.3.3/code/modules/accessibility.js' %}"></script>
+<script src="{% static 'lib/Highcharts-Gantt-10.3.3/code/modules/exporting.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row py-3">
+    <div class="col-3">
+      <div class="info-box">
+        <span class="info-box-icon bg-primary"><i class="fas fa-pause-circle"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">En espera</span>
+          <span class="info-box-number">{{ en_espera }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="info-box">
+        <span class="info-box-icon bg-danger"><i class="fas fa-times-circle"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Detenidas</span>
+          <span class="info-box-number">{{ detenidas }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="info-box">
+        <span class="info-box-icon bg-info"><i class="fas fa-wind"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Soplado</span>
+          <span class="info-box-number">{{ soplado }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="info-box">
+        <span class="info-box-icon bg-warning"><i class="fas fa-syringe"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Inyección</span>
+          <span class="info-box-number">{{ inyeccion }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card card-dark">
+    <div class="card-header">
+      <div style="text-align: center;">
+        PROYECCIÓN Y EJECUCIÓN PRODUCCIÓN
+      </div>
+    </div>
+    <div class="card-body">
+      <div id="container"></div>
+    </div>
+  </div>
+</div>
+<script type="application/javascript">
+  Highcharts.ganttChart('container', {
+
+    navigator: {
+      enabled: true,
+      liveRedraw: true,
+      series: {
+        type: 'gantt',
+        pointPlacement: 0.5,
+        pointPadding: 0.25,
+        accessibility: {
+          enabled: false
+        }
+      },
+      yAxis: {
+        min: 0,
+        max: 3,
+        reversed: true,
+        categories: {{ maquinas| safe }}
+      }
+    },
+
+    scrollbar: {
+    enabled: true
+  },
+
+    rangeSelector: {
+    enabled: true,
+    selected: 0
+  },
+
+    accessibility: {
+    point: {
+      descriptionFormatter: function (point) {
+        var completedValue = point.completed ?
+          point.completed.amount || point.completed : null,
+          completed = completedValue ?
+            ' Task ' + Math.round(completedValue * 1000) / 10 + '% completed.' :
+            '';
+        return Highcharts.format(
+          '{point.yCategory}.{completed} Start {point.x:%Y-%m-%d}, end {point.x2:%Y-%m-%d} Estado {point.estado}.', {
+          point,
+          completed,
+        }
+        );
+      }
+    },
+    series: {
+      descriptionFormatter: function (series) {
+        return series.name;
+      }
+    }
+  },
+
+    lang: {
+    accessibility: {
+      axis: {
+        xAxisDescriptionPlural: 'The chart has a two-part X axis showing time in both week numbers and days.',
+        yAxisDescriptionPlural: 'The chart has one Y axis showing task categories.'
+      }
+    }
+  },
+
+    series: [
+  {% for orden in inyectora_1 %}
+  {
+    name: '{{ orden.producto.productos.Nombre_producto }}',
+    data: [{
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}, {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}, {{ orden.tiempo_finalizacion_esperado.day }}),
+      completed: {% if orden.get_porcentaje_avance is not None %} {{ orden.get_porcentaje_avance }} {% else %}0{% endif %},
+      name: '{{ orden.maquina }}'
+    }]
+  },
+  {% endfor %}
+  {% for orden in inyectora_2 %}
+  {
+    name: '{{ orden.producto.productos.Nombre_producto }}',
+    data: [{
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}, {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}, {{ orden.tiempo_finalizacion_esperado.day }}),
+      completed: {% if orden.cantidad_acumulada is not None %} {{ orden.cantidad_acumulada }} {% else %}0{% endif %},
+      name: '{{ orden.maquina }}'
+    }]
+  },
+  {% endfor %}
+  {% for orden in inyectora_3 %}
+  {
+    name: '{{ orden.producto.productos.Nombre_producto }}',
+    data: [{
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}, {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}, {{ orden.tiempo_finalizacion_esperado.day }}),
+      completed: {% if orden.cantidad_acumulada is not None %} {{ orden.cantidad_acumulada }} {% else %}0{% endif %},
+      name: '{{ orden.maquina }}'
+    }]
+  },
+  {% endfor %}
+  {% for orden in inyectora_4 %}
+  {
+    name: '{{ orden.producto.productos.Nombre_producto }}',
+    data: [{
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}, {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}, {{ orden.tiempo_finalizacion_esperado.day }}),
+      completed: {% if orden.cantidad_acumulada is not None %} {{ orden.cantidad_acumulada }} {% else %}0{% endif %},
+      name: '{{ orden.maquina }}'
+    }]
+  },
+  {% endfor %}
+  {% for orden in inyectora_5 %}
+  {
+    name: '{{ orden.producto.productos.Nombre_producto }}',
+    data: [{
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}, {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}, {{ orden.tiempo_finalizacion_esperado.day }}),
+      completed: {% if orden.cantidad_acumulada is not None %} {{ orden.cantidad_acumulada }} {% else %}0{% endif %},
+      name: '{{ orden.maquina }}'
+    }]
+  },
+  {% endfor %}
+  {% for orden in inyectora_6 %}
+  {
+    name: '{{ orden.producto.productos.Nombre_producto }}',
+    data: [{
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}, {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}, {{ orden.tiempo_finalizacion_esperado.day }}),
+      completed: {% if orden.cantidad_acumulada is not None %} {{ orden.cantidad_acumulada }} {% else %}0{% endif %},
+      name: '{{ orden.maquina }}'
+    }]
+  },
+  {% endfor %}
+  {% for orden in sopladora_1 %}
+  {
+    name: '{{ orden.producto.productos.Nombre_producto }}',
+    data: [{
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}, {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}, {{ orden.tiempo_finalizacion_esperado.day }}),
+      completed: {% if orden.cantidad_acumulada is not None %} {{ orden.cantidad_acumulada }} {% else %}0{% endif %},
+      name: '{{ orden.maquina }}'
+    }]
+  },
+  {% endfor %}
+  {% for orden in sopladora_2 %}
+  {
+    name: '{{ orden.producto.productos.Nombre_producto }}',
+    data: [{
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}, {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}, {{ orden.tiempo_finalizacion_esperado.day }}),
+      completed: {% if orden.cantidad_acumulada is not None %} {{ orden.cantidad_acumulada }} {% else %}0{% endif %},
+      name: '{{ orden.maquina }}'
+    }]
+  },
+  {% endfor %}
+  {% for orden in sopladora_3 %}
+  {
+    name: '{{ orden.producto.productos.Nombre_producto }}',
+    data: [{
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}, {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}, {{ orden.tiempo_finalizacion_esperado.day }}),
+      completed: {% if orden.cantidad_acumulada is not None %} {{ orden.cantidad_acumulada }} {% else %}0{% endif %},
+      name: '{{ orden.maquina }}'
+    }]
+  },
+  {% endfor %}
+    ]
+  });
+</script>
+{% endblock %}

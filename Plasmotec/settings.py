@@ -182,8 +182,6 @@ AUTH_USER_MODEL = 'users.User'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
-USE_THOUSAND_SEPARATOR = True
-
 
 #Configuración para envio de correos
 SERVER_EMAIL = 'confidencial <confidencial@plasmotecsas.com>'
