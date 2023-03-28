@@ -105,6 +105,7 @@ class CrearNuevoControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin,
             if action == 'add':
                 with transaction.atomic():
                     control = json.loads(request.POST['control'])
+                    produccion = Produccion.objects.get(numero_op=kwargs.get('pk'))
                     control_produccion = ControlProduccion()
                     control_produccion.numero_op_id = kwargs.get('pk')
                     control_produccion.turno = control['turno']
@@ -117,6 +118,11 @@ class CrearNuevoControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin,
                     control_produccion.cavidades_operacion = control['cavidades_operacion']
                     control_produccion.observaciones = control['observaciones']
                     control_produccion.save(self)
+                    control_query = ControlProduccion.objects.filter(
+                        numero_op_id=kwargs.get('pk')).aggregate(cantidad_acumulada=Sum('cantidad_producida'))
+                    if  produccion.cantidad_requerida - control_query['cantidad_acumulada'] <= 0:
+                        produccion.estado_op = 'Terminada'
+                        produccion.save()
                     for colaborador in control['colaborador']:
                         modelo_colaborador = ColaboradorControlProduccion()
                         modelo_colaborador.control_id = control_produccion.id
