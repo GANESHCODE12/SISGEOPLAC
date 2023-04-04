@@ -1,16 +1,21 @@
 var producto = null;
+var orden = null;
 var tblHistoricoProduccion;
 
 function generate_report() {
     let producto = document.getElementById('id_producto').value;
+    let orden = document.getElementById('id_orden').value;
     var parameters = {
         'action': 'searchdata',
         'producto': producto,
+        'orden': orden,
     };
 
     if (producto !== null) {
         parameters['producto'] = producto;
-        console.log(producto.value);
+    }
+    if (orden !== null) {
+        parameters['orden'] = orden;
     }
 
     tblHistoricoProduccion = $('#data').DataTable({
@@ -210,6 +215,10 @@ $(function () {
     $('#buscar-producto').on('click', function (e) {
         generate_report();
         document.getElementById('id_producto').value = "";
+    })
+    $('#buscar-orden').on('click', function (e) {
+        generate_report();
+        document.getElementById('id_orden').value = "";
     })
     generate_report();
 });

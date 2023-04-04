@@ -105,3 +105,8 @@ class HistoricalForm(forms.Form):
         'autocomplete': 'off',
         'placeholder': 'Ingrese el nombre del producto!',
     }))
+    orden = forms.IntegerField(widget=forms.NumberInput(attrs={
+        'class': 'form-control',
+        'autocomplete': 'off',
+        'placeholder': 'Ingrese el número de la orden!',
+    }))
