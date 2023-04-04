@@ -281,6 +281,7 @@ class CertificadoCalidadView(LoginRequiredMixin, ValidatePermissionRequiredMixin
         context['material'] = Requisicion.objects.filter(numero_orden=inspeccion.numero_op_id)
         context['title'] = 'Certificado No. {}, Cliente: {}'.format(certificado.id, certificado.cliente_despacho)
         context['list_url'] = reverse_lazy('Control_calidad:certificados-calidad')
+        context['niveles'] = NivelDeInspeccion.objects.filter(inspeccion_calidad = inspeccion.id)
         context['entity'] = 'Certificados'
         context['fecha_vencimiento'] = inspeccion.numero_op.fecha_creacion + timedelta(weeks=104)
         return context

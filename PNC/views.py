@@ -43,7 +43,6 @@ class ListaPNC(LoginRequiredMixin, ListView):
             if action == 'searchdata':
                 data = []
                 for i in ProductoNoConforme.objects.all():
-                    colaboradores = ColaboradorInspeccionCalidad.objects.filter(inspeccion_id=i.id)
                     item = i.toJSON()
                     item['numero_op'] = i.id_inspeccion.numero_op_id
                     item['producto'] = i.id_inspeccion.numero_op.producto.productos.Nombre_producto
@@ -407,7 +406,6 @@ class ReportPncView(TemplateView):
                 if len(start_date) and len(end_date):
                     search = search.filter(fecha_actualizacion__range=[start_date, end_date])
                 for i in search:
-                    colaboradores = ColaboradorInspeccionCalidad.objects.filter(inspeccion_id=i.id)
                     data.append([
                         i.id_inspeccion.numero_op.producto.productos.Nombre_producto,
                         i.id_inspeccion.numero_op.producto.color.color,
@@ -417,7 +415,6 @@ class ReportPncView(TemplateView):
                         i.id_inspeccion_id,
                         i.estado_pnc,
                         i.cantidad_pnc,
-                        [colaborador.colaborador.nombre for colaborador in colaboradores],
                     ])
             else:
                 data['error'] = 'Ha ocurrido un error'
