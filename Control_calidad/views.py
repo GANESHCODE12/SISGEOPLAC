@@ -1,6 +1,7 @@
 """Vistas de la aplicación Inspecciones de calidad"""
 
 #Django
+from typing import List
 from django.http.response import JsonResponse
 from django.db.models import Q, Sum
 from django.urls import reverse_lazy
@@ -28,7 +29,7 @@ from PNC.models import ProductoNoConforme, TrazabilidadProductoNoConforme
 
 #Utilidades
 import json
-from datetime import timedelta
+from datetime import timedelta, datetime, timezone
 
 
 class ListaInspecciones(LoginRequiredMixin, ValidatePermissionRequiredMixin, ListView):
@@ -260,10 +261,18 @@ class CertificadoCalidadView(LoginRequiredMixin, ValidatePermissionRequiredMixin
     """Vista para el detalle de las fichas técnicas"""
 
     model = CertificadosCalidad
-    template_name = 'Control_calidad/certificado_calidad.html'
     queryset = CertificadosCalidad.objects.all()
     context_object_name = 'CertificadosCalidad'
     permission_required = 'view_controlcalidad'
+
+    def get_template_names(self):
+        pk = self.kwargs.get('pk')
+        certificado = CertificadosCalidad.objects.get(pk=pk)
+        fecha_version_1 = datetime(year=2023, month=4, day=4, tzinfo=timezone(offset=timedelta()))
+
+        if certificado.fecha_generacion < fecha_version_1:
+            return 'Control_calidad/certificado_calidad_v1.html'
+        return 'Control_calidad/certificado_calidad_v2.html'
 
     def get_context_data(self, **kwargs):
         """Agrega los demás modelos relacionados con la ficha
@@ -283,7 +292,7 @@ class CertificadoCalidadView(LoginRequiredMixin, ValidatePermissionRequiredMixin
         context['list_url'] = reverse_lazy('Control_calidad:certificados-calidad')
         context['niveles'] = NivelDeInspeccion.objects.filter(inspeccion_calidad = inspeccion.id)
         context['entity'] = 'Certificados'
-        context['fecha_vencimiento'] = inspeccion.numero_op.fecha_creacion + timedelta(weeks=104)
+        context['fecha_vencimiento'] = inspeccion.numero_op.fecha_creacion + timedelta(days=730)
         return context
 
 

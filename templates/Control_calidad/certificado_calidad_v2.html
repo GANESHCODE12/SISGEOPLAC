@@ -23,11 +23,11 @@
                         <td style="text-align: center"><b>CÓDIGO: FT-Q-24</b></td>
                     </tr>
                     <tr>
-                        <td style="text-align: center"><b>VERSIÓN: 1</b></td>
+                        <td style="text-align: center"><b>VERSIÓN: 2</b></td>
                     </tr>
                     <tr>
                         <td rowspan="2" style="text-align: center"><b>CERTIFICADO DE CALIDAD</b></td>
-                        <td style="text-align: center"><b>FECHA 30 DE SEPTIEMBRE 2022</b></td>
+                        <td style="text-align: center"><b>FECHA: 04 DE ABRIL 2023</b></td>
                     </tr>
                 </tbody>
             </table>
@@ -215,30 +215,32 @@
         </div>
     </div>
     <div class="container-fluid py-4">
-        <div class="col">
-            <table class="table table-bordered">
-                <thead class="table-dark" style="text-align: center;">
-                    <tr>
-                        <th colspan="7">NIVEL DE INSPECCIÓN</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th class="list-group-item-dark" style="text-align: center;">NIVEL</th>
-                        <th class="list-group-item-dark" style="text-align: center;">CÓDIGO</th>
-                        <th class="list-group-item-dark" style="text-align: center;">LETRA</th>
-                        <th class="list-group-item-dark" style="text-align: center;">CANTIDAD</th>
-                    </tr>
-                    {% for nivel in niveles.all %}
-                    <tr>
-                        <td style="text-align: center;">{{ nivel.tipo_nivel }}</td>
-                        <td style="text-align: center;">{{ nivel.codigo_nivel }}</td>
-                        <td style="text-align: center;">{{ nivel.letra }}</td>
-                        <td style="text-align: center;">{{ nivel.cantidades_inspeccionar }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="card card-dark" id="line-card">
+            <div class="card-header">
+                <div class="container-fluid" style="text-align: center;">
+                    NIVEL DE INSPECCIÓN
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th class="list-group-item-dark" style="text-align: center;">NIVEL</th>
+                            <th class="list-group-item-dark" style="text-align: center;">CÓDIGO</th>
+                            <th class="list-group-item-dark" style="text-align: center;">LETRA</th>
+                            <th class="list-group-item-dark" style="text-align: center;">CANTIDAD</th>
+                        </tr>
+                        {% for nivel in niveles.all %}
+                        <tr>
+                            <td style="text-align: center;">{{ nivel.tipo_nivel }}</td>
+                            <td style="text-align: center;">{{ nivel.codigo_nivel }}</td>
+                            <td style="text-align: center;">{{ nivel.letra }}</td>
+                            <td style="text-align: center;">{{ nivel.cantidades_inspeccionar }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <div class="container-fluid py-4">

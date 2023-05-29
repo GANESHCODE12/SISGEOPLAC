@@ -47,6 +47,7 @@ function generate_report() {
       { "data": "control" },
       { "data": "numero_op" },
       { "data": "producto" },
+      { "data": "maquina" },
       { "data": "colaborador" },
       { "data": "turno" },
       { "data": "cargo" },
@@ -56,7 +57,7 @@ function generate_report() {
     ],
     columnDefs: [
       {
-        targets: [0, 1, -1, -2, -3, 4],
+        targets: [0, 1, -1, -2, -3, 5],
         class: 'text-center'
       },
     ],
