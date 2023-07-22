@@ -291,3 +291,36 @@ class DiagramaGantt(TemplateView):
         context['title'] = 'Gantt'
         context['entity'] = 'Gantt'
         return context
+    
+
+class DashBoardProduccion(TemplateView):
+    template_name = 'Plasmotec/dashboard_produccion.html'
+    
+    def get_total_ordenes(self):
+        produccion_query = Produccion.objects.all().count()
+        return produccion_query
+    
+    def get_total_terminadas(self):
+        produccion_query = Produccion.objects.filter(estado_op='Terminada').count()
+        return produccion_query
+    
+    def get_total_pendientes_soplado(self):
+        en_espera_soplado = Produccion.objects.filter(producto__productos__proceso__icontains='sop', estado_op='En espera').count()
+        detenida_soplado = Produccion.objects.filter(producto__productos__proceso__icontains='sop', estado_op='Detenida').count()
+        return en_espera_soplado + detenida_soplado
+    
+    def get_total_pendientes_inyeccion(self):
+        en_espera_inyeccion = Produccion.objects.filter(producto__productos__proceso__icontains='iny', estado_op='En espera').count()
+        detenida_inyeccion = Produccion.objects.filter(producto__productos__proceso__icontains='iny', estado_op='Detenida').count()
+        return en_espera_inyeccion + detenida_inyeccion
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total_ordenes'] = self.get_total_ordenes()
+        context['terminadas'] = self.get_total_terminadas()
+        context['porcentaje_terminadas'] = (self.get_total_terminadas() / self.get_total_ordenes()) * 100
+        context['soplado'] = self.get_total_pendientes_soplado()
+        context['inyeccion'] = self.get_total_pendientes_inyeccion()
+        context['title'] = 'Dashboard producción'
+        context['entity'] = 'Dashboard producción'
+        return context

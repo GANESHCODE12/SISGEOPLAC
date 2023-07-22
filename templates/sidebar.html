@@ -114,7 +114,7 @@
                         <p>
                             Control Producción
                             <i class="fas fa-angle-left right"></i>
-                            <span class="badge badge-info right">3</span>
+                            <span class="badge badge-info right">4</span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
@@ -135,6 +135,44 @@
                                 <i class=" nav-icon fas fa-plus"></i>
                                 <p>Nuevo motivo</p>
                             </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-calendar-alt"></i>
+                                <p>
+                                    Programación
+                                    <i class="fas fa-angle-left right"></i>
+                                    <span class="badge badge-success right">4</span>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Gestion_Humana:programacion' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-plus"></i>
+                                        <p>Nueva programación</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Gestion_Humana:actualizar-programacion' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-edit"></i>
+                                        <p>Actualizar programación</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Gestion_Humana:programacion-historico' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-clock"></i>
+                                        <p>Histórico</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Gestion_Humana:imprimir-programacion' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-print"></i>
+                                        <p>Imprimir</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </li>

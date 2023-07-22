@@ -418,6 +418,15 @@ class TecnicosOperarios(models.Model):
     def toJSON(self):
         item = model_to_dict(self)
         return item
+    
+    def toJSON_programacion(self):
+        item = model_to_dict(
+            self,
+            exclude=[
+                'cargo',
+                'codigo'
+            ])
+        return item
 
 
 # Modelo de entrega dotación
@@ -582,4 +591,102 @@ class ExamenesMedicos(models.Model):
     ):
         item = model_to_dict(self)
         item['resultados'] = self.get_resultados()
+        return item
+
+
+class Programacion(models.Model):
+    colaborador = models.ForeignKey(
+        TecnicosOperarios,
+        on_delete=models.CASCADE,
+        verbose_name="Colaborador"
+    )
+    turno_list = [
+        ('Turno 1', 'Turno 1'),
+        ('Turno 2', 'Turno 2'),
+        ('Turno 3', 'Turno 3'),
+        ('Turno 4', 'Turno 4'),
+        ('Turno 5', 'Turno 5'),
+        ('Turno 6', 'Turno 6'),
+        ('Vacaciones', 'Vacaciones'),
+        ('Incapacidad', 'Incapacidad'),
+        ('Otros', 'Otros'),
+        ('Licencia no remunerada', 'Licencia no remunerada'),
+    ]
+    turno = models.CharField(
+        max_length=50,
+        choices=turno_list,
+        verbose_name="Turno"
+    )
+    fecha_programacion = models.DateField(
+        verbose_name="Fecha programación"
+    )
+    lista_maquina = [
+        ('', ''),
+        ('Sin asignar', 'Sin asignar'),
+        ('Inyectora 1','Inyectora 1'),
+        ('Inyectora 2','Inyectora 2'),
+        ('Inyectora 3','Inyectora 3'),
+        ('Inyectora 4','Inyectora 4'),
+        ('Inyectora 5','Inyectora 5'),
+        ('Inyectora 6','Inyectora 6'),
+        ('Inyectora 7','Inyectora 7'),
+        ('Sopladora 1','Sopladora 1'),
+        ('Sopladora 2','Sopladora 2'),
+        ('Sopladora 3','Sopladora 3'),
+        ('Maquila','Maquila'),
+        ('Ensamble','Ensamble'),
+    ]
+    maquina = models.CharField(
+        choices=lista_maquina,
+        verbose_name="Máquina",
+        max_length=100
+    )
+    cumplimiento = models.BooleanField(
+        default=True,
+        verbose_name="Cumplimiento programación"
+    )
+    motivo_incumplimiento_list = [
+        ('Calamidad domestica', 'Calamidad domestica'),
+        ('Incapacidad EPS', 'Incapacidad EPS'),
+        ('Permiso remunerado', 'Permiso remunerado'),
+        ('Permiso no remunerado', 'Permiso no remunerado'),
+        ('Cambio de turno', 'Cambio de turno'),
+        ('Día de la familia', 'Día de la familia'),
+        ('Renuncia', 'Renuncia'),
+        ('Daño máquina', 'Daño máquina'),
+        ('Falta de material', 'Falta de material'),
+        ('Incapacidad ARL', 'Incapacidad ARL'),
+        ('No justificado', 'No justificado'),
+        ('Vacaciones', 'Vacaciones'),
+    ]
+    motivo_incumplimiento = models.CharField(
+        verbose_name="Motivo incumplimiento",
+        choices=motivo_incumplimiento_list,
+        blank=True,
+        null=True,
+        max_length=100
+    )
+    turno_reprogramacion = models.CharField(
+        max_length=50,
+        choices=turno_list,
+        blank=True,
+        null=True,
+        verbose_name="Turno reprogramación"
+    )
+
+    class Meta:
+        """Configuración del modelo"""
+
+        verbose_name = 'Programación'
+        verbose_name_plural = 'Programación'
+        db_table = 'Programación'
+        ordering = ['-id']
+
+    def __str__(self):
+        return '{}'.format(
+            self.fecha_programacion
+        )
+
+    def toJSON(self):
+        item = model_to_dict(self)
         return item

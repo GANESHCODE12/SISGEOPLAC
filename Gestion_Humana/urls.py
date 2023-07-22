@@ -93,5 +93,24 @@ urlpatterns = [
         view=views.ActualizarDotacionView.as_view(), 
         name='actualizar-entrega-dotacion'
     ),
+    path(
+        route='programacion', 
+        view=views.CrearProgramacionView.as_view(), 
+        name='programacion'
+    ),
+    path(
+        route='programacion-historico', 
+        view=views.ProgramacionView.as_view(), 
+        name='programacion-historico'
+    ),
+    path(
+        route='actualizar-programacion', 
+        view=views.ActualizarProgramacionView.as_view(), 
+        name='actualizar-programacion'
+    ),path(
+        route='imprimir-programacion', 
+        view=views.ProgramacionImprimirView.as_view(), 
+        name='imprimir-programacion'
+    ),
 
 ]

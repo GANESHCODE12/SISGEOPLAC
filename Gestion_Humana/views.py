@@ -8,6 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, TemplateView
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.db import transaction
+from django.db.models import Q
 
 # Form
 from Gestion_Humana.forms import *
@@ -17,6 +19,10 @@ from Plasmotec.mixins import ValidatePermissionRequiredMixin
 
 # Models
 from Gestion_Humana.models import *
+
+# Utils
+import json
+from datetime import datetime
 
 
 class NuevaColaboradorView(LoginRequiredMixin, ValidatePermissionRequiredMixin, CreateView):
@@ -702,4 +708,207 @@ class ActualizarDotacionView(LoginRequiredMixin, ValidatePermissionRequiredMixin
         context['list_url'] = reverse_lazy('Gestion_Humana:Colaboradores')
         context['entity'] = 'Colaboradores'
         context['action'] = 'edit'
+        return context
+
+
+class CrearProgramacionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, CreateView):
+
+    template_name = 'Gestion_Humana/crear_programacion.html'
+    form_class = CrearProgramacionForm
+    success_url = reverse_lazy('Gestion_Humana:programacion-historico')
+    context_object_name = 'Programacion'
+    permission_required = 'add_programacion'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'add':
+                with transaction.atomic():
+                    programacion_form = json.loads(request.POST['programacion'])
+                    for colab in programacion_form['programacion_colaborador']:
+                        programacion_model = Programacion()
+                        programacion_model.colaborador_id = colab['id']
+                        programacion_model.turno = colab['turno']
+                        programacion_model.fecha_programacion = datetime.strptime(
+                            colab['fecha_programacion'], '%Y-%m-%d')
+                        programacion_model.maquina = colab['maquina']
+                        programacion_model.save(self)
+            elif action == 'search_colaborador':
+                data = []
+                ids_exclude = json.loads(request.POST['ids'])
+                busqueda = TecnicosOperarios.objects.filter(
+                    Q(nombre__icontains=request.POST['term']) |
+                    Q(codigo__icontains=request.POST['term']))
+                for i in busqueda:
+                    item = i.toJSON()
+                    item['text'] = i.nombre
+                    data.append(item)
+            else:
+                data['error'] = 'No ha ingresado a ninguna opción!'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
+
+    def get_context_data(self, **kwargs):
+        """Función que agrega el contexto de la información 
+        de producción"""
+
+        pk = self.kwargs.get('pk')
+
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Programación"
+        context['list_url'] = reverse_lazy('Gestion_Humana:programacion-historico')
+        context['entity'] = 'Programación'
+        context['action'] = 'add'
+        return context
+
+
+class ProgramacionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, ListView):
+
+    template_name = 'Gestion_Humana/programacion.html'
+    model = Programacion
+    permission_required = 'view_programacion'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'searchdata':
+                data = []
+                for i in Programacion.objects.all().select_related('colaborador'):
+                    item = i.toJSON()
+                    item['nombre'] = i.colaborador.nombre
+                    data.append(item)
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Programacion'
+        context['list_url'] = reverse_lazy('Gestion_Humana:programacion')
+        context['entity'] = 'Programacion'
+        return context
+
+
+class ActualizarProgramacionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, CreateView):
+
+    template_name = 'Gestion_Humana/actualizar_programacion.html'
+    form_class = ActualizarProgramacionForm
+    success_url = reverse_lazy('Control_produccion:Control_orden')
+    context_object_name = 'Programacion'
+    permission_required = 'change_programacion'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'add':
+                with transaction.atomic():
+                    print(request.POST)
+                    programacion_form = json.loads(request.POST['programacion'])
+                    for colab in programacion_form['programacion_colaborador']:
+                        programacion_model = Programacion.objects.get(id=colab['id'])
+                        programacion_model.colaborador_id = colab['colaborador']
+                        programacion_model.turno = colab['turno']
+                        programacion_model.fecha_programacion = datetime.strptime(
+                            colab['fecha_programacion'], '%Y-%m-%d')
+                        programacion_model.maquina = colab['maquina']
+                        if colab['cumplimiento'] == 1:
+                            programacion_model.cumplimiento = True
+                        else:
+                            programacion_model.cumplimiento = False
+                        programacion_model.motivo_incumplimiento = colab['motivo_incumplimiento']
+                        programacion_model.turno_reprogramacion = colab['turno_reprogramacion']
+                        programacion_model.save()
+            elif action == 'searchdata':
+                data = []
+                start_date = request.POST.get('start_date', '')
+                end_date = request.POST.get('end_date', '')
+                search = Programacion.objects.all()
+                if len(start_date) and len(end_date):
+                    search = Programacion.objects.filter(
+                        fecha_programacion__range=[start_date, end_date]
+                    ).select_related('colaborador')
+                action = request.POST['action']
+                for i in search:
+                    item = i.toJSON()
+                    item['nombre'] = i.colaborador.nombre
+                    data.append(item)
+            else:
+                data['error'] = 'No ha ingresado a ninguna opción!'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
+
+    def get_context_data(self, **kwargs):
+        """Función que agrega el contexto de la información 
+        de producción"""
+
+        pk = self.kwargs.get('pk')
+
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Actualizar programación"
+        context['list_url'] = reverse_lazy('Control_produccion:Control_orden')
+        context['entity'] = 'Actualizar programación'
+        context['action'] = 'add'
+        context['form'] = ReportGestionHumanaForm()
+        return context
+
+
+class ProgramacionImprimirView(LoginRequiredMixin, ValidatePermissionRequiredMixin, TemplateView):
+
+    template_name = 'Gestion_Humana/programacion_imprimir.html'
+    model = Programacion
+    permission_required = 'view_programacion'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'searchdata':
+                data = []
+                start_date = request.POST.get('start_date', '')
+                end_date = request.POST.get('end_date', '')
+                search = Programacion.objects.all()
+                if len(start_date) and len(end_date):
+                    search = Programacion.objects.filter(
+                        fecha_programacion__range=[start_date, end_date]
+                    ).select_related('colaborador')
+                action = request.POST['action']
+                for i in search:
+                    item = i.toJSON()
+                    item['nombre'] = i.colaborador.nombre
+                    data.append(item)
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Imprimir Programación'
+        context['list_url'] = reverse_lazy('Gestion_Humana:imprimir-programacion')
+        context['entity'] = 'Imprimir Programación'
+        context['form'] = ReportGestionHumanaForm()
         return context

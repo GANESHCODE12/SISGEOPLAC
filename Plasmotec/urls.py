@@ -46,6 +46,11 @@ urlpatterns = [
         view=views.DiagramaGantt.as_view(),
         name='diagrama-gantt'
     ),
+    path(
+        route='dashboard-produccion',
+        view=views.DashBoardProduccion.as_view(),
+        name='dashboard-produccion'
+    ),
 
     #Admin urls
     path('admin/', admin.site.urls),
