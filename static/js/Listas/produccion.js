@@ -45,7 +45,7 @@ $(function () {
                         buttons += '<a href="#"><button title="Requiere aprobación" class="btn btn-danger btn-xs btn-flat" disabled><i class="fas fa-vials"></i></button></a> ';
                         buttons += '<a><button title="Requiere aprobación" class="btn btn-danger btn-xs btn-flat" disabled><i class="fas fa-list-alt"></i></button></a> ';
                         buttons += '<a><button title="Requiere aprobación" class="btn btn-danger btn-xs btn-flat" disabled><i class="fas fa-tools"></i></button></a> ';
-                        buttons += '<a href="#"><button title="Requiere aprobación" class="btn btn-danger btn-xs btn-flat" disabled><i class="fas fa-people-carry"></i></button></a> ';
+                        // buttons += '<a href="#"><button title="Requiere aprobación" class="btn btn-danger btn-xs btn-flat" disabled><i class="fas fa-people-carry"></i></button></a> ';
                     } else {
                         var buttons = '<a href="actualizar/orden-' + row.numero_op + '"><button title="Actualizar orden" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></button></a> ';
                         buttons += '<a href="detalle_orden/' + row.numero_op + '/"><button title="Detalle orden" class="btn btn-primary btn-xs btn-flat"><i class="fas fa-eye"></i></button></a> ';
@@ -53,7 +53,7 @@ $(function () {
                         buttons += '<a href="/Control_calidad/Crear_inspeccion/' + row.numero_op + '"><button title="Crear Inspección" class="btn btn-success btn-xs btn-flat"><i class="fas fa-vials"></i></button></a> ';
                         buttons += '<a rel="details_controls"><button title="Controles de producción" class="btn btn-dark btn-xs btn-flat"><i class="fas fa-list-alt"></i></button></a> ';
                         buttons += '<a rel="details_MPI"><button title="Detalle Materia Prima E Insumos" class="btn btn-secondary btn-xs btn-flat"><i class="fas fa-tools"></i></button></a> ';
-                        buttons += '<a href="/Inventario/Requisicion_MP_insumos/' + row.numero_op + '"><button title="Requisición material" class="btn btn-success btn-xs btn-flat"><i class="fas fa-people-carry"></i></button></a> ';
+                        // buttons += '<a href="/Inventario/Requisicion_MP_insumos/' + row.numero_op + '"><button title="Requisición material" class="btn btn-success btn-xs btn-flat"><i class="fas fa-people-carry"></i></button></a> ';
                     }
                     return buttons;
                 }

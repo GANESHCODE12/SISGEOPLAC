@@ -683,8 +683,8 @@ class Programacion(models.Model):
         ordering = ['-id']
 
     def __str__(self):
-        return '{}'.format(
-            self.fecha_programacion
+        return 'Id:{}'.format(
+            self.id
         )
 
     def toJSON(self):

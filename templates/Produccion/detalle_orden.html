@@ -141,22 +141,21 @@
                         <th class="bg-secondary" id="titulos" style="text-align: center;">Referencia</th>
                         <th class="bg-secondary" id="titulos" style="text-align: center;">Cantidad</th>
                     </tr>
-                    {% if materia_prima %}
+
                     <tr>
-                        <td style="text-align: center;">{{ materia_prima.material_solicitado.ingreso_materia_prima.nombre }}</td>
-                        <td style="text-align: center;">{{ materia_prima.material_solicitado.ingreso_materia_prima.categoria }}</td>
-                        <td style="text-align: center;">{{ materia_prima.material_solicitado.ingreso_materia_prima.referencia }}</td>
+                        <td style="text-align: center;">{{ Produccion.producto.productos.material }}</td>
+                        <td style="text-align: center;">Materia Prima</td>
+                        <td style="text-align: center;"></td>
                         <td style="text-align: center;">{{ Produccion.maximo_material|floatformat:"2" }} Kg</td>
                     </tr>
-                    {% endif %}
-                    {% if pigmento %}
+
                     <tr>
-                        <td style="text-align: center;">{{ pigmento.material_solicitado.ingreso_materia_prima.nombre }}</td>
-                        <td style="text-align: center;">{{ pigmento.material_solicitado.ingreso_materia_prima.categoria }}</td>
+                        <td style="text-align: center;">{{ Produccion.producto.referencia_pigmento }}</td>
+                        <td style="text-align: center;">Pigmento</td>
                         <td style="text-align: center;">{{ pigmento.material_solicitado.ingreso_materia_prima.referencia }}</td>
                         <td style="text-align: center;">{{ Produccion.maximo_pigmento|floatformat:"2" }} Kg</td>
                     </tr>
-                    {% endif %}
+                    
                 </tbody>
             </table>
             &nbsp;

@@ -246,6 +246,21 @@ class Productos_colores(models.Model):
         verbose_name='Código de producto',
         null=True
     )
+    referencia_pigmento = models.CharField(
+        max_length=255,
+        verbose_name='Referencia del pigmento',
+        null=True,
+        blank=True
+    )
+    dosificacion = models.PositiveIntegerField(
+        verbose_name='Dosificación',
+        null=True,
+        blank=True
+    )
+    version_documento = models.PositiveIntegerField(
+        default=1,
+        verbose_name='Versión ficha técnica'
+    )
 
     def __str__(self):
         return '{} V.{}, Cliente: {}, Color: {}'.format(

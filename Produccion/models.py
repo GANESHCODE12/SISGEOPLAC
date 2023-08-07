@@ -101,6 +101,7 @@ class Produccion(models.Model):
         ('Inyectora 4','Inyectora 4'),
         ('Inyectora 5','Inyectora 5'),
         ('Inyectora 6','Inyectora 6'),
+        ('Inyectora 8','Inyectora 8'),
         ('Sopladora 1','Sopladora 1'),
         ('Sopladora 2','Sopladora 2'),
         ('Sopladora 3','Sopladora 3'),

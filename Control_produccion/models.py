@@ -76,6 +76,11 @@ class ControlProduccion(models.Model):
         blank=True,
         verbose_name='Observaciones'
     )
+    material_molido = models.PositiveIntegerField(
+        verbose_name='Cantidad material molido',
+        blank=True,
+        null=True
+    )
 
     def save(self, force_insert=False, force_update= False, using=None, update_fields=None):
         user = get_current_user()

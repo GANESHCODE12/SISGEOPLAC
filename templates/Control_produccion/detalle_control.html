@@ -60,6 +60,53 @@
                 </table>
             </div>
         </div>
+        {% if materiales %}
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-bordered">
+                    <thead class="table-dark" style="text-align: center;">
+                        <tr>
+                            <th colspan="4">MATERIAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="list-group-item-dark" style="text-align: center;">Material</th>
+                            <th class="list-group-item-dark" style="text-align: center;">Categoria</th>
+                            <th class="list-group-item-dark" style="text-align: center;">Referencia</th>
+                            <th class="list-group-item-dark" style="text-align: center;">Cantidad</th>
+                        </tr>
+                        {% for material in materiales %}
+                        <tr>
+                            <td style="text-align: center;">{{ material.material_solicitado.ingreso_materia_prima.nombre }}</td>
+                            <td style="text-align: center;">{{ material.material_solicitado.ingreso_materia_prima.categoria }}</td>
+                            <td style="text-align: center;">{{ material.material_solicitado.ingreso_materia_prima.referencia }}</td>
+                            <td style="text-align: center;">{{ material.cantidad_solicitada }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% if Control_produccion.material_molido >= 0 %}
+                        <tr>
+                            <th class="list-group-item-dark" style="text-align: center;" colspan="1">
+                                Material molido recuperado
+                            </th>
+                            <th class="list-group-item-dark" style="text-align: center;" colspan="1">
+                                Total materia prima
+                            </th>
+                            <th class="list-group-item-dark" style="text-align: center;" colspan="2">
+                                Porcentaje material molido recuperado
+                            </th>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">{{ Control_produccion.material_molido }}</td>
+                            <td style="text-align: center;">{{ cantidad_material }}</td>
+                            <td style="text-align: center;" colspan="2">{{ porcentaje_recuperado|floatformat:"2" }} %</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
         <div class="row">
             <div class="col-sm-6">
                 <table class="table table-bordered">

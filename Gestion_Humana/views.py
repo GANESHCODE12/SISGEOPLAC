@@ -802,7 +802,7 @@ class ProgramacionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, List
         return context
 
 
-class ActualizarProgramacionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, CreateView):
+class ActualizarProgramacionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, TemplateView):
 
     template_name = 'Gestion_Humana/actualizar_programacion.html'
     form_class = ActualizarProgramacionForm
@@ -820,7 +820,6 @@ class ActualizarProgramacionView(LoginRequiredMixin, ValidatePermissionRequiredM
             action = request.POST['action']
             if action == 'add':
                 with transaction.atomic():
-                    print(request.POST)
                     programacion_form = json.loads(request.POST['programacion'])
                     for colab in programacion_form['programacion_colaborador']:
                         programacion_model = Programacion.objects.get(id=colab['id'])

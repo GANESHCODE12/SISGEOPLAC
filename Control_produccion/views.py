@@ -21,6 +21,8 @@ from Plasmotec.mixins import ValidatePermissionRequiredMixin
 from Control_produccion.models import *
 from Produccion.models import Produccion
 from Gestion_Humana.models import TecnicosOperarios
+from Inventario.models import *
+from Control_calidad.models import *
 
 # Utils
 import json
@@ -117,6 +119,7 @@ class CrearNuevoControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin,
                     control_produccion.ciclo_turno = control['ciclo_turno']
                     control_produccion.cavidades_operacion = control['cavidades_operacion']
                     control_produccion.observaciones = control['observaciones']
+                    control_produccion.material_molido = control.get('material_molido')
                     control_produccion.save(self)
                     control_query = ControlProduccion.objects.filter(
                         numero_op_id=kwargs.get('pk')).aggregate(cantidad_acumulada=Sum('cantidad_producida'))
@@ -136,9 +139,18 @@ class CrearNuevoControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin,
                         modelo_motivo.minutos = int(motivo['minutos'])
                         modelo_motivo.observacion = motivo['observacion']
                         modelo_motivo.save(self)
+                    for material in control['requisicion']:
+                        modelo_materiales = Requisicion()
+                        modelo_materiales.material_solicitado = Entrada.objects.get(id=material['id'])
+                        modelo_materiales.cantidad_solicitada = float(material['cantidad_solicitada'])
+                        modelo_materiales.numero_orden_id = self.kwargs.get('pk')
+                        modelo_materiales.observaciones_solicitud = material['observaciones_solicitud']
+                        modelo_materiales.categoria = material['tipo']
+                        modelo_materiales.control_id_id = control_produccion.id
+                        modelo_materiales.save(self)
             elif action == 'search_colaborador':
                 data = []
-                ids_exclude = json.loads(request.POST['ids'])
+                ids_exclude = json.loads(request.POST['ids_colaborador'])
                 busqueda = TecnicosOperarios.objects.filter(
                     Q(nombre__icontains=request.POST['term']) |
                     Q(codigo__icontains=request.POST['term'])).exclude(id__in=ids_exclude)[0:10]
@@ -157,6 +169,72 @@ class CrearNuevoControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin,
                     item['minutos'] = 0
                     item['horas'] = 0
                     item['observacion'] = ''
+                    data.append(item)
+            elif action == 'search_material':
+                data = []
+                ids_exclude_material = json.loads(request.POST['ids_materiales'])
+                busqueda = Entrada.objects.filter(
+                    Q(ingreso_materia_prima__nombre__icontains=request.POST['term']) | 
+                    Q(ingreso_materia_prima__referencia__icontains=request.POST['term']) |
+                    Q(lote__icontains=request.POST['term'])
+                ).exclude(id__in=ids_exclude_material)[0:10]
+
+                for i in busqueda:
+                    requisiciones = Requisicion.objects.filter(material_solicitado_id = i.id
+                    ).aggregate(material_solicitado_id = Sum('cantidad_solicitada'))
+                    pk = self.kwargs.get('pk')
+                    produccion = Produccion.objects.get(pk=pk)
+                    material = Requisicion.objects.filter(numero_orden_id=pk, categoria='Materia Prima').aggregate(numero_orden_id=Sum('cantidad_solicitada'))
+                    pigmento = Requisicion.objects.filter(numero_orden_id=pk, categoria='Pigmento').aggregate(numero_orden_id=Sum('cantidad_solicitada'))
+                    pnc = MateriaPrimaInsumos.objects.filter(
+                    materia_prima_insumo__ingreso_materia_prima_id = i.id
+                    ).aggregate(materia_prima_insumo__ingreso_materia_prima_id = Sum('materia_prima_insumo__cantidad_ingresada'))
+                    pnc_datos = MateriaPrimaInsumos.objects.filter(
+                    materia_prima_insumo__ingreso_materia_prima_id = i.id
+                    )
+
+                    def get_cantidad_pnc():
+                        for pnc_dato in pnc_datos:
+                            if pnc_dato.estado == 'Retenido' or pnc_dato.estado == 'En espera':
+                                cantidad_pnc = pnc['materia_prima_insumo__ingreso_materia_prima_id']
+                            else:
+                                cantidad_pnc = 0
+                            return cantidad_pnc
+            
+                    def get_cantidad_disponible():
+                        if produccion.aprobacion_pigmento == True and i.ingreso_materia_prima.categoria == "Pigmento":
+                            return round((produccion.pigmento_adicional + produccion.maximo_pigmento) - pigmento['numero_orden_id'], 2)
+                        elif produccion.aprobacion_materia_prima == True and i.ingreso_materia_prima.categoria == "Materia Prima":
+                            return round((produccion.materia_prima_adicional + produccion.maximo_material) - material['numero_orden_id'], 2)
+                        elif i.ingreso_materia_prima.categoria == "Pigmento":
+                            return round(produccion.maximo_pigmento - pigmento['numero_orden_id'] if pigmento['numero_orden_id'] is not None else produccion.maximo_pigmento, 2)
+                        elif i.ingreso_materia_prima.categoria == "Materia Prima":
+                            return round(produccion.maximo_material - material['numero_orden_id'] if material['numero_orden_id'] is not None else produccion.maximo_material, 2)
+                        else:
+                            return round(i.cantidad_ingresada - requisiciones['material_solicitado_id'] if requisiciones['material_solicitado_id'] is not None else i.cantidad_ingresada, 2)
+                        
+                    def get_cantidad_inventario():
+                        if pnc['materia_prima_insumo__ingreso_materia_prima_id'] is not None:
+                            resta_cantidad_disponible = get_cantidad_disponible() - get_cantidad_pnc()
+                            return 0 if resta_cantidad_disponible <= 0 else resta_cantidad_disponible
+                        elif get_cantidad_disponible() == 0:
+                            return 0
+                        elif pnc['materia_prima_insumo__ingreso_materia_prima_id'] is None:
+                            if requisiciones['material_solicitado_id'] is not None:
+                                resta_inventario = i.cantidad_ingresada - requisiciones['material_solicitado_id']
+                                return 0 if resta_inventario <= 0 else resta_inventario
+                            else:
+                                return i.cantidad_ingresada
+
+                    item = i.toJSON()
+                    item['cantidad_disponible'] = get_cantidad_disponible()
+                    item['pnc'] = get_cantidad_pnc() if pnc['materia_prima_insumo__ingreso_materia_prima_id'] is not None else 0
+                    item['cantidad_inventario'] = round(get_cantidad_inventario(), 2)
+                    item['text'] = i.ingreso_materia_prima.nombre
+                    item['referencia'] = i.ingreso_materia_prima.referencia
+                    item['tipo'] = i.ingreso_materia_prima.categoria
+                    item['cantidad_solicitada'] = 0
+                    item['observaciones_solicitud'] = ''
                     data.append(item)
             elif action == 'create_element':
                 with transaction.atomic():
@@ -238,16 +316,21 @@ class DetalleControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin, De
         pk = self.kwargs.get('pk')
         paradas = TiemposParadasControlProduccion.objects.filter(control_id=pk)
         controles = ControlProduccion.objects.filter(id=pk)
+        cantidad = Requisicion.objects.filter(control_id = pk,categoria = "Materia Prima").aggregate(total_materia_prima=Sum('cantidad_solicitada'))
+        context['cantidad_material'] = cantidad['total_materia_prima']
         for control in controles:
             context['tiempo_total_parada'] = control.tiempo_total_paradas
             context['tiempo_produccion'] = control.tiempo_produccion
             context['cantidad_esperada_turno'] = control.cantidad_esperada_turno
             context['rendimiento'] = control.rendimiento_produccion
+            if control.material_molido != None:
+                context['porcentaje_recuperado'] = (control.material_molido / (control.material_molido + context['cantidad_material'])) * 100
         context['title'] = 'Detalle control'
         context['list_url'] = reverse_lazy('Control_produccion:Control_orden')
         context['entity'] = 'Controles'
         context['tecnicos'] = ColaboradorControlProduccion.objects.filter(control_id=pk)
         context['paradas'] = paradas
+        context['materiales'] = Requisicion.objects.filter(control_id=pk)
         return context
 
 

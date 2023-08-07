@@ -209,6 +209,15 @@ class DiagramaGantt(TemplateView):
         
         return produccion_query
     
+    def inyectora_8(self):
+        produccion_query = Produccion.objects.filter(
+            estado_op='En producción', 
+            maquina='Inyectora 8',
+            fecha_inicio_produccion__isnull=False
+        )
+        
+        return produccion_query
+    
     def sopladora_1(self):
         produccion_query = Produccion.objects.filter(
             estado_op='En producción', 
@@ -245,6 +254,7 @@ class DiagramaGantt(TemplateView):
             'Inyectora 4',
             'Inyectora 5',
             'Inyectora 6',
+            'Inyectora 8',
             'Sopladora 1',
             'Sopladora 2',
             'Sopladora 3',
@@ -280,6 +290,7 @@ class DiagramaGantt(TemplateView):
         context['inyectora_4'] = self.inyectora_4()
         context['inyectora_5'] = self.inyectora_5()
         context['inyectora_6'] = self.inyectora_6()
+        context['inyectora_8'] = self.inyectora_8()
         context['sopladora_1'] = self.sopladora_1()
         context['sopladora_2'] = self.sopladora_2()
         context['sopladora_3'] = self.sopladora_3()

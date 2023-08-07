@@ -188,6 +188,17 @@
     }]
   },
   {% endfor %}
+  {% for orden in inyectora_8 %}
+  {
+    name: '{{ orden.producto.productos.Nombre_producto }} Orden: {{ orden }}',
+    data: [{
+      start: Date.UTC({{ orden.fecha_inicio_produccion.year }}, {{ orden.fecha_inicio_produccion.month }}-1, {{ orden.fecha_inicio_produccion.day }}),
+      end: Date.UTC({{ orden.tiempo_finalizacion_esperado.year }}, {{ orden.tiempo_finalizacion_esperado.month }}-1, {{ orden.tiempo_finalizacion_esperado.day }}),
+      completed: {% if orden.cantidad_acumulada is not None %} {{ orden.cantidad_acumulada }} {% else %}0{% endif %},
+      name: '{{ orden.maquina }}'
+    }]
+  },
+  {% endfor %}
   {% for orden in sopladora_1 %}
   {
     name: '{{ orden.producto.productos.Nombre_producto }} Orden: {{ orden }}',

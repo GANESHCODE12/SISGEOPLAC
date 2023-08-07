@@ -32,6 +32,10 @@ class CrearControlForm(ModelForm):
                 'class': 'form-control',
                 'style': 'width: 100%'
             }),
+            'material_molido': NumberInput(attrs={
+                'class': 'form-control',
+                'style': 'width: 100%'
+            }),
             'ciclo_turno': NumberInput(attrs={
                 'class': 'form-control',
                 'style': 'width: 100%'

@@ -23,7 +23,7 @@
 {% endblock %}
 
 {% block content %}
-<form method="post" action="." enctype="multipart/form-data" id="formProgramacion">
+<form method="post" action="." enctype="multipart/form-data" id="formProgramacionUpdate">
     <div class="card card-dark">
         {% block card-header %}
         <div class="card-header">
@@ -77,6 +77,7 @@
                 </div>
             </div>
         </div>
+        {% block card-footer %}
         <div class="card-footer d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">
                 <i class="fas fa-save"></i> Cargar
@@ -87,6 +88,10 @@
             </a>
             &nbsp;
         </div>
+        {% endblock %}
     </div>
 </form>
+{% endblock %}
+{% block javascript %}
+
 {% endblock %}

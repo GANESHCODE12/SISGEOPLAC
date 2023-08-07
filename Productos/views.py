@@ -151,13 +151,22 @@ class DetalleFichaView(LoginRequiredMixin, ValidatePermissionRequiredMixin, Deta
     """Vista para el detalle de las fichas técnicas"""
 
     model = Producto
-    template_name = 'Productos/detalle_ficha.html'
     queryset = Producto.objects.all()
     context_object_name = 'FichasTecnica'
     permission_required = 'view_producto'
 
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+    
+    def get_template_names(self):
+        pk = self.kwargs.get('pk')
+        producto_color = Productos_colores.objects.filter(productos_id=pk)
+
+        for document in producto_color:
+            if document.version_documento == 1:
+                return 'Productos/detalle_ficha.html'
+            elif document.version_documento == 2:
+                return 'Productos/detalle_ficha_V3.html'
 
     def get_context_data(self, **kwargs):
         """Agrega los demás modelos relacionados con la ficha

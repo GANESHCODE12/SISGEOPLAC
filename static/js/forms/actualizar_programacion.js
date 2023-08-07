@@ -187,21 +187,19 @@ function generate_report() {
         });
     
         //Guardado de datos
-        $('#formProgramacion').on('submit', function(e){
+        $('#formProgramacionUpdate').on('submit', function(e){
             e.preventDefault();
     
-            var parameters = new FormData();
+            var parameters = new FormData(this);
             parameters.append('action', $('input[name="action"]').val());
             parameters.append('programacion', JSON.stringify(programacion.items));
-            submit_with_ajax(window.location.pathname, parameters, 'Notificación', 'Esta segur@ que desea crear el siguiente registro', function(){
+            submit_with_ajax(window.location.pathname, parameters, 'Notificación', 'Esta segur@ que desea acualizar el siguiente registro', function(){
                 location.href = '/Gestión_humana/programacion-historico';
             });
         });
         programacion.programacion_colaborador()
     });
 }
-
-generate_report()
 
 $(function () {
     $('input[name="date_range"]').daterangepicker({
@@ -217,6 +215,5 @@ $(function () {
         $(this).data('daterangepicker').setStartDate(date_now);
         $(this).data('daterangepicker').setEndDate(date_now);
         date_range = picker;
-        generate_report();
     });
 });

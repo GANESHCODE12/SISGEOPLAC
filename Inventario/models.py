@@ -9,6 +9,7 @@ from crum import get_current_user
 
 #Modelos
 from users.models import User
+from Control_produccion.models import ControlProduccion
 
 
 #Inventario Producto Terminado
@@ -256,7 +257,7 @@ class Requisicion(models.Model):
 
   categoria = models.CharField(
     max_length= 250,
-    verbose_name='Proveedor',
+    verbose_name='Categoria',
     default='Insumo'
   )
 
@@ -273,6 +274,14 @@ class Requisicion(models.Model):
   observaciones_solicitud = models.TextField(
     blank=True,
     verbose_name='Observaciones Solicitud'
+  )
+
+  control_id = models.ForeignKey(
+    ControlProduccion,
+    on_delete=models.CASCADE,
+    verbose_name='Control producción',
+    null=True,
+    blank=True
   )
 
   def save(self, force_insert=False, force_update= False, using=None, update_fields=None):
