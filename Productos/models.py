@@ -252,7 +252,7 @@ class Productos_colores(models.Model):
         null=True,
         blank=True
     )
-    dosificacion = models.PositiveIntegerField(
+    dosificacion = models.FloatField(
         verbose_name='Dosificación',
         null=True,
         blank=True

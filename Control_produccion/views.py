@@ -267,7 +267,6 @@ class CrearNuevoControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin,
                             ) if control['numero_op_id'] is not None else produccion.cantidad_requerida
         return context
 
-
 class NuevoMotivoView(LoginRequiredMixin, ValidatePermissionRequiredMixin, CreateView):
     """Vista para crear los motivos de paradas"""
 
@@ -323,7 +322,7 @@ class DetalleControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin, De
             context['tiempo_produccion'] = control.tiempo_produccion
             context['cantidad_esperada_turno'] = control.cantidad_esperada_turno
             context['rendimiento'] = control.rendimiento_produccion
-            if control.material_molido != None:
+            if control.material_molido != None and cantidad['total_materia_prima'] != None:
                 context['porcentaje_recuperado'] = (control.material_molido / (control.material_molido + context['cantidad_material'])) * 100
         context['title'] = 'Detalle control'
         context['list_url'] = reverse_lazy('Control_produccion:Control_orden')
