@@ -112,9 +112,9 @@ class CrearNuevoControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin,
                     control_produccion.numero_op_id = kwargs.get('pk')
                     control_produccion.turno = control['turno']
                     control_produccion.hora_inicio = datetime.strptime(
-                        control['hora_inicio'], '%d-%m-%Y %H:%M %Z:%S')
+                        control['hora_inicio'], '%d-%m-%Y %H:%M %z')
                     control_produccion.hora_final = datetime.strptime(
-                        control['hora_final'], '%d-%m-%Y %H:%M %Z:%S')
+                        control['hora_final'], '%d-%m-%Y %H:%M %z')
                     control_produccion.cantidad_producida = control['cantidad_producida']
                     control_produccion.ciclo_turno = control['ciclo_turno']
                     control_produccion.cavidades_operacion = control['cavidades_operacion']
@@ -266,6 +266,7 @@ class CrearNuevoControlView(LoginRequiredMixin, ValidatePermissionRequiredMixin,
         context['saldo'] = (produccion.cantidad_requerida - control['numero_op_id']
                             ) if control['numero_op_id'] is not None else produccion.cantidad_requerida
         return context
+
 
 class NuevoMotivoView(LoginRequiredMixin, ValidatePermissionRequiredMixin, CreateView):
     """Vista para crear los motivos de paradas"""
@@ -436,7 +437,7 @@ class ReporteRendimientoView(TemplateView):
                 end_date = request.POST.get('end_date', '')
                 search = ColaboradorControlProduccion.objects.all()
                 if len(start_date) and len(end_date):
-                    search = search.filter(control__fecha_creacion__range=[start_date, end_date])
+                    search = search.filter(control__hora_inicio__range=[start_date, end_date])
                 for i in search:
                     item = i.toJSON()
                     item['control'] = i.control_id
@@ -449,6 +450,9 @@ class ReporteRendimientoView(TemplateView):
                     item['cantidad_producida'] = i.control.cantidad_producida
                     item['cantidad_esperada'] = round(i.cantidad_esperada_turno, 2)
                     item['rendimiento'] = round(i.rendimiento_produccion, 2)
+                    item['rendimiento'] = round(i.rendimiento_produccion, 2)
+                    if i.control.hora_inicio is not None:
+                        item['hora_inicio'] = i.control.hora_inicio.strftime('%d-%m-%Y')
                     data.append(item)
             else:
                 data['error'] = 'Ha ocurrido un error'

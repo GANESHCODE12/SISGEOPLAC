@@ -54,10 +54,11 @@ function generate_report() {
       { "data": "cantidad_producida" },
       { "data": "cantidad_esperada" },
       { "data": "rendimiento" },
+      { "data": "hora_inicio" },
     ],
     columnDefs: [
       {
-        targets: [0, 1, -1, -2, -3, 5],
+        targets: [0, 1, -2, -3, -4, 5],
         class: 'text-center'
       },
     ],
