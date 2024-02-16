@@ -1,0 +1,28 @@
+{% extends "lista.html" %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'lib/moment-2.25.3/moment-with-locales.js' %}"></script>
+    <script src="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js' %}"></script>
+    <link href="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
+
+    <script src="{% static 'js/Listas/certificados.js' %}"></script>
+{% endblock %}
+
+{% block columnas %}
+<tr>
+    <th>Id</th>
+    <th>Fecha Generación</th>
+    <th>Producto</th>
+    <th>Color</th>
+    <th>Cliente</th>
+    <th>Orden</th>
+    <th>OP</th>
+    <th>Cantidad Requerida</th>
+    <th>Cantidad Certificado</th>
+    <th>Saldo Cliente</th>
+    <th>Opciones</th>
+</tr>
+{% endblock %}
+{% block javascript %}
+
+{% endblock %}

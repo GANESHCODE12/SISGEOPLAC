@@ -12,9 +12,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 
-#Utilidades
-from decouple import config
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = 'hzd2zl+l%hl_+z0lx3leysc89&+d(t)sucb8*jt#@dlxfm-1$s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['sistemadegestion.plasmotecsas.com', 'localhost']
 
 
 # Application definition
@@ -41,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     
     #Utilities
     'crispy_forms',
@@ -54,6 +52,9 @@ INSTALLED_APPS = [
     'Produccion',
     'users',
     'Productos',
+    'Inventario',
+    'Gestion_Humana',
+    'notify'
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -97,8 +98,12 @@ WSGI_APPLICATION = 'Plasmotec.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'plasmotec',
+        'USER': 'userplasmotec',
+        'PASSWORD': 'dWJ4dO!HoeWU',
+        'HOST': 'localhost',
+        'PORT': '',
         'ATOMIC_REQUESTS': True,
     }
 }
@@ -142,16 +147,18 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
-    BASE_DIR / 'static'
-),
+STATIC_ROOT = BASE_DIR / 'static/'
+
+# STATICFILES_DIRS = (
+#     BASE_DIR / 'static'
+# ),
 
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / 'media/'
 
 MEDIA_URL = '/media/'
 
@@ -174,4 +181,13 @@ AUTH_USER_MODEL = 'users.User'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
-USE_THOUSAND_SEPARATOR = True
+#Configuración para envio de correos
+SERVER_EMAIL = 'confidencial <confidencial@plasmotecsas.com>'
+DEFAULT_FROM_EMAIL = 'confidencial <confidencial@plasmotecsas.com>'
+EMAIL_HOST = 'mail.plasmotecsas.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'confidencial@plasmotecsas.com'
+EMAIL_HOST_PASSWORD = 's~A0Br),tA8$'
+EMAIL_USE_TLS = True
+
+DOMAIN = 'https://sistemadegestion.plasmotecsas.com/'

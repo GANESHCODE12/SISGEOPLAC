@@ -9,14 +9,19 @@
 {% endblock %}
 {% block columnas %}
 <tr>
-    <th style="text-align: center; width: 9%">No. orden</th>
-    <th style="text-align: center; width: 14%">Producto</th>
-    <th style="text-align: center; width: 12.5%">Lote</th>
-    <th style="text-align: center; width: 12.5%">Cliente</th>
-    <th style="text-align: center; width: 12.5%">Cant. requerida</th>
-    <th style="text-align: center; width: 12.5%">Estado Orden</th>
-    <th style="text-align: center; width: 12.5%">Fecha de entrega</th>
-    <th style="text-align: center; width: 14.5%">Opciones</th>
+    <th style="text-align: center; ">Id</th>
+    <th style="text-align: center; ">Producto</th>
+    <th style="text-align: center; ">Estado Orden</th>
+    <th style="text-align: center; ">Máquina</th>
+    <th style="text-align: center; ">OP</th>
+    <th style="text-align: center; ">Cliente</th>
+    <th style="text-align: center; ">Cant. requerida</th>
+    <th style="text-align: center; ">Cant. Producida</th>
+    <th style="text-align: center; ">Saldo Orden</th>
+    <th style="text-align: center; ">Saldo Cliente</th>
+    <th style="text-align: center; ">Color</th>
+    <th style="text-align: center; ">Fecha de entrega</th>
+    <th style="text-align: center; ">Opciones</th>
 </tr>
 {% endblock %}
 {% block filas %}
@@ -24,5 +29,71 @@
 {% endblock %}
 
 {% block javascript %}
-
+<div class="modal fade" id="myModalDetControls" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><b>
+                    <i class="fas fa-gamepad"></i>
+                    Controles De La Orden De Producción</b>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" id="tblDetControls">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Producto</th>
+                            <th>No. Orden</th>
+                            <th>Fecha Control</th>
+                            <th>Cantidad Producida</th>
+                            <th>Turno</th>
+                            <th>Máquina</th>
+                            <th>Colaboradores</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModalDetMPI" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderModalLabel"><b>
+                    <i class="fas fa-tools"></i>
+                    Materia Prima E Insumos Utilizados En La Orden</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" id="tblDetMPI">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Producto</th>
+                            <th>Categoria</th>
+                            <th>Referencia</th>
+                            <th>Proveedor</th>
+                            <th>Ingresado por</th>
+                            <th>Fecha de ingreso</th>
+                            <th>lote</th>
+                            <th>Cantidad</th>
+                            <th>Unidad de medida</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

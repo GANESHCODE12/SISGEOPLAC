@@ -18,6 +18,7 @@ $(function () {
             {"data": "codigo"},
             {"data": "titulo"},
             {"data": "tipo_documento"},
+            {"data": "cliente"},
             {"data": "proceso"},
             {"data": "versión"},
             {"data": "fecha"},
@@ -30,8 +31,8 @@ $(function () {
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    var buttons = '<a href="/Documentación/actualizar_documento/' + row.id + '/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a> ';
-                    buttons += '<a href="/Documentación/detalle_documento/' + row.id + '/" type="button" class="btn btn-primary btn-xs btn-flat"><i class="fas fa-eye"></i></a> ';
+                    var buttons = '<a href="/Documentación/actualizar_documento/' + row.id + '/"><button title="Editar Documento" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></button></a> ';
+                    buttons += '<a href="/Documentación/detalle_documento/' + row.id + '/"><button title="Detalle Documento" class="btn btn-primary btn-xs btn-flat"><i class="fas fa-eye"></i></button></a> ';
                     return buttons;
                 }
             },

@@ -1,0 +1,324 @@
+{% extends "body.html" %}
+{% load static %}
+
+{% block head %}
+
+<!-- CSS style -->
+<link rel="stylesheet" href="{% static '../static/assets/css/styleprint.css' %}">
+
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td rowspan="4" style="width: 25%; padding-top: 3%;">
+                        <img src="{% static 'img/logo.png' %}">
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="2" style="text-align: center; width: 50%; padding-top: 3%;"><b>ASEGURAMIENTO DE CALIDAD</b></td>
+                    <td style="text-align: center"><b>CÓDIGO: FT-Q-10</b></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center"><b>VERSIÓN: 03</b></td>
+                </tr>
+                <tr>
+                    <td rowspan="2" style="text-align: center"><b>INSPECCIÓN MATERIA PRIMA E INSUMOS</b></td>
+                    <td style="text-align: center"><b>FECHA 28 DE OCTUBRE 2022</b></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="card card-dark" id="line-card">
+    <div class="card-header">
+        <div class="container-fluid" style="text-align: center;">
+            DATOS GENERALES
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr scope="row">
+                        <td class="bg-secondary" id="titulos">Fecha inspección</td>
+                        <td style="text-align: center;">{{ MateriaPrimaInsumos.fecha_creacion|date:"d/m/Y" }}</td>
+                        <td class="bg-secondary" id="titulos">Cantidad</td>
+                        <td style="text-align: center;">{{ entrada.cantidad_ingresada }}</td>
+                    </tr>
+                    <tr scope="row">
+                        <td class="bg-secondary" id="titulos">Nombre materia prima o insumo</td>
+                        <td style="text-align: center;">{{ entrada.ingreso_materia_prima.nombre }}</td>
+                        <td class="bg-secondary"id="titulos">Proveedor</td>
+                        <td style="text-align: center;">{{ entrada.ingreso_materia_prima.proveedor }}</td>
+                    </tr>
+                    <tr scope="row">
+                        <td class="bg-secondary"id="titulos">Referencia</td>
+                        <td style="text-align: center;">{{ entrada.ingreso_materia_prima.referencia }}</td>
+                        <td class="bg-secondary" id="titulos">Fecha de fabricación</td>
+                        <td style="text-align: center;">{{ MateriaPrimaInsumos.fecha_lote|date:"d/m/Y" }}</td>
+                    </tr>
+                    <tr scope="row">
+                        <td class="bg-secondary" id="titulos">Arte cliente</td>
+                        <td style="text-align: center;">{{ MateriaPrimaInsumos.arte_cliente }}</td>
+                        <td class="bg-secondary" id="titulos">Arte ingreso</td>
+                        <td style="text-align: center;">{{ MateriaPrimaInsumos.arte_ingreso }}</td>
+                    </tr>
+                    <tr scope="row">
+                        <td class="bg-secondary" id="titulos">Lote</td>
+                        <td style="text-align: center;">{{ MateriaPrimaInsumos.lote }}</td>
+                        <td class="bg-secondary" id="titulos">Analista</td>
+                        <td style="text-align: center;">{{ MateriaPrimaInsumos.inspector_calidad }}</td>
+                    </tr>
+                    <tr scope="row">
+                        <td class="bg-secondary" id="titulos">Unidades de muestra</td>
+                        <td style="text-align: center;">{{ MateriaPrimaInsumos.unidades_muestra }}</td>
+                        <td class="bg-secondary" id="titulos">Cajas/Paquetes/Bolsas revisadas</td>
+                        <td style="text-align: center;">{{ MateriaPrimaInsumos.unidades_empaque }}</td>
+                    </tr>
+                    <tr scope="row">
+                        <td class="bg-secondary" id="titulos">Estado de la inspección</td>
+                        <td style="text-align: center;" colspan="3">{{ MateriaPrimaInsumos.estado }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="card card-dark" id="salto-pagina">
+    <div class="card-header">
+        <div class="container-fluid" style="text-align: center;">
+            INSPECCIÓN DOCUMENTAL
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <li class="list-group-item list-group-item-dark">Certificado</li>
+                <li class="list-group-item list-group-item-dark">Cumple especificaciones</li>
+                <li class="list-group-item list-group-item-dark">Coincide lote de ingreso</li>
+            </div>
+            <div class="col-sm-9">
+                <li class="list-group-item">Cumple {% if 'MateriaPrimaInsumos.certificado == True' %} {% else %} No Cumple {% endif %} </li>
+                <li class="list-group-item">Cumple {% if 'MateriaPrimaInsumos.especificaciones == True' %} {% else %} No Cumple {% endif %}</li>
+                <li class="list-group-item">Cumple {% if 'MateriaPrimaInsumos.lote_ingreso == True' %} {% else %} No Cumple {% endif %}</li>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-dark" id="salto-pagina">
+    <div class="card-header">
+        <div class="container-fluid" style="text-align: center;">
+            ANALISÍS ATRIBUTOS Y/O FUNCIONAL
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr scope="row">
+                        <th class="bg-secondary" id="titulos" style="text-align: center;">Especificación</th>
+                        <th class="bg-secondary" id="titulos" style="text-align: center;">Cumplimiento</th>
+                    </tr>
+                    {% for instance in analisis.all %}
+                    <tr>
+                        <td>{{ instance.especificacion }}</td>
+                        <td>{{ instance.cumple }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="card card-dark" id="line-card">
+    <div class="card-header">
+        <div class="container-fluid" style="text-align: center;">
+            CONTROL POR ATRIBUTOS
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th class="bg-secondary" style="text-align: center;">CARACTERISTICAS</th>
+                        {% if 'muestra_1' in muestras %}
+                        <th class="bg-secondary" style="text-align: center;">muestra 1</th>
+                        {% endif %}
+                        {% if 'muestra_2' in muestras %}
+                        <th class="bg-secondary" style="text-align: center;">muestra 2</th>
+                        {% endif %}
+                        {% if 'muestra_3' in muestras %}
+                        <th class="bg-secondary" style="text-align: center;">muestra 3</th>
+                        {% endif %}
+                        {% if 'muestra_4' in muestras %}
+                        <th class="bg-secondary" style="text-align: center;">muestra 4</th>
+                        {% endif %}
+                        {% if 'muestra_5' in muestras %}
+                        <th class="bg-secondary" style="text-align: center;">muestra 5</th>
+                        {% endif %}
+                        {% if 'muestra_6' in muestras %}
+                        <th class="bg-secondary" style="text-align: center;">muestra 6</th>
+                        {% endif %}
+                        {% if 'muestra_7' in muestras %}
+                        <th class="bg-secondary" style="text-align: center;">muestra 7</th>
+                        {% endif %}
+                        {% if 'muestra_8' in muestras %}
+                        <th class="bg-secondary" style="text-align: center;">muestra 8</th>
+                        {% endif %}
+                        {% if 'muestra_9' in muestras %}
+                        <th class="bg-secondary" style="text-align: center;">muestra 9</th>
+                        {% endif %}
+                        {% if 'muestra_10' in muestras %}
+                        <th class="bg-secondary" style="text-align: center;">muestra 10</th>
+                        {% endif %}
+                        {% if 'muestra_11' in muestras %}
+                        <th class="bg-secondary" style="text-align: center;">muestra 11</th>
+                        {% endif %}
+                        {% if 'muestra_12' in muestras %}
+                        <th class="bg-secondary" style="text-align: center;">muestra 12</th>
+                        {% endif %}
+                        {% if 'muestra_13' in muestras %}
+                        <th class="bg-secondary" style="text-align: center;">muestra 13</th>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% for instance in dimensional.all %}
+                        <td>
+                            {{ instance.especificacion }}
+                        </td>
+                        {% if instance.muestra_1 is not None %}
+                        <td style="text-align: center;">
+                            {{ instance.muestra_1 }}
+                        </td>
+                        {% endif %}
+                        {% if instance.muestra_2 is not None %}
+                        <td style="text-align: center;">
+                            {{ instance.muestra_2 }}
+                        </td>
+                        {% endif %}
+                        {% if instance.muestra_3 is not None %}
+                        <td style="text-align: center;">
+                            {{ instance.muestra_3 }}
+                        </td>
+                        {% endif %}
+                        {% if instance.muestra_4 is not None %}
+                        <td style="text-align: center;">
+                            {{ instance.muestra_4 }}
+                        </td>
+                        {% endif %}
+                        {% if instance.muestra_5 is not None %}
+                        <td style="text-align: center;">
+                            {{ instance.muestra_5 }}
+                        </td>
+                        {% endif %}
+                        {% if instance.muestra_6 is not None %}
+                        <td style="text-align: center;">
+                            {{ instance.muestra_6 }}
+                        </td>
+                        {% endif %}
+                        {% if instance.muestra_7 is not None %}
+                        <td style="text-align: center;">
+                            {{ instance.muestra_7 }}
+                        </td>
+                        {% endif %}
+                        {% if instance.muestra_8 is not None %}
+                        <td style="text-align: center;">
+                            {{ instance.muestra_8 }}
+                        </td>
+                        {% endif %}
+                        {% if instance.muestra_9 is not None %}
+                        <td style="text-align: center;">
+                            {{ instance.muestra_9 }}
+                        </td>
+                        {% endif %}
+                        {% if instance.muestra_10 is not None %}
+                        <td style="text-align: center;">
+                            {{ instance.muestra_10 }}
+                        </td>
+                        {% endif %}
+                        {% if instance.muestra_11 is not None %}
+                        <td style="text-align: center;">
+                            {{ instance.muestra_11 }}
+                        </td>
+                        {% endif %}
+                        {% if instance.muestra_12 is not None %}
+                        <td style="text-align: center;">
+                            {{ instance.muestra_12 }}
+                        </td>
+                        {% endif %}
+                        {% if instance.muestra_13 is not None %}
+                        <td style="text-align: center;">
+                            {{ instance.muestra_13 }}
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="container-fluid py-4">
+    <div class="card card-dark" id="line-card">
+        <div class="card-header">
+            <div class="container-fluid" style="text-align: center;">
+                OBSERVACIONES
+            </div>
+        </div>
+        <div class="card-body">
+                <div>{{ MateriaPrimaInsumos.observaciones }}</div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col">
+            <li class="list-group-item list-group-item-dark">Inspeccionador <br> por:</li>
+            <li class="list-group-item list-group-item-dark">Aprobado</li>
+        </div>
+        <div class="col">
+            <li class="list-group-item">{{ MateriaPrimaInsumos.inspector_calidad.get_full_name }} </li>
+            <li class="list-group-item">Si {% if 'MateriaPrimaInsumos.aprobado == True' %} {% else %} No {% endif %}</li>
+        </div>
+        <div class="col">
+            <li class="list-group-item list-group-item-dark">Revisado por:</li>
+            <li class="list-group-item list-group-item-dark">Tolerado</li>
+        </div>
+        <div class="col">
+            <li class="list-group-item">{{ MateriaPrimaInsumos.revisado_por }}</li>
+            <li class="list-group-item">Si {% if 'MateriaPrimaInsumos.tolerado == True' %} {% else %} No {% endif %}</li>
+        </div>
+    </div>
+</div>
+<div class="card-footer d-flex justify-content-end d-print-none">
+    <button type="button" class="btn btn-info">
+        <a style="color: white;" href="{{ MateriaPrimaInsumos.get_certificado }}" download="{{ MateriaPrimaInsumos.get_certificado }}">
+            <i class="fas fa-download"></i> Descargar certificado proveedor
+        </a>
+    </button>
+    &nbsp;
+    <button type="submit" class="btn btn-primary printbutton">
+        <i class="fas fa-file-pdf"></i> Imprimir
+    </button>
+    &nbsp;
+    <a href="{{ list_url }}" class="btn btn-danger">
+        <i class="fas fa-chevron-left"></i> Volver
+    </a>
+    &nbsp;
+    {% block button %}
+
+    {% endblock %}
+</div>
+{% endblock %}
+{% block javascript %}
+<script>
+    $('.printbutton').on('click',  function () {
+        print()
+    });
+</script>
+{% endblock %}

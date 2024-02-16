@@ -1,7 +1,7 @@
 {% load static %}
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="{% url 'inicio' %}" class="brand-link">
+    <a href="{% url 'diagrama-gantt' %}" class="brand-link">
         <i class="nav-icon fas fa-wine-bottle"></i>
         <span class="brand-text font-weight-light">PLASMOTEC</span>
     </a>
@@ -14,7 +14,7 @@
                 <li class="nav-header">APLICACIONES</li>
                 <li class="nav-item">
                     <a href="{% url 'users:listado_usuarios' %}" class="nav-link">
-                        <i class="nav-icon fas fa-users"></i>
+                        <i class="nav-icon fas fa-address-card"></i>
                         <p>Gestión de usuarios</p>
                     </a>
                 </li>
@@ -25,22 +25,222 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'Control_produccion:Control_orden' %}" class="nav-link">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-medal"></i>
+                        <p>
+                            Calidad
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right">4</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'Control_calidad:Inspecciones_calidad' %}" class="nav-link">
+                                <i class="nav-icon fas fa-vial"></i>
+                                <p>Inspecciones PT</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'Inventario:Ingresos' %}" class="nav-link">
+                                <i class="nav-icon fas fa-boxes"></i>
+                                <p>Inspecciones MP</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'Control_calidad:certificados-calidad' %}" class="nav-link">
+                                <i class="nav-icon fas fa-folder-open"></i>
+                                <p>Certificados de calidad</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-times-circle"></i>
+                                <p>
+                                    Producto no <br> conforme
+                                    <span class="badge badge-success right">3</span>
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'PNC:Productos_no_conformes' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-times-circle"></i>
+                                        <p>Listado PNC</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'PNC:motivo-pnc' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-plus"></i>
+                                        <p>Nuevo motivo PNC</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'PNC:motivos-pnc' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-list-alt"></i>
+                                        <p>Lista motivos</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-file-pdf"></i>
+                                <p>
+                                    Documentos
+                                    <i class="fas fa-angle-left right"></i>
+                                    <span class="badge badge-success right">2</span>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Documentación:Documentos' %}" class="nav-link">
+                                        <i class=" nav-icon fas fa-clipboard-list"></i>
+                                        <p>Listado Documentos</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Documentación:Crear_documento' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-plus"></i>
+                                        <p>Nuevo Documento</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-gamepad"></i>
-                        <p>Control producción</p>
+                        <p>
+                            Control Producción
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right">4</span>
+                        </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'Control_produccion:Control_orden' %}" class="nav-link">
+                                <i class="nav-icon fas fa-gamepad"></i>
+                                <p>Controles</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'Control_produccion:motivos-de-paradas' %}" class="nav-link">
+                                <i class="nav-icon fas fa-stopwatch"></i>
+                                <p>Motivos Paradas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'Control_produccion:nuevo-motivo-de-parada' %}" class="nav-link">
+                                <i class=" nav-icon fas fa-plus"></i>
+                                <p>Nuevo motivo</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-calendar-alt"></i>
+                                <p>
+                                    Programación
+                                    <i class="fas fa-angle-left right"></i>
+                                    <span class="badge badge-success right">4</span>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Gestion_Humana:programacion' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-plus"></i>
+                                        <p>Nueva programación</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Gestion_Humana:actualizar-programacion' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-edit"></i>
+                                        <p>Actualizar programación</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Gestion_Humana:programacion-historico' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-clock"></i>
+                                        <p>Histórico</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Gestion_Humana:imprimir-programacion' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-print"></i>
+                                        <p>Imprimir</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'PNC:Productos_no_conformes' %}" class="nav-link">
-                        <i class="nav-icon fas fa-times-circle"></i>
-                        <p>Producto No Conforme</p>
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-warehouse"></i>
+                        <p>
+                            Inventarios
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right">2</span>
+                        </p>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'Control_calidad:Inspecciones_calidad' %}" class="nav-link">
-                        <i class="nav-icon fas fa-vial"></i>
-                        <p>Inspecciones de calidad</p>
-                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-robot"></i>
+                                <p>
+                                    Materia Prima E <br> Insumos
+                                    <span class="badge badge-success right">2</span>
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Inventario:Lista_Elementos_MP_Insumos' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-boxes"></i>
+                                        <p>Inventario</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Inventario:Ingresos_MP_Insumos' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-dolly"></i>
+                                        <p>Ingreso</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-prescription-bottle"></i>
+                                <p>
+                                    Producto <br> Terminado
+                                    <span class="badge badge-success right">3</span>
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Inventario:Inventario_PT' %}" class="nav-link">
+                                        <i class="nav-icon fab fa-product-hunt"></i>
+                                        <p>Inventario Producto</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Inventario:inventario-producto-terminado-orden' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-boxes"></i>
+                                        <p>Inventario Ordenes</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Inventario:Requisicion_PT' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-truck-loading"></i>
+                                        <p>Requisición</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -48,68 +248,132 @@
                         <p>
                             Productos
                             <i class="fas fa-angle-left right"></i>
-                            <span class="badge badge-info right">5</span>
+                            <span class="badge badge-info right">2</span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{% url 'Productos:Productos' %}" class="nav-link">
-                                <i class=" nav-icon fas fa-clipboard-list"></i>
-                                <p>Listado Productos</p>
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-clipboard-list"></i>
+                                <p>
+                                    Listas
+                                    <i class="fas fa-angle-left right"></i>
+                                    <span class="badge badge-success right">7</span>
+                                </p>
                             </a>
-                            <li class="nav-item">
-                                <a href="{% url 'Productos:Nueva_ficha' %}" class="nav-link">
-                                    <i class="nav-icon fas fa-plus"></i>
-                                    <p>Nuevo Producto</p>
-                                </a>
-                            </li>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Productos:Productos' %}" class="nav-link">
+                                        <i class=" nav-icon fas fa-clipboard-list"></i>
+                                        <p>Listado Productos</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Productos:Dimensiones' %}" class="nav-link">
+                                        <i class=" nav-icon fas fa-tachometer-alt"></i>
+                                        <p>Dimensiones</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Productos:Atributos' %}" class="nav-link">
+                                        <i class=" nav-icon fab fa-creative-commons-by"></i>
+                                        <p>Atributos</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Productos:Pruebas' %}" class="nav-link">
+                                        <i class=" nav-icon fas fa-vials"></i>
+                                        <p>Pruebas</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Productos:Normas' %}" class="nav-link">
+                                        <i class=" nav-icon fas fa-suitcase"></i>
+                                        <p>Normas</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Productos:Colores' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-palette"></i>
+                                        <p>Colores</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="{% url 'Productos:Dimensiones' %}" class="nav-link">
-                                <i class=" nav-icon fas fa-tachometer-alt"></i>
-                                <p>Dimensiones</p>
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-plus"></i>
+                                <p>
+                                    Creación
+                                    <i class="fas fa-angle-left right"></i>
+                                    <span class="badge badge-success right">3</span>
+                                </p>
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{% url 'Productos:Atributos' %}" class="nav-link">
-                                <i class=" nav-icon fab fa-creative-commons-by"></i>
-                                <p>Atributos</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{% url 'Productos:Pruebas' %}" class="nav-link">
-                                <i class=" nav-icon fas fa-vials"></i>
-                                <p>Pruebas</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{% url 'Productos:Normas' %}" class="nav-link">
-                                <i class=" nav-icon fas fa-suitcase"></i>
-                                <p>Normas</p>
-                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{% url 'Productos:Nueva_ficha' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-industry"></i>
+                                        <p>Nuevo Producto</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Productos:Producto_color' %}" class="nav-link">
+                                        <i class="nav-icon fas fa-palette"></i>
+                                        <p>Producto Color</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'Produccion:nuevo-desarrollo' %}" class="nav-link">
+                                        <i class="nav-icon fab fa-connectdevelop"></i>
+                                        <p>Desarrollo</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-file-pdf"></i>
+                        <i class="nav-icon fas fa-users"></i>
                         <p>
-                            Documentos
+                            Gestión Humana
                             <i class="fas fa-angle-left right"></i>
                             <span class="badge badge-info right">2</span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{% url 'Documentación:Documentos' %}" class="nav-link">
-                                <i class=" nav-icon fas fa-clipboard-list"></i>
-                                <p>Listado Documentos</p>
+                            <a href="{% url 'Gestion_humana:Nuevo_colaborador' %}" class="nav-link">
+                                <i class="nav-icon fas fa-user-plus"></i>
+                                <p>Nuevo Colaborador</p>
+                            </a>
+                        <li class="nav-item">
+                            <a href="{% url 'Gestion_humana:Colaboradores' %}" class="nav-link">
+                                <i class="nav-icon fas fa-user-friends"></i>
+                                <p>Colaboradores</p>
                             </a>
                         </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-hard-hat"></i>
+                        <p>
+                            Tecnicos Operarios
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right">2</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{% url 'Documentación:Crear_documento' %}" class="nav-link">
-                                <i class="nav-icon fas fa-plus"></i>
-                                <p>Nuevo Documento</p>
+                            <a href="{% url 'Gestion_humana:tecnicos-operarios' %}" class="nav-link">
+                                <i class="nav-icon fas fa-user-plus"></i>
+                                <p>Nuevo Técnico</p>
+                            </a>
+                        <li class="nav-item">
+                            <a href="{% url 'Gestion_humana:lista-tecnicos-operarios' %}" class="nav-link">
+                                <i class="nav-icon fas fa-user-friends"></i>
+                                <p>Técnicos Operarios</p>
                             </a>
                         </li>
                     </ul>

@@ -2,8 +2,37 @@
 
 
 {% block card-header %}
+    <div class="card card-dark" id="line-card">
+        <div class="card-header">
+            <div class="container-fluid" style="text-align: center;">
+                UNIDAD DE EMPAQUE
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr scope="row">
+                        <td class="bg-secondary" id="titulos">Caja</td>
+                        <td>{{ producto.productos.caja }}</td>
+                        <td class="bg-secondary" id="titulos">Unidad de empaque</td>
+                        <td>{{ producto.productos.unidad_empaque }}</td>
+                    </tr>
+                    <tr scope="row">
+                        <td class="bg-secondary" id="titulos">Bolsa</td>
+                        <td>{{ producto.productos.bolsa }}</td>
+                        <td class="bg-secondary" id="titulos">Forma de empaque</td>
+                        <td>{{ producto.productos.forma_empaque }}</td>
+                    </tr>
+                    <tr scope="row">
+                        <td class="bg-secondary" id="titulos">Tipo</td>
+                        <td colspan="3">{{ producto.productos.tipo }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
     <div class="card-header">
         <i class="fas fa-plus"></i>
-        {{ title }} del producto: {{ producto.Nombre_producto }}
+        {{ title }} del producto: {{ producto.productos.Nombre_producto }}, Color: {{ producto.color.color }}
     </div>
 {% endblock %}

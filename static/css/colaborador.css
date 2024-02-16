@@ -1,0 +1,82 @@
+.portada {
+  width: 100%;
+  height: auto;
+  background-image: url( "../img/pexels-cottonbro-9665178.jpg" );
+  background-size: contain;
+}
+.foto-perfil {
+  border-radius: 50%;
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-top: 30px;
+  margin-left: calc(100% / -2);
+  border: 6px solid #6c757d;
+  z-index: 1;
+}
+.generales {
+  text-align: center;
+  color: white;
+}
+.info-general {
+  margin-left: 160px;
+  display: flex;
+  justify-content: space-between;
+}
+.documentos {
+  background-color: #6c757d;
+  text-align: center;
+  color: white;
+}
+.list-title {
+  background-color: #6c757d;
+  color: white;
+}
+.list-portada{
+  margin-left: 10px;
+}
+.list-documentos {
+  display: flex;
+  justify-content: space-between;
+}
+@media (max-width: 1279px) {
+  .foto-perfil {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    position: inherit;
+    margin: auto;
+    border: 5px solid #6c757d;
+  }
+  .info-general {
+    margin-top: auto;
+    margin-right: auto;
+  }
+  .list-portada-hidden {
+    display: none;
+  }
+}
+@media (max-width: 1149px) {
+  .list-portada {
+    display: none;
+  }
+  .list-portada-hidden {
+    margin-top: 4px;
+    display: inherit;
+  }
+}
+@media (min-width: 1279px) {
+  .list-portada-hidden {
+    display: none;
+  }
+  .info-general {
+    margin-left: 160px;
+  }
+}
+@media (max-width: 467px) {
+  .list-documentos {
+    display: inline;
+  }
+}

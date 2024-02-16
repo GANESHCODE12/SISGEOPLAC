@@ -8,6 +8,7 @@ from django.forms import model_to_dict
 #Utilidades
 from django.db.models.aggregates import Sum
 from crum import get_current_user
+from datetime import timedelta
 
 #Modelos
 from users.models import User
@@ -21,11 +22,9 @@ class ControlProduccion(models.Model):
         on_delete = models.CASCADE,
         related_name='supervisor'
     )
-
     fecha_creacion = models.DateTimeField(
         auto_now_add=True,
     )
-
     supervisor_actualizo = models.ForeignKey(
         User,
         on_delete = models.CASCADE,
@@ -33,33 +32,22 @@ class ControlProduccion(models.Model):
         null=True,
         blank=True,
     )
-    
     fecha_actualizacion = models.DateTimeField(
         auto_now=True,
         null=True,
         blank=True
     )
-
     numero_op = models.ForeignKey(
         'Produccion.Produccion',
         on_delete=models.CASCADE,
         verbose_name='Número de orden',
     )
-    
-    tecnico = models.CharField(
-        max_length=50,
-        verbose_name='Técnico'
-    )
-
-    operario = models.CharField(
-        max_length=50,
-        verbose_name='Operario'
-    )
-
     lista_turno = [
         ('1','1'),
         ('2','2'),
         ('3','3'),
+        ('4','4'),
+        ('5','5'),
     ]
     turno = models.CharField(
         max_length=30, 
@@ -67,34 +55,31 @@ class ControlProduccion(models.Model):
         default='1',
         verbose_name='Turno'
     )
-
     hora_inicio = models.DateTimeField(
-        verbose_name='Hora inicio'
+        verbose_name='Hora inicio',
+        null=True
     )
-
     hora_final = models.DateTimeField(
-        verbose_name='Hora Final'
+        verbose_name='Hora Final',
+        null=True
     )
-
     cantidad_producida = models.PositiveIntegerField(
         verbose_name='Cantidad producida'
     )
-
     ciclo_turno = models.FloatField(
         verbose_name='Ciclo turno'
     )
-    
     cavidades_operacion = models.PositiveIntegerField(
         verbose_name='Cavidades Operación'
     )
-
-    tiempo_paradas = models.DurationField(
-        verbose_name='Tiempo de paradas'
-    )
-
     observaciones = models.TextField(
         blank=True,
         verbose_name='Observaciones'
+    )
+    material_molido = models.PositiveIntegerField(
+        verbose_name='Cantidad material molido',
+        blank=True,
+        null=True
     )
 
     def save(self, force_insert=False, force_update= False, using=None, update_fields=None):
@@ -121,25 +106,11 @@ class ControlProduccion(models.Model):
         return self.hora_final - self.hora_inicio
 
     @property
-    def tiempo_produccion(self):
-        """Retorna el tiempo total de producción"""
-    
-        resultado = self.resta_tiempos - self.tiempo_paradas
-
-        return resultado
-
-    @property
     def bolsas_completadas(self):
         """Retorna el número de bolsas completadas en 
         el truno"""
 
-        return (self.cantidad_producida / self.numero_op.producto.unidad_empaque)
-
-    @property
-    def rendimiento_produccion(self):
-        """Retorna en porcentaje el rendimiento de producción"""
-        
-        return (self.cantidad_producida / self.numero_op.cantidad_planeada) * 100
+        return (self.cantidad_producida / self.numero_op.producto.productos.unidad_empaque)
 
     @property
     def cantidad_acumulada(self):
@@ -161,7 +132,45 @@ class ControlProduccion(models.Model):
 
         for self.numero_op.numero_op, value in cantidad.items():
             return self.numero_op.cantidad_requerida  - value
+
+    @property
+    def tiempo_total_paradas(self):
+        """Retorna el tiempo total de paradas"""
+
+        horas = 0
+        minutos = 0
+        paradas = TiemposParadasControlProduccion.objects.filter(control_id=self.id)
+
+        for parada in paradas:
+            horas += parada.horas
+            minutos += parada.minutos
+    
+        tiempo_total_paradas = timedelta(hours=horas, minutes=minutos)
+        return tiempo_total_paradas
+
+    @property
+    def tiempo_produccion(self):
+        """Retorna el tiempo total de producción"""
+    
+        resultado = self.resta_tiempos - self.tiempo_total_paradas
+
+        return resultado
+
+    @property
+    def cantidad_esperada_turno(self):
+        """Retorna la cantida esperada por turno"""
+
+        cantidad = (self.numero_op.producto.productos.cavidades / self.numero_op.producto.productos.ciclo)
+
+        return cantidad * self.tiempo_produccion.total_seconds()
+
+    @property
+    def rendimiento_produccion(self):
+        """Retorna en porcentaje el rendimiento de producción"""
         
+        return (
+            self.cantidad_producida / self.cantidad_esperada_turno
+        ) * 100
         
     class Meta:
         """Configuración del modelo"""
@@ -169,4 +178,159 @@ class ControlProduccion(models.Model):
         verbose_name = 'Control orden'
         verbose_name_plural = 'Controles de produccion'
         db_table = 'Controles de produccion'
+        ordering = ['-id']
+
+
+class ColaboradorControlProduccion(models.Model):
+    """Modelo colaboradores en control de producción"""
+
+    control = models.ForeignKey(
+        ControlProduccion,
+        on_delete = models.CASCADE,
+        related_name='Control'
+    )
+    colaborador = models.ForeignKey(
+        'Gestion_Humana.TecnicosOperarios',
+        on_delete=models.CASCADE,
+        verbose_name='Colaborador',
+    )
+
+    def __str__(self):
+        return 'Control Producción: {}, Colaborador: {}'.format(self.control, self.colaborador.nombre)
+
+    def toJSON(self):
+        item = model_to_dict(self)
+        return item
+
+    @property
+    def resta_tiempos(self):
+        """Retorna la diferencia de tiempo inicio y final de producción"""
+
+        return self.control.hora_final - self.control.hora_inicio
+
+    @property
+    def tiempo_total_paradas(self):
+        """Retorna el tiempo total de paradas"""
+
+        horas = 0
+        minutos = 0
+        paradas = TiemposParadasControlProduccion.objects.filter(control_id=self.control_id)
+
+        for parada in paradas:
+            horas += parada.horas
+            minutos += parada.minutos
+    
+        tiempo_total_paradas = timedelta(hours=horas, minutes=minutos)
+        return tiempo_total_paradas
+
+    @property
+    def tiempo_produccion(self):
+        """Retorna el tiempo total de producción"""
+    
+        resultado = self.resta_tiempos - self.tiempo_total_paradas
+
+        return resultado
+        
+    @property
+    def cantidad_esperada_turno(self):
+        """Retorna la cantida esperada por turno"""
+
+        cantidad = (self.control.numero_op.producto.productos.cavidades / self.control.numero_op.producto.productos.ciclo)
+
+        return cantidad * self.tiempo_produccion.total_seconds()
+
+    @property
+    def rendimiento_produccion(self):
+        """Retorna en porcentaje el rendimiento de producción"""
+
+        cantidad_esperada = self.cantidad_esperada_turno if self.cantidad_esperada_turno != 0 else 1
+        
+        return (
+            self.control.cantidad_producida / cantidad_esperada
+        ) * 100
+    
+    class Meta:
+        """Configuración del modelo"""
+
+        verbose_name = 'Colaborador Control orden'
+        verbose_name_plural = 'Colaborador Controles de produccion'
+        db_table = 'Colaborador Controles de produccion'
+        ordering = ['-id']
+
+
+class MotivosParadasControlProduccion(models.Model):
+    """Modelo de motivos de paradas"""
+
+    motivo = models.CharField(
+        max_length=50,
+        verbose_name="Motivo Parada",
+        blank=True,
+        null=True,
+    )
+
+    def __str__(self):
+        return 'Motivo: {}'.format(self.motivo)
+
+    def toJSON(self):
+        item = model_to_dict(self)
+        return item  
+        
+    class Meta:
+        """Configuración del modelo"""
+
+        verbose_name = 'Motivo de parada'
+        verbose_name_plural = 'Motivos de paradas'
+        db_table = 'Motivos de paradas'
+        ordering = ['-id']
+
+
+class TiemposParadasControlProduccion(models.Model):
+    """Modelo de tiempos de paradas"""
+
+    control = models.ForeignKey(
+        ControlProduccion,
+        on_delete = models.CASCADE,
+        related_name='Control_Parada'
+    )
+    motivo = models.ForeignKey(
+        MotivosParadasControlProduccion,
+        on_delete = models.CASCADE,
+        null=True,
+        verbose_name="Motivo Parada",
+    )
+    horas = models.PositiveBigIntegerField(
+        verbose_name="Segundos",
+        null=True
+    )
+    minutos = models.PositiveBigIntegerField(
+        verbose_name="Minutos",
+        null=True
+    )
+    observacion = models.CharField(
+        max_length=200,
+        null=True,
+        blank=True,
+        verbose_name='Observación'
+    )
+
+    def __str__(self):
+        return 'Control Producción: {}, Motivo: {}'.format(self.control, self.motivo)
+
+    def toJSON(self):
+        item = model_to_dict(self)
+        return item
+
+    @property
+    def tiempo_paradas(self):
+        """Retorna el tiempo de las paradas"""
+    
+        tiempo = timedelta(hours=self.horas, minutes=self.minutos)
+        return tiempo
+        
+    class Meta:
+        """Configuración del modelo"""
+
+        verbose_name = 'Tiempo de parada'
+        verbose_name_plural = 'Tiempos de paradas'
+        db_table = 'Tiempos de paradas'
         ordering = ['-id']

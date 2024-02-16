@@ -1,0 +1,6 @@
+Buenos días!! {{ usuario }}
+
+Si ha solicitado el cambio de su contraseña por favor de click <a href="{{ link }}">acá</a>, de lo contrario haga caso omiso
+a este correo.
+
+Saludos!!

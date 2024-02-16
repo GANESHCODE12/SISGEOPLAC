@@ -22,20 +22,19 @@ $(function () {
             {"data": "numero_op"},
             {"data": "cantidad_producida"},
             {"data": "saldo_orden"},
-            {"data": "fecha_creacion"},
+            {"data": "hora_inicio"},
             {"data": "turno"},
             {"data": "producto"},
-            {"data": "supervisor"},
-            {"data": "tecnico"},
-            {"data": "operario"},
+            {"data": "maquina"},
+            {"data": "colaboradores"},
         ],
         columnDefs: [
             {
                 targets: [0],
                 class: 'text-center',
                 render: function (data, type, row) {
-                    var buttons = '<a href="/Control_produccion/Detalle_control/' + row.id + '/" class="btn btn-primary btn-xs btn-flat"><i class="fas fa-eye"></i></a> ';
-                    buttons += '<a href="/Control_produccion/Crear_nuevo_control/' + row.numero_op + '/" type="button" class="btn btn-success btn-xs btn-flat"><i class="fas fa-plus"></i></a>';
+                    var buttons = '<a href="/Control_produccion/Detalle_control/' + row.id + '/"><button title="Detalle" class="btn btn-info btn-xs btn-flat"><i class="fas fa-eye"></i></button></a> ';
+                    buttons += '<a href="/Control_produccion/Crear_nuevo_control/' + row.numero_op + '/"><button title="Nuevo Control" class="btn btn-success btn-xs btn-flat"><i class="fas fa-plus"></i></button></a>';
                     return buttons;
                 }
             },
@@ -70,6 +69,18 @@ $(function () {
                         /\B(?=(\d{3})+(?!\d))/g, "."
                     );
                 }
+            },
+            {
+                targets: [-1],
+                class: 'text-center',
+                orderable: false,
+                render: function (data, type, row) {
+                    var html = '';
+                    $.each(row.colaboradores, function (key, value) {
+                        html += '<span class="badge badge-primary">'+value.nombre+'</span> ';
+                    });
+                    return html;
+                },
             },
         ],
         initComplete: function (settings, json) {

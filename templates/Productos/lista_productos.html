@@ -5,19 +5,23 @@
     <script src="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js' %}"></script>
     <link href="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
 
+    <!-- CSS style -->
+    <link rel="stylesheet" href="{% static '../static/css/lista_producto.css' %}">
+
     <script src="{% static 'js/Listas/productos.js' %}"></script>
 {% endblock %}
 {% block columnas %}
 <tr>
-    <th style="text-align: center; width: 2%">Id</th>
-    <th style="text-align: center; width: 16.5%">Nombre del producto</th>
-    <th style="text-align: center; width: 14.5%">Cliente</th>
-    <th style="text-align: center; width: 10.5%">Número de ficha</th>
-    <th style="text-align: center; width: 8.5%">Proceso</th>
-    <th style="text-align: center; width: 9.5%">Version</th>
-    <th style="text-align: center; width: 12.5%">Fecha de vigencia</th>
-    <th style="text-align: center; width: 11.5%">Estado Ficha</th>
-    <th style="text-align: center; width: 12.5%">Opciones</th>
+    <th>OP</th>
+    <th>Id</th>
+    <th>Nombre del producto</th>
+    <th>Cliente</th>
+    <th>Número de ficha</th>
+    <th>Proceso</th>
+    <th>Version</th>
+    <th>Fecha de vigencia</th>
+    <th>Estado Ficha</th>
+    <th>Opciones</th>
 </tr>
 {% endblock %}
 {% block filas %}

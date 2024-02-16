@@ -1,0 +1,10 @@
+Buenos días!!</p>
+    
+  Se han actualizado el producto los productos no conformes
+  de la orden:{{ orden }}, relacionada con el producto {{ producto }}
+  con la siguiente información:
+
+  Motivo: {{ motivo }}
+  Estado: {{ estado }}
+  Cantidad: {{ cantidad }}
+  Saludos!!

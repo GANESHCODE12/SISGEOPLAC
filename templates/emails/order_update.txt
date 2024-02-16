@@ -1,0 +1,21 @@
+Buenos días!!
+     
+    Se ha modificado la orden de producción: {{ orden }} del producto {{ producto }}
+    con la siguiente información:
+    
+     
+    Lote: {{ lote }}
+    Fecha inicio de producción: {{ fecha_inicio_produccion }}
+    Orden de compra: {{ orden_compra }}
+    Cantidad requerida: {{ cantidad_requerida }}
+    Máquina: {{ maquina }}
+    Estado de la orden: {{ estado_op }}
+    Fecha de entrega: {{ fecha_entrega }}
+    Materia prima adicional: {{ materia_prima_adicional }}
+    Pigmento adicional: {{ pigmento_adicional }}
+    Aprobación orden: {{ aprobacion_orden }}
+    Aprobación materia prima: {{ aprobacion_materia_prima }}
+    Aprobación pigmento: {{ aprobacion_pigmento }}
+    Observaciones: {{ observaciones }}
+     
+    Saludos!!

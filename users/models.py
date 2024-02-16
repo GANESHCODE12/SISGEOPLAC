@@ -41,6 +41,13 @@ class User(AbstractUser):
         verbose_name='Fecha de modificación'
     )
 
+    token = models.UUIDField(
+        primary_key=False,
+        editable=False,
+        null=True,
+        blank=True
+    )
+
     class Meta:
         """Configuración del modelo"""
 

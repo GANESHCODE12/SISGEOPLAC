@@ -33,10 +33,6 @@ class CrearProductoForm(ModelForm):
             'numero_ficha': NumberInput(attrs = {
                 'class': 'form-control',
             }),
-            'codigo_producto': TextInput(attrs = {
-                'class': 'form-control',
-                'autocomplete': 'off',
-            }),
             'proceso': TextInput(attrs = {
                 'class': 'form-control',
             }),
@@ -83,12 +79,6 @@ class CrearProductoForm(ModelForm):
             'olor': TextInput(attrs = {
                 'class': 'form-control',
             }),
-            'color': TextInput(attrs = {
-                'class': 'form-control',
-            }),
-            'sabor': TextInput(attrs = {
-                'class': 'form-control',
-            }),
             'pigmento': TextInput(attrs = {
                 'class': 'form-control',
             }),
@@ -128,7 +118,8 @@ class CrearProductoForm(ModelForm):
         }
         exclude = [
             'elaborado_por', 
-            'modificado_por'
+            'modificado_por',
+            'diagrama'
         ]
     
     def save(self, commit:True):
@@ -213,6 +204,26 @@ class AtributosForm(ModelForm):
         return data
 
 
+class ColorForm(ModelForm):
+
+    class Meta:
+
+        model = Colores
+        fields = '__all__'
+    
+    def save(self, commit:True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception  as e:
+            data['error'] = str(e)
+        return data
+
+
 class NormasForm(ModelForm):
     """Modelo de formulario para creación de control de
     atributos de la ficha técnica"""
@@ -246,9 +257,68 @@ class ActualizarProductoForm(ModelForm):
         """Configuración del formulario"""
 
         model = Producto
-        fields = [
-            'diagrama'
+        fields = '__all__'
+        exclude = [
+            'elaborado_por',
+            'modificado_por'
         ]
+    
+    def save(self, commit:True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception  as e:
+            data['error'] = str(e)
+        return data
+
+
+class ActualizarDiagramaForm(ModelForm):
+    """Modelo para la creación de fichas"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    class Meta:
+        """Configuración del formulario"""
+
+        model = Producto
+        fields = ('diagrama',)
+    
+    def save(self, commit:True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception  as e:
+            data['error'] = str(e)
+        return data
+
+
+class ProductosColoresForm(ModelForm):
+    
+    class Meta:
+        color = ModelChoiceField(
+                queryset = Colores.objects.all(),
+                widget=Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%'
+            })),
+        productos = ModelChoiceField(
+                queryset = Producto.objects.all(),
+                widget=Select(attrs={
+                'class': 'form-control select2',
+                'style': 'width: 100%'
+            })),
+
+        model = Productos_colores
+        fields = '__all__'
     
     def save(self, commit:True):
         data = {}

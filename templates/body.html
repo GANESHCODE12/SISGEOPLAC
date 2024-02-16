@@ -3,7 +3,8 @@
 
 {% endblock %}
 {% block body %}
-    <body class="hold-transition sidebar-mini layout-fixed">
+
+<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <!-- Header -->
         {% include 'header.html' %}
@@ -37,23 +38,55 @@
         <!-- Footer -->
         {% include 'footer.html' %}
     </div>
+    <div class="modal fade" id="modalLeido" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <form action="{% url 'notificacion-leida' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="notificacion" id="notificacion" value="">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            Marcar como leido 
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p> Realmente quieres marcar esta notificación como leida? </p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ list_url }}" class="btn btn-danger"><i class="fas fa-times"></i> Cancelar</a>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Marcar como leido</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
     <!-- Block javascript -->
     {% block javascript %}
 
     {% endblock %}
     <script>
+        $(document).on('click', '.modal-leido', function () {
+            $('#notificacion').val($(this).attr('data-notificacion'));
+            $('#modalLeido').modal('show');
+        });
+    </script>
+    <script>
         {% if messages %}
-            var html = '<p>';
-            {% for message in messages %}
-                html += '{{ message }}<br>';
-            {% endfor %}
-            html += '</p>';
-            Swal.fire({
-                title: 'Error!',
-                html: html,
-                icon: 'error'
-            });
+        var html = '<p>';
+        {% for message in messages %}
+        html += '{{ message }}<br>';
+        {% endfor %}
+        html += '</p>';
+        Swal.fire({
+            title: 'Error!',
+            html: html,
+            icon: 'error'
+        });
         {% endif %}
     </script>
-    </body>
+</body>
 {% endblock %}

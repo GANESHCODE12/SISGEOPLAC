@@ -4,7 +4,7 @@
 from django import forms
 
 #Models
-from PNC.models import ProductoNoConforme
+from PNC.models import MotivoPnc, ProductoNoConforme
 
 
 #Campos especiales
@@ -58,3 +58,31 @@ class ActualizarPNC(forms.ModelForm):
         except Exception  as e:
             data['error'] = str(e)
         return data
+
+
+class MotivoForm(forms.ModelForm):
+
+    class Meta:
+        """Configuración del formulario"""
+
+        model = MotivoPnc
+        fields = '__all__'
+
+    def save(self, commit:True):
+        data = {}
+        form = super()
+        try:
+            if form.is_valid():
+                form.save()
+            else:
+                data['error'] = form.errors
+        except Exception  as e:
+            data['error'] = str(e)
+        return data
+
+
+class ReportPncForm(forms.Form):
+    date_range = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'autocomplete': 'off'
+    }))

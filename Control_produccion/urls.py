@@ -14,6 +14,16 @@ urlpatterns = [
         name='Control_orden'
     ),
     path(
+        route='motivos-de-paradas', 
+        view=views.ListaMotivosView.as_view(), 
+        name='motivos-de-paradas'
+    ),
+    path(
+        route='nuevo-motivo-de-parada', 
+        view=views.NuevoMotivoView.as_view(), 
+        name='nuevo-motivo-de-parada'
+    ),
+    path(
         route='Crear_nuevo_control/<int:pk>/', 
         view=views.CrearNuevoControlView.as_view(), 
         name='Crear_nuevo_control'
@@ -22,6 +32,26 @@ urlpatterns = [
         route='Detalle_control/<int:pk>/', 
         view=views.DetalleControlView.as_view(), 
         name='Detalle_control'
+    ),
+    path(
+        route='historico-controles', 
+        view=views.HistoricoControlView.as_view(), 
+        name='historico-controles'
+    ),
+    path(
+        route='reporte-controles', 
+        view=views.ReporteControlView.as_view(), 
+        name='reporte-controles'
+    ),
+    path(
+        route='reporte-rendimiento', 
+        view=views.ReporteRendimientoView.as_view(), 
+        name='reporte-rendimiento'
+    ),
+    path(
+        route='reporte-paradas', 
+        view=views.ReporteParadasView.as_view(), 
+        name='reporte-paradas'
     ),
 
 ]

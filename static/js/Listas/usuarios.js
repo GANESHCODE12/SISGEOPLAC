@@ -2,9 +2,6 @@ var tblUsuarios;
 
 $(function () {
     tblUsuarios = $('#data').DataTable({
-        responsive: true,
-        autoWidth: false,
-        destroy: true,
         deferRender: true,
         ajax: {
             url: window.location.pathname,
@@ -28,8 +25,8 @@ $(function () {
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    var buttons = '<a href="/users/actualizar_usuario/' + row.id + '/" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a> ';
-                    buttons += '<a href="/users/eliminar_usuario/' + row.id + '/" type="button" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash"></i></a> ';
+                    var buttons = '<a href="/users/actualizar_usuario/' + row.id + '/"><button title="Actualizar Usuario" class="btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></button></a> ';
+                    buttons += '<a href="/users/eliminar_usuario/' + row.id + '/"><button title="Eliminar Usuario" class="btn btn-danger btn-xs btn-flat"><i class="fas fa-trash"></i></button></a>';
                     return buttons;
                 }
             },

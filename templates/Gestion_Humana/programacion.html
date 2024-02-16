@@ -1,0 +1,27 @@
+{% extends "lista.html" %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'lib/moment-2.25.3/moment-with-locales.js' %}"></script>
+    <script src="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js' %}"></script>
+    <link href="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
+
+    <script src="{% static 'js/Listas/programacion.js' %}"></script>
+{% endblock %}
+
+{% block columnas %}
+
+<tr>
+    <th>Id</th>
+    <th>Colaborador</th>
+    <th>Fecha</th>
+    <th>Turno</th>
+    <th>Máquina</th>
+    <th>Cumpl</th>
+    <th>Motivo de incum</th>
+    <th>Turno Reprogram</th>
+
+</tr>
+
+{% endblock %}
+{% block javascript %}
+{% endblock %}

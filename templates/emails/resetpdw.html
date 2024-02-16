@@ -1,0 +1,14 @@
+{% extends 'emails/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 21px; color: #555555;">
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Buenos días!! {{ usuario }}</p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;"> </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">
+      Si ha solicitado el cambio de su contraseña por favor de click <a href="{{ link }}">acá</a>, de lo contrario haga caso omiso
+      a este correo.
+    </p>
+    <p style="font-size: 14px; line-height: 25px; margin: 0;">Saludos!!</p>
+</div>
+{% endblock %}

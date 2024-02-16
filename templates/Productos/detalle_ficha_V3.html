@@ -1,0 +1,397 @@
+{% extends "body.html" %}
+{% load static %}
+
+{% block head %}
+
+<!-- CSS style -->
+<link rel="stylesheet" href="{% static '../static/assets/css/styleprint.css' %}">
+
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td rowspan="4" style="width: 25%; padding-top: 3%;">
+                        <img src="{% static 'img/logo.png' %}">
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="2" style="text-align: center; width: 50%; padding-top: 3%;"><b>ASEGURAMIENTO DE CALIDAD</b></td>
+                    <td style="text-align: center"><b>CÓDIGO: ES-Q-03</b></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center"><b>VERSIÓN: 3</b></td>
+                </tr>
+                <tr>
+                    <td rowspan="2" style="text-align: center"><b>FICHA TÉCNICA DE PRODUCTO</b></td>
+                    <td style="text-align: center"><b>FECHA 24 DE JULIO 2023</b></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="card card-dark" id="line-card">
+    <div class="card-header">
+        <div class="container-fluid" style="text-align: center;">
+            DATOS GENERALES
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <tbody>
+                <tr scope="row">
+                    <td class="bg-secondary" id="titulos">Producto</td>
+                    <td>{{ FichasTecnica.Nombre_producto }}</td>
+                    <td class="bg-secondary" id="titulos">Número de ficha</td>
+                    <td style="text-align: center;">{{ FichasTecnica.numero_ficha }}</td>
+                </tr>
+                <tr scope="row">
+                    <td class="bg-secondary" id="titulos">Proceso</td>
+                    <td>{{ FichasTecnica.proceso }}</td>
+                    <td class="bg-secondary" id="titulos">Fecha de vigencia</td>
+                    <td style="text-align: center;">{{ FichasTecnica.fecha_vigencia }}</td>
+                </tr>
+                <tr scope="row">
+                    <td class="bg-secondary" id="titulos">Cliente</td>
+                    <td style="text-align: left;">{{ FichasTecnica.cliente_especifico }}</td>
+                    <td class="bg-secondary" id="titulos">Versión</td>
+                    <td style="text-align: center;">{{ FichasTecnica.version }}</td>
+                </tr>
+                <tr scope="row">
+                    <td class="bg-secondary" id="titulos">Tipo producto</td>
+                    <td>{{ FichasTecnica.tipo_producto }}</td>
+                    <td class="bg-secondary" id="titulos">Estado Ficha</td>
+                    <td style="text-align: center;">{{ FichasTecnica.estado_ficha }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="card card-dark" id="line-card">
+    <div class="card-header">
+        <div class="container-fluid" style="text-align: center;">
+            ESPECIFICACIONES
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <tbody>
+                <tr scope="row">
+                    <td class="bg-secondary" id="titulos">Cavidades</td>
+                    <td>{{ FichasTecnica.cavidades }}</td>
+                    <td class="bg-secondary" id="titulos">Peso</td>
+                    <td>{{ FichasTecnica.peso }}</td>
+                </tr>
+                <tr scope="row">
+                    <td class="bg-secondary" id="titulos">Material</td>
+                    <td colspan="4">{{ FichasTecnica.material }}</td>
+                </tr>
+                <tr scope="row">
+                    <td class="bg-secondary" id="titulos">Descripción</td>
+                    <td colspan="4">{{ FichasTecnica.descripción_especificaciones }}</td>
+                </tr>
+                <tr scope="row">
+                    <td class="bg-secondary d-print-none" id="titulos">Ciclo</td>
+                    <td colspan="4" class="d-print-none">{{ FichasTecnica.ciclo }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="card card-dark" id="line-card">
+    <div class="card-header">
+        <div class="container-fluid" style="text-align: center;">
+            CARACTERISTICAS DE CONTROL
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm">
+                    <table class="table table-bordered">
+                        <thead style="text-align: center;">
+                            <tr>
+                                <th colspan="3" class="bg-dark" id="titulo-tabla">ATRIBUTOS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th class="bg-secondary" id="titulos">Caracteristicas</th>
+                                <th class="bg-secondary" id="titulos">Especificación</th>
+                                <th class="bg-secondary" id="titulos">Observación</th>
+                            </tr>
+                            {% for instance in controlatributo.all %}
+                            <tr>
+                                <td>{{ instance.id_atributo }}</td>
+                                <td>{{ instance.id_atributo.especificacion }}</td>
+                                <td>{{ instance.id_atributo.observacion }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm">
+                    <table class="table table-bordered">
+                        <thead style="text-align: center;">
+                            <tr>
+                                <th class="bg-dark" id="titulo-tabla" colspan="4">DIAGRAMA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: center;" colspan="4">
+                                    <img src="{{ FichasTecnica.get_plane }}" alt="{{ FichasTecnica.plano }}"
+                                        class="img-fluid" id="imagen-impresion"/>
+                                    <a href="{{ FichasTecnica.get_plane }}"
+                                        download="{{ FichasTecnica.get_plane }}" class="d-print-none">Descargar plano</a>
+                                </td> 
+                            </tr>
+                            <tr>
+                                <td class=" bg-secondary" id="titulos" style="text-align: center;">Plano
+                                </td>
+                                <td style="text-align: center;">{{ FichasTecnica.plano }}</td>
+                            </tr>
+                            <tr>
+                                <td class="bg-secondary" id="titulos" style="text-align: center;">Fecha</td>
+                                <td style="text-align: center;">{{ FichasTecnica.fecha_plano }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-dark" id="salto-pagina-ficha">
+    <div class="card-header">
+        <div class="container-fluid" style="text-align: center;">
+            CARACTERISTICAS ORGANOLEPTICAS
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <tbody>
+                <tr scope="row">
+                    <td class="bg-secondary" id="titulos" style="text-align: center;">
+                        Olor
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">
+                        {{ FichasTecnica.olor }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <table class="table table-bordered">
+            <thead>
+                <tr scope="row">
+                    <td class="bg-secondary" id="titulos" style="text-align: center;">
+                        Colores
+                    </td>
+                    <td class="bg-secondary" id="titulos" style="text-align: center;">
+                        Código de producto
+                    </td>
+                    <td class="bg-secondary" id="titulos" style="text-align: center;">
+                        Referencia pigmento
+                    </td>
+                    <td class="bg-secondary" id="titulos" style="text-align: center;">
+                        Dosificación
+                    </td>
+                    <td class="bg-secondary" id="titulos" style="text-align: center;">
+                        Versión
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for instance in color.all %}
+                <tr scope="row">
+                    <td style="text-align: center;">{{ instance.color.color }}</td>
+                    <td style="text-align: center;">{{ instance.codigo_producto }}</td>
+                    {% if instance.referencia_pigmento %}
+                    <td style="text-align: center;">{{ instance.referencia_pigmento }}</td>
+                    {% else %}
+                    <td style="text-align: center;">No se ha actualizado</td>
+                    {% endif %}
+                    {% if instance.dosificacion %}
+                    <td style="text-align: center;">{{ instance.dosificacion }}</td>
+                    {% else %}
+                    <td style="text-align: center;">No se ha actualizado</td>
+                    {% endif %}
+                    <td style="text-align: center;">{{ instance.version_documento }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="card card-dark" id="line-card">
+    <div class="card-header">
+        <div class="container-fluid" style="text-align: center;">
+            UNIDAD DE EMPAQUE
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <tbody>
+                <tr scope="row">
+                    <td class="bg-secondary" id="titulos">Caja</td>
+                    <td>{{ FichasTecnica.caja }}</td>
+                    <td class="bg-secondary" id="titulos">Unidad de empaque</td>
+                    <td>{{ FichasTecnica.unidad_empaque }}</td>
+                </tr>
+                <tr scope="row">
+                    <td class="bg-secondary" id="titulos">Bolsa</td>
+                    <td>{{ FichasTecnica.bolsa }}</td>
+                    <td class="bg-secondary" id="titulos">Forma de empaque</td>
+                    <td>{{ FichasTecnica.forma_empaque }}</td>
+                </tr>
+                <tr scope="row">
+                    <td class="bg-secondary" id="titulos">Tipo</td>
+                    <td colspan="3">{{ FichasTecnica.tipo }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="card card-dark" id="line-card">
+    <div class="card-header">
+        <div class="container-fluid" style="text-align: center;">
+            CARACTERISTICAS DIMESIONALES
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th class="bg-secondary" id="titulos">Caracteristicas a controlar</th>
+                    <th class="bg-secondary" id="titulos">Unidad de medida</th>
+                    <th class="bg-secondary" id="titulos">Equipo de medición</th>
+                    <th class="bg-secondary" id="titulos">Valor nominal</th>
+                    <th class="bg-secondary" id="titulos">Tolerancia</th>
+                </tr>
+                {% for instance in caracteristicasdimensionale.all %}
+                <tr>
+                    <td>{{ instance.id_dimensiones.caracteristicas_control }}</td>
+                    <td>{{ instance.id_dimensiones.unidad_medida }}</td>
+                    <td>{{ instance.id_dimensiones.equipo_medicion }}</td>
+                    <td style="text-align: center;">{{ instance.valor_nominal }}</td>
+                    <td style="text-align: center;"> +/- {{ instance.tolerancia_d }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm">
+            <div class="card card-dark" id="line-card">
+                <div class="card-header">
+                    <div class="container-fluid" style="text-align: center;">
+                        NORMAS APLICABLES
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th class="bg-secondary" id="titulos">Código</th>
+                                <th class="bg-secondary" id="titulos">Nombre</th>
+                            </tr>
+                            {% for instance in normasaplicable.all %}
+                            <tr id="tabla_atributos">
+                                <td>{{ instance.id_norma.codigo }}</td>
+                                <td>{{ instance.id_norma.titulo }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="card card-dark" id="line-card">
+                <div class="card-header">
+                    <div class="container-fluid" style="text-align: center;">
+                        NOTAS
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div>{{ FichasTecnica.notas|linebreaks }}</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card card-dark" id="line-card">
+                        <div class="card-header">
+                            <div class="container-fluid" style="text-align: center;">
+                                VIDA ÚTIL
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div>{{ FichasTecnica.vida_util|linebreaks }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-dark" id="salto-pagina">
+    <div class="card-header">
+        <div class="container-fluid" style="text-align: center;">
+            PRUEBAS Y/O ENSAYOS
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th class="bg-secondary" id="titulos">Variables</th>
+                    <th class="bg-secondary" id="titulos">Descripción</th>
+                    <th class="bg-secondary" id="titulos">Medio de control</th>
+                    <th class="bg-secondary" id="titulos">Valor</th>
+                    <th class="bg-secondary" id="titulos">Tolerancia</th>
+                </tr>
+                {% for instance in pruebasensayo.all %}
+                <tr>
+                    <td>{{ instance.id_pruebas.variables }}</td>
+                    <td>{{ instance.id_pruebas.descripcion_prueba }}</td>
+                    <td>{{ instance.id_pruebas.medio_control }}</td>
+                    <td style="text-align: center;">{{ instance.valor }}</td>
+                    <td style="text-align: center;"> +/- {{ instance.tolerancia_p }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="card card-dark" id="salto-pagina">
+    <div class="card-header">
+        <div class="container-fluid" style="text-align: center;">
+            CONTROL DEL DOCUMENTO
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <tbody>
+                <tr style="text-align: center;">
+                    <th class="bg-secondary" id="titulos">Elaboró</th>
+                    <th class="bg-secondary" id="titulos">Revisó</th>
+                    <th class="bg-secondary" id="titulos">Aprobó</th>
+                </tr>
+                <tr style="text-align: center;">
+                    <td>{{ FichasTecnica.elaborado }}</td>
+                    <td>{{ FichasTecnica.revisado }}</td>
+                    <td>{{ FichasTecnica.aprobado }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

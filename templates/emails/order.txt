@@ -1,0 +1,14 @@
+Buenos días!!</p>
+    
+  Se ha creado la orden de producción: {{ orden }} del producto {{ producto }}
+  con la siguiente información:
+
+  Lote: {{ lote }}
+  Orden de compra: {{ orden_compra }}
+  Cliente: {{ cliente }}
+  Cantidad requerida: {{ cantidad_requerida }}
+  Máquina: {{ maquina }}
+  Estado de la orden: {{ estado_op }}
+  Fecha de entrega: {{ fecha_entrega }}
+  Observaciones: {{ observaciones }}
+  Saludos!!

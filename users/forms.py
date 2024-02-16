@@ -127,3 +127,40 @@ class UserProfileForm(ModelForm):
         except Exception as e:
             data['error'] = str(e)
         return data
+
+
+class ResetPasswordForm(Form):
+    username = CharField(widget=TextInput(attrs={
+        'placeholder': 'Ingrese su usuario',
+        'class': 'form-control',
+        'autocomplete': 'off'
+    }))
+
+    def clean(self):
+        cleaned = super().clean()
+        if not User.objects.filter(username=cleaned['username']).exists():
+            self._errors['error'] = self._errors.get('error', self.error_class())
+            self.errors['error'].append('El usuario no existe!!')
+        return cleaned
+
+
+class ChangePasswordForm(Form):
+    password = CharField(widget=PasswordInput(attrs={
+        'placeholder': 'Ingrese su nueva contraseña',
+        'class': 'form-control',
+        'autocomplete': 'off'
+    }))
+
+    confirmPassword = CharField(widget=PasswordInput(attrs={
+        'placeholder': 'Repita su nueva contraseña',
+        'class': 'form-control',
+        'autocomplete': 'off'
+    }))
+
+    def clean(self):
+        cleaned = super().clean()
+        password = cleaned['password']
+        confirmPassword = cleaned['confirmPassword']
+        if password != confirmPassword:
+            raise ValidationError('No coinciden las contraseñas!!')
+        return cleaned

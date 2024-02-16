@@ -9,149 +9,184 @@
 {% endblock %}
 
 {% block head_content %}
-    <title>Plasmotec | orden {{ Produccion.numero_op }}</title>
+<title>Plasmotec | orden {{ Produccion.numero_op }}</title>
 {% endblock %}
 
 {% block content %}
-
-    <div class="card">
-        <div class="card-header">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col">
-                        <img src="{% static 'img/logo.png' %}" class="rounded float-start" style="width: 250px;">
-                    </div>
-                    <div class="col-6">
-                        <h4 style="color: black; text-align: center">ORDEN DE PRODUCCIÓN NÚMERO:</h4>
-                        <h5 style="color: black; text-align: center">{{ Produccion.numero_op }}</h5>
-                    </div>
-                    <div class="col">
-                    </div>
-                </div>
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td rowspan="4" style="width: 25%; padding-top: 3%;">
+                        <img src="{% static 'img/logo.png' %}">
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="2" style="text-align: center; width: 50%; padding-top: 3%;"><b>PRODUCCIÓN</b></td>
+                    <td style="text-align: center"><b>CÓDIGO: FT-P-01</b></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center"><b>VERSIÓN: 01</b></td>
+                </tr>
+                <tr>
+                    <td rowspan="2" style="text-align: center"><b>ORDEN DE PRODUCCIÓN</b></td>
+                    <td style="text-align: center"><b>FECHA 26 DE DICIEMBRE 2022</b></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="card">
+    
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <li class="list-group-item list-group-item-dark">Producto</li>
+                <li class="list-group-item list-group-item-dark">Color</li>
+                <li class="list-group-item list-group-item-dark">Cliente</li>
+                <li class="list-group-item list-group-item-dark">OP</li>
+                <li class="list-group-item list-group-item-dark">Cantidad requerida</li>
+                <li class="list-group-item list-group-item-dark d-print-none">Orden de Compra</li>
             </div>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col">
-                    <li class="list-group-item list-group-item-dark" >Creada por</li>
-                    <li class="list-group-item list-group-item-dark" >Fecha elaboración op</li>
-                    <li class="list-group-item list-group-item-dark" >Fecha de entrega</li>
-                    <li class="list-group-item list-group-item-dark" >Tipo producto</li>
-                    <li class="list-group-item list-group-item-dark" >Lote</li>
-                    &nbsp;
-                    <li class="list-group-item list-group-item-dark" >Producto</li>
-                    <li class="list-group-item list-group-item-dark" >Cliente</li>
-                    <li class="list-group-item list-group-item-dark" >Cantidad MPKG</li>
-                    <li class="list-group-item list-group-item-dark d-print-none" >Orden de Compra</li>
-                    &nbsp;
-                    <li class="list-group-item list-group-item-dark" >Cantidad requerida</li>
-                    <li class="list-group-item list-group-item-dark" >Materia prima</li>
-                    <li class="list-group-item list-group-item-dark" >Color</li>
-                    <li class="list-group-item list-group-item-dark" >Referencia pigmento</li>
-                </div>
-                <div class="col-sm-9">
-                    <li class="list-group-item">{{ Produccion.usuario.first_name }} {{ Produccion.usuario.last_name }}</li>
-                    <li class="list-group-item">{{ Produccion.fecha_creacion }}</li>
-                    <li class="list-group-item">{{ Produccion.fecha_entrega }}</>
-                    <li class="list-group-item">{{ Produccion.producto.tipo_producto }}</li>
-                    <li class="list-group-item">{{ Produccion.lote}}</li>
-                    &nbsp;
-                    <li class="list-group-item">{{ Produccion.producto.Nombre_producto }}</li>
-                    <li class="list-group-item">{{ Produccion.cliente }}</li>
-                    <li class="list-group-item">{{ Produccion.cantidad_mpkg }} Kg</li>
-                    <li class="list-group-item d-print-none">{{ Produccion.orden_compra }}</li>
-                    &nbsp;
-                    <li class="list-group-item">{{ Produccion.cantidad_requerida }}</>
-                    <li class="list-group-item">{{ Produccion.producto.material }}</li>
-                    <li class="list-group-item">{{ Produccion.producto.color }}</li>
-                    <li class="list-group-item">{{ Produccion.referencia_pigmento }}</li>
-                </div>
-
-                <div class="col-sm-12">
-                    &nbsp;
-                    <table class="table table-bordered">
-                        <thead class="bg-dark" id="titulos" style="text-align: center">
-                            <tr>
-                                <th colspan="4" id="titulo-tabla">UNIDAD DE EMPAQUE</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr scope="row">
-                                <td class="bg-secondary" id="titulos">Caja</td>
-                                <td>{{ Produccion.producto.caja }}</td>
-                                <td class="bg-secondary" id="titulos">Unidad de empaque</td>
-                                <td>{{ Produccion.producto.unidad_empaque }}</td>
-                            </tr>
-                            <tr scope="row">
-                                <td class="bg-secondary" id="titulos">Bolsa</td>
-                                <td>{{ Produccion.producto.bolsa }}</td>
-                                <td class="bg-secondary" id="titulos">Forma de empaque</td>
-                                <td>{{ Produccion.producto.forma_empaque }}</td>
-                            </tr>
-                            <tr scope="row">
-                                <td class="bg-secondary" id="titulos">Tipo</td>
-                                <td colspan="3">{{ Produccion.producto.tipo }}</td>
-                            </tr>
-                            <tr scope="row">
-                                <td class="bg-secondary" id="titulos">Número de cajas</td>
-                                <td colspan="3">{{ Produccion.numero_cajas|floatformat:"2" }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <thead class="bg-secondary" id="titulos" style="text-align: center">
-                            <tr id="lista_detalle">
-                                <th class="bg-secondary" id="titulos">Peso</th>
-                                <th class="bg-secondary" id="titulos">Maquina</th>
-                                <th class="bg-secondary" id="titulos">Ciclo</th>
-                                <th class="bg-secondary" id="titulos">Número de cavidades</th>
-                                <th class="bg-secondary" id="titulos">Cantidad planeada por turno</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="text-align: center">
-                                <td>{{ Produccion.producto.peso }}</td>
-                                <td>{{ Produccion.maquina }}</td>
-                                <td>{{ Produccion.producto.ciclo }}</td>
-                                <td>{{ Produccion.producto.cavidades }}</td>
-                                <td>{{ Produccion.cantidad_planeada|floatformat:"2" }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                &nbsp;
-                <table class="table table-bordered">
-                    <thead class="bg-secondary" id="titulos" style="text-align: center">
-                        <tr>
-                            <th class="bg-secondary" id="titulos">Observaciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="text-align: left;">{{ Produccion.observaciones|linebreaks }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="col-sm-9">
+                <li class="list-group-item">{{ Produccion.producto.productos.Nombre_producto }}</li>
+                <li class="list-group-item">{{ Produccion.producto.color.color }}</li>
+                <li class="list-group-item">{{ Produccion.cliente }}</li>
+                <li class="list-group-item">{{ Produccion.numero_op }} - {{ anio }}</li>
+                <li class="list-group-item">{{ Produccion.cantidad_requerida }}</li>
+                <li class="list-group-item d-print-none">{{ Produccion.orden_compra }}</li>
             </div>
         </div>
         &nbsp;
-        <div class="d-flex justify-content-end d-print-none">
-            <a href="{% url 'Produccion:actualizar' Produccion.pk %}"">
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-edit"></i>
-                    Actualizar
-                </button>
-            </a>
+        <div class="row">
+            <div class="col">
+                <li class="list-group-item list-group-item-dark">Creada por</li>
+                <li class="list-group-item list-group-item-dark">Fecha elaboración op</li>
+                <li class="list-group-item list-group-item-dark">Fecha de entrega</li>
+                <li class="list-group-item list-group-item-dark">Tipo producto</li>                
+            </div>
+            <div class="col-sm-9">
+                <li class="list-group-item">{{ Produccion.usuario.first_name }} {{ Produccion.usuario.last_name }}</li>
+                <li class="list-group-item">{{ Produccion.fecha_creacion }}</li>
+                <li class="list-group-item">{{ Produccion.fecha_entrega }}</>
+                <li class="list-group-item">{{ Produccion.producto.productos.tipo_producto }}</li>
+            </div>
+        </div>
+        <br>
+        <table class="table table-bordered">
+            <thead class="bg-secondary" id="titulos" style="text-align: center">
+                <tr id="lista_detalle">
+                    <th class="bg-secondary" id="titulos">Peso</th>
+                    <th class="bg-secondary" id="titulos">Maquina</th>
+                    <th class="bg-secondary" id="titulos">Ciclo</th>
+                    <th class="bg-secondary" id="titulos">Número de cavidades</th>
+                    <th class="bg-secondary" id="titulos">Cantidad planeada por turno</th>
+                    <th class="bg-secondary" id="titulos">Tiempo esperado de producción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="text-align: center">
+                    <td>{{ Produccion.producto.productos.peso }}</td>
+                    <td>{{ Produccion.maquina }}</td>
+                    <td>{{ Produccion.producto.productos.ciclo }}</td>
+                    <td>{{ Produccion.producto.productos.cavidades }}</td>
+                    <td>{{ Produccion.cantidad_planeada|floatformat:"2" }}</td>
+                    <td>{{ Produccion.tiempo_esperado|floatformat:"2" }} Horas</td>
+                </tr>
+            </tbody>
+        </table>
+        &nbsp;
+        <div class="col-sm-12">
+            <table class="table table-bordered">
+                <thead class="bg-dark" id="titulos" style="text-align: center">
+                    <tr>
+                        <th colspan="4" id="titulo-tabla">UNIDAD DE EMPAQUE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr scope="row">
+                        <td class="bg-secondary" id="titulos">Caja</td>
+                        <td>{{ Produccion.producto.productos.caja }}</td>
+                        <td class="bg-secondary" id="titulos">Unidad de empaque</td>
+                        <td>{{ Produccion.producto.productos.unidad_empaque }}</td>
+                    </tr>
+                    <tr scope="row">
+                        <td class="bg-secondary" id="titulos">Bolsa</td>
+                        <td>{{ Produccion.producto.productos.bolsa }}</td>
+                        <td class="bg-secondary" id="titulos">Forma de empaque</td>
+                        <td>{{ Produccion.producto.productos.forma_empaque }}</td>
+                    </tr>
+                    <tr scope="row">
+                        <td class="bg-secondary" id="titulos">Tipo</td>
+                        <td colspan="3">{{ Produccion.producto.productos.tipo }}</td>
+                    </tr>
+                    <tr scope="row">
+                        <td class="bg-secondary" id="titulos">Número de cajas</td>
+                        <td colspan="3">{{ Produccion.numero_cajas|floatformat:"2" }}</td>
+                    </tr>
+                </tbody>
+            </table>
             &nbsp;
-            <a href="{{ list_url }}" class="btn btn-danger">
-                <i class="fas fa-times"></i> Cancelar
-            </a>
+            <table class="table table-bordered">
+                <thead class="bg-dark" id="titulos" style="text-align: center">
+                    <tr>
+                        <th id="titulo-tabla" colspan="4">MATERIAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="bg-secondary" id="titulos" style="text-align: center;">Material</th>
+                        <th class="bg-secondary" id="titulos" style="text-align: center;">Categoria</th>
+                        <th class="bg-secondary" id="titulos" style="text-align: center;">Referencia</th>
+                        <th class="bg-secondary" id="titulos" style="text-align: center;">Cantidad</th>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align: center;">{{ Produccion.producto.productos.material }}</td>
+                        <td style="text-align: center;">Materia Prima</td>
+                        <td style="text-align: center;"></td>
+                        <td style="text-align: center;">{{ Produccion.maximo_material|floatformat:"2" }} Kg</td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align: center;">{{ Produccion.producto.color.color  }}</td>
+                        <td style="text-align: center;">Pigmento</td>
+                        <td style="text-align: center;">{{ Produccion.producto.referencia_pigmento }}</td>
+                        <td style="text-align: center;">{{ Produccion.maximo_pigmento|floatformat:"2" }} Kg</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+            &nbsp;
+            <table class="table table-bordered">
+                <thead class="bg-secondary" id="titulos" style="text-align: center">
+                    <tr>
+                        <th class="bg-secondary" id="titulos">OBSERVACIONES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align: left;">{{ Produccion.observaciones|linebreaks }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-    {% if Produccion.producto.proceso == 'Inyección' %}
-        <div class="card-footer text-muted">
-            <h5 style="text-align: center;">
-                En el arranque de la producción se tiene que pesar 500 unidades para sacar el peso promedio
-            </h5>
-        </div>
-    {% endif %}
+    <div id="salto-pagina-ficha"></div>
+    <img src="{% static 'img/orden_produccion.png' %}">
+    &nbsp;
+    <div class="d-flex justify-content-end d-print-none">
+        <a href="{% url 'Produccion:actualizar-orden' Produccion.pk %}"">
+                <button type=" submit" class="btn btn-primary">
+            <i class="fas fa-edit"></i>
+            Actualizar
+            </button>
+        </a>
+        &nbsp;
+        <a href="{{ list_url }}" class="btn btn-danger">
+            <i class="fas fa-times"></i> Cancelar
+        </a>
+    </div>
+</div>
 {% endblock %}

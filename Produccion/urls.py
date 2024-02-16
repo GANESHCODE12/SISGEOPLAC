@@ -24,9 +24,28 @@ urlpatterns = [
         name='Nueva_orden'
     ),
     path(
-        route='actualizar_orden/<int:pk>/', 
-        view=views.ActualizarOrden.as_view(), 
-        name='actualizar'
+        route='actualizar/orden-<int:pk>/notificacion-<int:Notificacion_id>', 
+        view=views.ActualizarOrdenNotificacionView.as_view(), 
+        name='actualizar-orden-notificacion'
     ),
-    
+    path(
+        route='actualizar/orden-<int:pk>', 
+        view=views.ActualizarOrdenView.as_view(), 
+        name='actualizar-orden'
+    ),
+    path(
+        route='nuevo-desarrollo', 
+        view=views.CrearDesarrolloView.as_view(), 
+        name='nuevo-desarrollo'
+    ),
+    path(
+        route='historico-ordenes', 
+        view=views.HistoricoOrdenView.as_view(), 
+        name='historico-ordenes'
+    ),
+    path(
+        route='detalle-historico-ordenes/orden-<int:pk>', 
+        view=views.DetalleHistoricoOrdenView.as_view(), 
+        name='detalle-historico-ordenes'
+    ),
 ]

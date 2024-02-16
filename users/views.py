@@ -1,12 +1,14 @@
 """Users views."""
 
 # Django
+from django.conf import settings
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group
 from django.urls import reverse_lazy
 from django.contrib.auth import views as auth_views
-from django.http.response import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.contrib.auth.views import PasswordResetView
+from django.http.response import HttpResponseRedirect, JsonResponse
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView, View
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
@@ -16,12 +18,16 @@ from django.views.generic.edit import FormView
 #Mixins
 from Plasmotec.mixins import ValidatePermissionRequiredMixin
 
-
 # Models
 from users.models import User
 
 #Forms
 from users.forms import *
+
+#Utils
+from Plasmotec import utils
+import threading
+import uuid
 
 
 class LoginView(auth_views.LoginView):
@@ -176,7 +182,7 @@ class UserChangeGroup(LoginRequiredMixin, View):
             request.session['group'] = Group.objects.get(pk=self.kwargs['pk'])
         except:
             pass
-        return HttpResponseRedirect(reverse_lazy('Produccion:Ordenes_produccion'))
+        return HttpResponseRedirect(reverse_lazy('diagrama-gantt'))
 
 
 class UserProfileView(LoginRequiredMixin, UpdateView):
@@ -253,4 +259,89 @@ class UserChangePasswordView(LoginRequiredMixin, FormView):
         context['list_url'] = reverse_lazy('users:login')
         context['entity'] = 'Contraseña'
         context['action'] = 'edit'
+        return context
+
+
+class ResetPasswordView(FormView):
+    form_class = ResetPasswordForm
+    template_name = 'users/resetpdw.html'
+    success_url = reverse_lazy('users:login')
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            form = ResetPasswordForm(request.POST)
+
+            url = settings.DOMAIN if not settings.DEBUG else 'http://{}/'.format(self.request.META['HTTP_HOST'])
+
+            usuario = User.objects.get(username=request.POST['username'])
+            usuario.token = uuid.uuid4()
+            usuario.save()
+
+            if form.is_valid():
+                threading_emails = threading.Thread(
+                    target=utils.send_email,
+                    args=(
+                    'confidencial@plasmotecsas.com',
+                    usuario.email,
+                    'Plasmotec - Reseteo de contraseña',
+                    'resetpdw',
+                    {
+                        'usuario': usuario.get_full_name(),
+                        'link': '{}users/change-password/{}'.format(url, str(usuario.token))
+                    },
+                ))
+
+                threading_emails.start()
+            else:
+                data['error'] = form.errors
+        except Exception as exc:
+            data['error'] = str(exc)
+        return JsonResponse(data, safe=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Reseteo de contraseña'
+        context['success_url'] = self.success_url
+        return context
+
+
+class ChangePasswordView(FormView):
+    form_class = ChangePasswordForm
+    template_name = 'users/changepdw.html'
+    success_url = reverse_lazy('users:login')
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        token = self.kwargs['token']
+        if User.objects.filter(token=token).exists():
+            return super().get(request, *args, **kwargs)
+        return HttpResponseRedirect(self.success_url)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            form = ChangePasswordForm(request.POST)
+            if form.is_valid():
+                user = User.objects.get(token=self.kwargs['token'])
+                user.set_password(request.POST['password'])
+                user.token = uuid.uuid4()
+                user.save()
+            else:
+                data['error'] = form.errors
+        except Exception as exc:
+            data['error'] = str(exc)
+        return JsonResponse(data, safe=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Reseteo de contraseña'
+        context['success_url'] = self.success_url
         return context
