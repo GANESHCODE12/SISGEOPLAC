@@ -21,6 +21,7 @@ $(function () {
             {"data": "id"},
             {"data": "numero_op"},
             {"data": "cantidad_producida"},
+            {"data": "acumulado"},
             {"data": "saldo_orden"},
             {"data": "hora_inicio"},
             {"data": "turno"},
@@ -39,7 +40,7 @@ $(function () {
                 }
             },
             {
-                targets: [5],
+                targets: [6],
                 class: 'text-center',
                 orderable: false,
                 searchable: false,
@@ -55,15 +56,7 @@ $(function () {
                 orderable: false,
             },
             {
-                targets: [4],
-                render: function (data, type, row) {
-                    return data.toString().replace(
-                        /\B(?=(\d{3})+(?!\d))/g, "."
-                    );
-                }
-            },
-            {
-                targets: [3],
+                targets: [4, 5, 3],
                 render: function (data, type, row) {
                     return data.toString().replace(
                         /\B(?=(\d{3})+(?!\d))/g, "."

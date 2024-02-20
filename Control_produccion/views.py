@@ -50,7 +50,8 @@ class ListaControl(LoginRequiredMixin, ValidatePermissionRequiredMixin, ListView
                     item = i.toJSON()
                     item['producto'] = i.numero_op.producto.productos.Nombre_producto
                     item['saldo_orden'] = i.saldo_orden
-                    item['fecha_creacion'] = i.fecha_creacion
+                    item['fecha_creacion'] = i.hora_inicio
+                    item['acumulado'] = i.cantidad_acumulada
                     item['maquina'] = i.numero_op.maquina
                     item['colaboradores'] = [
                         {'nombre': colaborador.colaborador.nombre} for colaborador in colaboradores]

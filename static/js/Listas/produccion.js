@@ -29,6 +29,7 @@ $(function () {
             { "data": "saldo_cliente" },
             { "data": "color" },
             { "data": "fecha_entrega" },
+            { "data": "orden_compra" },
             { "data": "numero_op" },
             { "data": "aprobacion_orden" }
         ],
@@ -67,7 +68,7 @@ $(function () {
                 }
             },
             {
-                targets: [-3],
+                targets: [-4],
                 class: 'text-center',
                 render: function (data, type, row) {
                     return moment(data).format('DD/MM/YYYY')

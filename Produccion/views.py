@@ -69,6 +69,7 @@ class ListaOrdenesView(LoginRequiredMixin, ListView):
                     item['saldo_cliente'] = (i.cantidad_requerida - saldo_cliente_a['inspeccion_certificado_id']) if saldo_cliente_a['inspeccion_certificado_id'] is not None else i.cantidad_requerida
                     item['color'] = i.producto.color.color
                     item['lote'] = '{}-{}'.format(i.numero_op, i.fecha_creacion.year)
+                    item['orden_compra'] = i.orden_compra
                     data.append(item)
             elif action == 'search_details_controls':
                 data = []

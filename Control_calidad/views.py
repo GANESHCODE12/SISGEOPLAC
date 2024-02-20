@@ -268,11 +268,15 @@ class CertificadoCalidadView(LoginRequiredMixin, ValidatePermissionRequiredMixin
     def get_template_names(self):
         pk = self.kwargs.get('pk')
         certificado = CertificadosCalidad.objects.get(pk=pk)
-        fecha_version_1 = datetime(year=2023, month=4, day=4, tzinfo=timezone(offset=timedelta()))
+        fecha_version_1 = datetime(year=2023, month=4, day=4, tzinfo=timezone.utc)
+        fecha_version_2 = datetime(year=2024, month=2, day=19, tzinfo=timezone.utc)
 
-        if certificado.fecha_generacion < fecha_version_1:
+        if certificado.fecha_generacion <= fecha_version_1:
             return 'Control_calidad/certificado_calidad_v1.html'
-        return 'Control_calidad/certificado_calidad_v2.html'
+        elif fecha_version_1 < certificado.fecha_generacion <= fecha_version_2:
+            return 'Control_calidad/certificado_calidad_v2.html'
+        else:
+            return 'Control_calidad/certificado_calidad_v3.html'
 
     def get_context_data(self, **kwargs):
         """Agrega los demás modelos relacionados con la ficha

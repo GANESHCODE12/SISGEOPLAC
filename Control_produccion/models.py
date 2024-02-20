@@ -116,7 +116,7 @@ class ControlProduccion(models.Model):
     def cantidad_acumulada(self):
         """Retorna la cantidad acumulada de una orden de producción"""
 
-        pk = self.numero_op
+        pk = self.numero_op_id
         cantidad = ControlProduccion.objects.filter(numero_op = pk).aggregate(cantidad_acumulada=Sum('cantidad_producida'))
 
         for self.numero_op.numero_op, value in cantidad.items():
