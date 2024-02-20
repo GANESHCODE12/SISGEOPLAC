@@ -269,7 +269,7 @@ class CertificadoCalidadView(LoginRequiredMixin, ValidatePermissionRequiredMixin
         pk = self.kwargs.get('pk')
         certificado = CertificadosCalidad.objects.get(pk=pk)
         fecha_version_1 = datetime(year=2023, month=4, day=4, tzinfo=timezone.utc)
-        fecha_version_2 = datetime(year=2024, month=2, day=19, tzinfo=timezone.utc)
+        fecha_version_2 = datetime(year=2024, month=2, day=20, tzinfo=timezone.utc)
 
         if certificado.fecha_generacion <= fecha_version_1:
             return 'Control_calidad/certificado_calidad_v1.html'

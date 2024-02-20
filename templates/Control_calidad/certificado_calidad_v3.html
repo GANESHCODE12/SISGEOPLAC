@@ -135,6 +135,7 @@
                             <th class="bg-secondary" id="titulos" style="text-align: center;">ESPECIFICACIÓN</th>
                             <th class="bg-secondary" id="titulos" style="text-align: center;">MEDIO DE CONTROL</th>
                             <th class="bg-secondary" id="titulos" style="text-align: center;">RESULTADOS</th>
+                            <th class="bg-secondary" id="titulos" style="text-align: center;">CONFORMIDAD</th>
                         </tr>
                         {% for instance in pruebas.all %}
                         <tr>
@@ -143,6 +144,7 @@
                             <td>{{ instance.pruebas_y_o_ensayos.tolerancia_p }}</td>
                             <td>{{ instance.pruebas_y_o_ensayos.id_pruebas.descripcion_prueba }}</td>
                             <td>{{ instance.pruebas_y_o_ensayos.id_pruebas.medio_control }}</td>
+                            <td>{{ instance.valor }}</td>
                             <td>{{ instance.resultado_p }}</td>
                         </tr>
                         {% endfor %}
