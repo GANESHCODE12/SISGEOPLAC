@@ -14,6 +14,9 @@
 <link href="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.css' %}" rel="stylesheet" />
 <script src="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.js' %}"></script>
 
+<script src="{% static 'lib/datatables-1.10.20/extensions/dataTables.fixedColumns.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/extensions/fixedColumns.bootstrap4.min.css' %}">
+
 <script src="{% static 'js/forms/inspeccion.js' %}"></script>
 {% endblock %}
 
@@ -323,52 +326,52 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="card card-secondary">
+                    <div class="card card-secondary" loading="lazy">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fas fa-vials"></i> Pruebas y/o ensayos</h3><br>
                             <h6>Si el valor es 0 (Cero) por favor digitelo, de lo contarrio no se gardará</h6>
                         </div>
                         <div class="card-body">
-                            <table class="table table-bordered" id="tblPruebasEnsayos">
+                            <table class="table table-bordered" id="tblPruebasEnsayos" >
                                 <thead>
                                     <tr>
-                                        <th>Prueba y/o ensayo</th>
-                                        <th>Valor FT</th>
-                                        <th>Tolerancia FT</th>
-                                        <th style="max-width: 150px;" id="cavidad_1">Cavidad 1</th>
-                                        <th style="max-width: 150px;" id="cavidad_2">Cavidad 2</th>
-                                        <th style="max-width: 150px;" id="cavidad_3">Cavidad 3</th>
-                                        <th style="max-width: 150px;" id="cavidad_4">Cavidad 4</th>
-                                        <th style="max-width: 150px;" id="cavidad_5">Cavidad 5</th>
-                                        <th style="max-width: 150px;" id="cavidad_6">Cavidad 6</th>
-                                        <th style="max-width: 150px;" id="cavidad_7">Cavidad 7</th>
-                                        <th style="max-width: 150px;" id="cavidad_8">Cavidad 8</th>
-                                        <th style="max-width: 150px;" id="cavidad_9">Cavidad 9</th>
-                                        <th style="max-width: 150px;" id="cavidad_10">Cavidad 10</th>
-                                        <th style="max-width: 150px;" id="cavidad_11">Cavidad 11</th>
-                                        <th style="max-width: 150px;" id="cavidad_12">Cavidad 12</th>
-                                        <th style="max-width: 150px;" id="cavidad_13">Cavidad 13</th>
-                                        <th style="max-width: 150px;" id="cavidad_14">Cavidad 14</th>
-                                        <th style="max-width: 150px;" id="cavidad_15">Cavidad 15</th>
-                                        <th style="max-width: 150px;" id="cavidad_16">Cavidad 16</th>
-                                        <th style="max-width: 150px;" id="cavidad_17">Cavidad 17</th>
-                                        <th style="max-width: 150px;" id="cavidad_18">Cavidad 18</th>
-                                        <th style="max-width: 150px;" id="cavidad_19">Cavidad 19</th>
-                                        <th style="max-width: 150px;" id="cavidad_20">Cavidad 20</th>
-                                        <th style="max-width: 150px;" id="cavidad_21">Cavidad 21</th>
-                                        <th style="max-width: 150px;" id="cavidad_22">Cavidad 22</th>
-                                        <th style="max-width: 150px;" id="cavidad_23">Cavidad 23</th>
-                                        <th style="max-width: 150px;" id="cavidad_24">Cavidad 24</th>
-                                        <th style="max-width: 150px;" id="cavidad_25">Cavidad 25</th>
-                                        <th style="max-width: 150px;" id="cavidad_26">Cavidad 26</th>
-                                        <th style="max-width: 150px;" id="cavidad_27">Cavidad 27</th>
-                                        <th style="max-width: 150px;" id="cavidad_28">Cavidad 28</th>
-                                        <th style="max-width: 150px;" id="cavidad_29">Cavidad 29</th>
-                                        <th style="max-width: 150px;" id="cavidad_30">Cavidad 30</th>
-                                        <th style="max-width: 150px;" id="cavidad_31">Cavidad 31</th>
-                                        <th style="max-width: 150px;" id="cavidad_32">Cavidad 32</th>
-                                        <th style="width: 150px;">Promedio</th>
-                                        <th style="width: 150px;">Resultado</th>
+                                        <th style="width: 100px !important;">Prueba y/o ensayo</th>
+                                        <th style="width: 100px !important;">Valor FT</th>
+                                        <th style="width: 100px !important;">Tolerancia FT</th>
+                                        <th style="width: 100px !important;" id="cavidad_1">Cavidad 1</th>
+                                        <th style="width: 100px !important;" id="cavidad_2">Cavidad 2</th>
+                                        <th style="width: 100px !important;" id="cavidad_3">Cavidad 3</th>
+                                        <th style="width: 100px !important;" id="cavidad_4">Cavidad 4</th>
+                                        <th style="width: 100px !important;" id="cavidad_5">Cavidad 5</th>
+                                        <th style="width: 100px !important;" id="cavidad_6">Cavidad 6</th>
+                                        <th style="width: 100px !important;" id="cavidad_7">Cavidad 7</th>
+                                        <th style="width: 100px !important;" id="cavidad_8">Cavidad 8</th>
+                                        <th style="width: 100px !important;" id="cavidad_9">Cavidad 9</th>
+                                        <th style="width: 100px !important;" id="cavidad_10">Cavidad 10</th>
+                                        <th style="width: 100px !important;" id="cavidad_11">Cavidad 11</th>
+                                        <th style="width: 100px !important;" id="cavidad_12">Cavidad 12</th>
+                                        <th style="width: 100px !important;" id="cavidad_13">Cavidad 13</th>
+                                        <th style="width: 100px !important;" id="cavidad_14">Cavidad 14</th>
+                                        <th style="width: 100px !important;" id="cavidad_15">Cavidad 15</th>
+                                        <th style="width: 100px !important;" id="cavidad_16">Cavidad 16</th>
+                                        <th style="width: 100px !important;" id="cavidad_17">Cavidad 17</th>
+                                        <th style="width: 100px !important;" id="cavidad_18">Cavidad 18</th>
+                                        <th style="width: 100px !important;" id="cavidad_19">Cavidad 19</th>
+                                        <th style="width: 100px !important;" id="cavidad_20">Cavidad 20</th>
+                                        <th style="width: 100px !important;" id="cavidad_21">Cavidad 21</th>
+                                        <th style="width: 100px !important;" id="cavidad_22">Cavidad 22</th>
+                                        <th style="width: 100px !important;" id="cavidad_23">Cavidad 23</th>
+                                        <th style="width: 100px !important;" id="cavidad_24">Cavidad 24</th>
+                                        <th style="width: 100px !important;" id="cavidad_25">Cavidad 25</th>
+                                        <th style="width: 100px !important;" id="cavidad_26">Cavidad 26</th>
+                                        <th style="width: 100px !important;" id="cavidad_27">Cavidad 27</th>
+                                        <th style="width: 100px !important;" id="cavidad_28">Cavidad 28</th>
+                                        <th style="width: 100px !important;" id="cavidad_29">Cavidad 29</th>
+                                        <th style="width: 100px !important;" id="cavidad_30">Cavidad 30</th>
+                                        <th style="width: 100px !important;" id="cavidad_31">Cavidad 31</th>
+                                        <th style="width: 100px !important;" id="cavidad_32">Cavidad 32</th>
+                                        <th style="width: 100px !important;">Promedio</th>
+                                        <th style="width: 100px !important;">Resultado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -380,7 +383,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="card card-secondary">
+                    <div class="card card-secondary" loading="lazy">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fas fa-tachometer-alt"> </i> Caracteristicas dimensionales</h3><br>
                             <h6>Si el valor es 0 (Cero) por favor digitelo, de lo contarrio no se gardará</h6>
@@ -389,43 +392,43 @@
                             <table class="table table-bordered" id="tblInspeccionDimensiones">
                                 <thead>
                                     <tr>
-                                        <th>Dimensión</th>
-                                        <th>Valor FT</th>
-                                        <th>Tolerancia FT</th>
-                                        <th style="max-width: 150px;" id="ccavidad_1">Cavidad 1</th>
-                                        <th style="max-width: 150px;" id="ccavidad_2">Cavidad 2</th>
-                                        <th style="max-width: 150px;" id="ccavidad_3">Cavidad 3</th>
-                                        <th style="max-width: 150px;" id="ccavidad_4">Cavidad 4</th>
-                                        <th style="max-width: 150px;" id="ccavidad_5">Cavidad 5</th>
-                                        <th style="max-width: 150px;" id="ccavidad_6">Cavidad 6</th>
-                                        <th style="max-width: 150px;" id="ccavidad_7">Cavidad 7</th>
-                                        <th style="max-width: 150px;" id="ccavidad_8">Cavidad 8</th>
-                                        <th style="max-width: 150px;" id="ccavidad_9">Cavidad 9</th>
-                                        <th style="max-width: 150px;" id="ccavidad_10">Cavidad 10</th>
-                                        <th style="max-width: 150px;" id="ccavidad_11">Cavidad 11</th>
-                                        <th style="max-width: 150px;" id="ccavidad_12">Cavidad 12</th>
-                                        <th style="max-width: 150px;" id="ccavidad_13">Cavidad 13</th>
-                                        <th style="max-width: 150px;" id="ccavidad_14">Cavidad 14</th>
-                                        <th style="max-width: 150px;" id="ccavidad_15">Cavidad 15</th>
-                                        <th style="max-width: 150px;" id="ccavidad_16">Cavidad 16</th>
-                                        <th style="max-width: 150px;" id="ccavidad_17">Cavidad 17</th>
-                                        <th style="max-width: 150px;" id="ccavidad_18">Cavidad 18</th>
-                                        <th style="max-width: 150px;" id="ccavidad_19">Cavidad 19</th>
-                                        <th style="max-width: 150px;" id="ccavidad_20">Cavidad 20</th>
-                                        <th style="max-width: 150px;" id="ccavidad_21">Cavidad 21</th>
-                                        <th style="max-width: 150px;" id="ccavidad_22">Cavidad 22</th>
-                                        <th style="max-width: 150px;" id="ccavidad_23">Cavidad 23</th>
-                                        <th style="max-width: 150px;" id="ccavidad_24">Cavidad 24</th>
-                                        <th style="max-width: 150px;" id="ccavidad_25">Cavidad 25</th>
-                                        <th style="max-width: 150px;" id="ccavidad_26">Cavidad 26</th>
-                                        <th style="max-width: 150px;" id="ccavidad_27">Cavidad 27</th>
-                                        <th style="max-width: 150px;" id="ccavidad_28">Cavidad 28</th>
-                                        <th style="max-width: 150px;" id="ccavidad_29">Cavidad 29</th>
-                                        <th style="max-width: 150px;" id="ccavidad_30">Cavidad 30</th>
-                                        <th style="max-width: 150px;" id="ccavidad_31">Cavidad 31</th>
-                                        <th style="max-width: 150px;" id="ccavidad_32">Cavidad 32</th>
-                                        <th>Promedio</th>
-                                        <th>Resultado</th>
+                                        <th style="width: 100px !important;">Dimensión</th>
+                                        <th style="width: 100px !important;">Valor FT</th>
+                                        <th style="width: 100px !important;">Tolerancia FT</th>
+                                        <th style="width: 100px !important;" id="ccavidad_1">Cavidad 1</th>
+                                        <th style="width: 100px !important;" id="ccavidad_2">Cavidad 2</th>
+                                        <th style="width: 100px !important;" id="ccavidad_3">Cavidad 3</th>
+                                        <th style="width: 100px !important;" id="ccavidad_4">Cavidad 4</th>
+                                        <th style="width: 100px !important;" id="ccavidad_5">Cavidad 5</th>
+                                        <th style="width: 100px !important;" id="ccavidad_6">Cavidad 6</th>
+                                        <th style="width: 100px !important;" id="ccavidad_7">Cavidad 7</th>
+                                        <th style="width: 100px !important;" id="ccavidad_8">Cavidad 8</th>
+                                        <th style="width: 100px !important;" id="ccavidad_9">Cavidad 9</th>
+                                        <th style="width: 100px !important;" id="ccavidad_10">Cavidad 10</th>
+                                        <th style="width: 100px !important;" id="ccavidad_11">Cavidad 11</th>
+                                        <th style="width: 100px !important;" id="ccavidad_12">Cavidad 12</th>
+                                        <th style="width: 100px !important;" id="ccavidad_13">Cavidad 13</th>
+                                        <th style="width: 100px !important;" id="ccavidad_14">Cavidad 14</th>
+                                        <th style="width: 100px !important;" id="ccavidad_15">Cavidad 15</th>
+                                        <th style="width: 100px !important;" id="ccavidad_16">Cavidad 16</th>
+                                        <th style="width: 100px !important;" id="ccavidad_17">Cavidad 17</th>
+                                        <th style="width: 100px !important;" id="ccavidad_18">Cavidad 18</th>
+                                        <th style="width: 100px !important;" id="ccavidad_19">Cavidad 19</th>
+                                        <th style="width: 100px !important;" id="ccavidad_20">Cavidad 20</th>
+                                        <th style="width: 100px !important;" id="ccavidad_21">Cavidad 21</th>
+                                        <th style="width: 100px !important;" id="ccavidad_22">Cavidad 22</th>
+                                        <th style="width: 100px !important;" id="ccavidad_23">Cavidad 23</th>
+                                        <th style="width: 100px !important;" id="ccavidad_24">Cavidad 24</th>
+                                        <th style="width: 100px !important;" id="ccavidad_25">Cavidad 25</th>
+                                        <th style="width: 100px !important;" id="ccavidad_26">Cavidad 26</th>
+                                        <th style="width: 100px !important;" id="ccavidad_27">Cavidad 27</th>
+                                        <th style="width: 100px !important;" id="ccavidad_28">Cavidad 28</th>
+                                        <th style="width: 100px !important;" id="ccavidad_29">Cavidad 29</th>
+                                        <th style="width: 100px !important;" id="ccavidad_30">Cavidad 30</th>
+                                        <th style="width: 100px !important;" id="ccavidad_31">Cavidad 31</th>
+                                        <th style="width: 100px !important;" id="ccavidad_32">Cavidad 32</th>
+                                        <th style="width: 100px !important;">Promedio</th>
+                                        <th style="width: 100px !important;">Resultado</th>
                                     </tr>
                                 </thead>
                                 <tbody>

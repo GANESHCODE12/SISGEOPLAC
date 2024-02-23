@@ -56,67 +56,6 @@
                 </a>
             </div>
         </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
-                <i class="far fa-bell"></i>
-                {% for n in notificacion.all %}
-                {% if n.read == False and n.actor != '{{ request.user.id }}' %}
-                <span class="badge badge-warning navbar-badge">
-                {{ notify }}
-                </span>
-                {% endif %}
-            </a>
-            {% endfor %}
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
-                {% for n in notificacion.all %}
-                {% if n.read == False and n.actor != n.destiny %}
-                <a href="{% url 'Produccion:actualizar-orden-notificacion' n.verbo n.id%}" class="dropdown-item">
-                    {% if n.level == "success" %}
-                    <p>
-                        <i class="fas fa-envelope mr-2"></i>
-                        {{ n.actor.get_full_name }} ha creado la orden de producción No. {{ n.verbo }}, requiere aprobación
-                    </p><br>
-                    <span class="float-left text-muted text-sm">{{ n.timestamp }}</span> <br>
-                    {% else %}
-                    <p>
-                        <i class="fas fa-envelope mr-2"></i>
-                        <small>
-                            {{ n.actor.get_full_name }} ha modificado la orden de producción No. {{ n.verbo }} con la siguiente información <br>
-                        </small>
-                        <small><b>Orden de compra:</b> {{ n.verbo.orden_compra }}</small><br>
-                        <small><b>Cantidad requerida:</b> {{ n.verbo.cantidad_requerida }}</small><br>
-                        <small><b>Máquina:</b> {{ n.verbo.maquina }}</small><br>
-                        <small><b>Estado:</b> {{ n.verbo.estado_op }}</small><br>
-                        <small><b>Fecha de entrega:</b> {{ n.verbo.fecha_entrega }}</small><br>
-                        <small><b>Lote:</b> {{ n.verbo }}-{{ n.verbo.fecha_creacion.year }} </small><br>
-                        <small><b>Aprobación orden:</b> {% if n.verbo.aprobacion_orden == True %} Si {% else %} No {% endif %}</small><br>
-                        {% if n.verbo.materia_prima_adicional %}
-                        <small><b>Materia prima adicional:</b> {{ n.verbo.materia_prima_adicional }}</small><br>
-                        <small><b>Aprobación materia prima:</b> {% if n.verbo.aprobacion_materia_prima == True %} Si {% else %} No {% endif %}</small><br>
-                        {% endif %}
-                        {% if n.verbo.fecha_inicio_produccion %}
-                        <small><b>Fecha de inicio produccion:</b> {{ n.verbo.fecha_inicio_produccion }}</small><br>
-                        {% endif %}
-                        {% if n.verbo.pigmento_adicional %}
-                        <small><b>Pigmento adicional:</b> {{ n.verbo.pigmento_adicional }}</small><br>
-                        <small><b>Aprobación pigmento:</b> {% if n.verbo.aprobacion_pigmento == True %} Si {% else %} No {% endif %}</small><br>
-                        {% endif %}
-                    </p><br>
-                    <span class="float-left text-muted text-sm">{{ n.timestamp }}</span>
-                    {% endif %}
-                </a>
-                <a class="dropdown-item modal-leido" data-notificacion="{{ n.id }}" type="button">
-                    <span class="float-left text-muted text-sm">
-                        <p style="color: Dodgerblue;"><i class="fas fa-eye"></i> Marcar como leído</p>
-                    </span> <br>
-                </a>
-                <div class="dropdown-divider"></div>
-                <div class="dropdown-divider"></div>
-                {% endif %}
-                {% endfor %}
-                <a href="{% url 'Notificaciones' %}" class="dropdown-item dropdown-footer">Mira todas las notificaciones</a>
-            </div>
-        </li>
         <li class="nav-item">
             <a class="nav-link" href="{% url 'users:logout' %}">
                 <i class="fas fa-power-off" aria-hidden="true"></i>

@@ -988,6 +988,9 @@ var inspeccion = {
             paging: false,
             searching: false,
             data: this.items.pruebasensayos,
+            fixedColumns: {
+                leftColumns: 3,
+            },
             columns: [
                 { "data": "text" },
                 { "data": "valor" },
@@ -1511,6 +1514,9 @@ var inspeccion = {
             paging: false,
             searching: false,
             data: this.items.inspecciondimensiones,
+            fixedColumns: {
+                rigthColumns: 3,
+            },
             columns: [
                 { "data": "text" },
                 { "data": "valor_nominal" },
@@ -1550,6 +1556,9 @@ var inspeccion = {
                 { "data": "promedio" },
                 { "data": "resultado_id" },
             ],
+            fixedColumns: {
+                leftColumns: 3,
+            },
             columnDefs: [
                 {
                     targets: [-2],

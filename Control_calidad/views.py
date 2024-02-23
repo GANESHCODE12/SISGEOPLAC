@@ -508,12 +508,12 @@ class CrearInspeccionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, C
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
-
-    def get_nivel(self):
+    
+    def get_nivel(self, pk):
         data = []
         try:
-            pk = self.kwargs.get('pk')
-            for i in NivelDeInspeccion.lista_tipo_nivel:
+            nivel_inspeccion = NivelDeInspeccion.lista_tipo_nivel
+            for i in nivel_inspeccion:
                 produccion = Produccion.objects.get(pk=pk)
                 item = {}
                 item['cantidad_orden'] = produccion.cantidad_requerida
@@ -525,11 +525,11 @@ class CrearInspeccionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, C
             pass
         return data
 
-    def get_pruebas(self):
+    def get_pruebas(self, productos_id):
         data = []
         try:
-            pk = self.kwargs.get('pk')
-            for i in PruebasEnsayo.objects.filter(id_producto_p_id = Produccion.objects.get(pk=pk).producto.productos_id):
+            pruebas_ensayos = PruebasEnsayo.objects.filter(id_producto_p_id = productos_id)
+            for i in pruebas_ensayos:
                 item = i.toJSON()
                 item['text'] = i.id_pruebas.variables
                 item['Nombre_producto'] = i.id_producto_p.Nombre_producto
@@ -537,13 +537,14 @@ class CrearInspeccionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, C
                 data.append(item)
         except:
             pass
-        return data
 
-    def get_dimensiones(self):
+        return data, pruebas_ensayos
+
+    def get_dimensiones(self, productos_id):
         data = []
         try:
-            pk = self.kwargs.get('pk')
-            for i in CaracteristicasDimensionale.objects.filter(id_producto_c_id = Produccion.objects.get(pk=pk).producto.productos_id):
+            dimensiones = CaracteristicasDimensionale.objects.filter(id_producto_c_id = productos_id)
+            for i in dimensiones:
                 item = i.toJSON()
                 item['text'] = i.id_dimensiones.caracteristicas_control
                 item['Nombre_producto'] = i.id_producto_c.Nombre_producto
@@ -553,13 +554,13 @@ class CrearInspeccionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, C
                 data.append(item)
         except:
             pass
-        return data
+        return data, dimensiones
 
-    def get_atributos(self):
+    def get_atributos(self, productos_id):
         data = []
         try:
-            pk = self.kwargs.get('pk')
-            for i in ControlAtributo.objects.filter(id_producto_a_id = Produccion.objects.get(pk=pk).producto.productos_id):
+            atributos = ControlAtributo.objects.filter(id_producto_a_id = productos_id)
+            for i in atributos:
                 item = i.toJSON()
                 item['text'] = i.id_atributo.caracteristicas
                 item['especificacion'] = i.id_atributo.especificacion
@@ -576,16 +577,20 @@ class CrearInspeccionView(LoginRequiredMixin, ValidatePermissionRequiredMixin, C
         context = super().get_context_data(**kwargs)
         pk = self.kwargs.get('pk')
         produccion = Produccion.objects.get(pk=pk)
+        resultado_data_pruebas, pruebas = self.get_pruebas(produccion.producto.productos_id)
+        resultado_data_dimensiones, dimensiones = self.get_dimensiones(produccion.producto.productos_id)
 
         context['produccion'] = produccion
         context['title'] = "Nueva Inspección De Calidad"
         context['list_url'] = reverse_lazy('Control_calidad:Inspecciones_calidad')
         context['entity'] = 'Inspecciones'
         context['action'] = 'add'
-        context['inspeccionpruebasyoensayos'] = json.dumps(self.get_pruebas())
-        context['inspecciondimensiones'] = json.dumps(self.get_dimensiones())
-        context['inspeccionatributos'] = json.dumps(self.get_atributos())
-        context['nivel'] = self.get_nivel()
+        context['inspeccionpruebasyoensayos'] = json.dumps(resultado_data_pruebas)
+        context['inspecciondimensiones'] = json.dumps(resultado_data_dimensiones)
+        context['inspeccionatributos'] = json.dumps(self.get_atributos(produccion.producto.productos_id))
+        context['nivel'] = self.get_nivel(pk)
+        context['pruebasensayos'] = pruebas
+        context['dimensiones'] = dimensiones
         context['cantidad_orden'] = produccion.cantidad_requerida
         return context
 
